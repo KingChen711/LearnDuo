@@ -18,11 +18,13 @@ public class Tutor
 
     [Required]
     [EmailAddress]
+    [MaxLength(100, ErrorMessage = "Email tối đa 100 kí tự.")]
     public string Email { get; set; } = null!;
 
     [Required]
     [RegularExpression(@"^(\+84|0)[1-9]\d{8}$", ErrorMessage = "Số điện thoại không hợp lệ")]
     [DisplayName("Số điện thoại")]
+    [MaxLength(12, ErrorMessage = "Số điện thoại tối đa 100 kí tự.")]
     public string Phone { get; set; } = null!;
 
     [DisplayName("Địa chỉ")]

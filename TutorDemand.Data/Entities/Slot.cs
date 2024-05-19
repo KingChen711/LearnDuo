@@ -25,6 +25,7 @@ public class Slot
     public TimeOnly Time { get; set; }
 
     [DisplayName("Mô tả tiết học")]
+    [MaxLength(100, ErrorMessage = "Tên tiết học tối đa 100 kí tự.")]
     public string? SlotDesc { get; set; }
 
     //navigator

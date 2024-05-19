@@ -18,11 +18,13 @@ public class Customer
 
     [Required]
     [EmailAddress]
+    [MaxLength(100, ErrorMessage = "Email tối đa 100 kí tự.")]
     public string Email { get; set; } = null!; //UNIQUE, nếu có mua hàng lần 2 thì find by email trước
 
     [Required]
     [RegularExpression(@"^(\+84|0)[1-9]\d{8}$", ErrorMessage = "Số điện thoại không hợp lệ")]
     [DisplayName("Số điện thoại")]
+    [MaxLength(12, ErrorMessage = "Số điện thoại tối đa 100 kí tự.")]
     public string Phone { get; set; } = null!;
 
     [DisplayName("Địa chỉ")]
@@ -32,7 +34,7 @@ public class Customer
     [DisplayName("Giới tính")]
     [MaxLength(10)]
     [EnumDataType(typeof(Gender))]
-    public bool? Gender { get; set; }
+    public string? Gender { get; set; }
 
     [DisplayName("Ngày sinh")]
     public DateOnly? Dob { get; set; }

@@ -24,6 +24,7 @@ public class TeachingSchedule
     public string RoomPassword { get; set; } = null!;
 
     [DisplayName("Các thứ học trong tuần")]
+    [MaxLength(100, ErrorMessage = "Các thứ học trong tuần tối đa 100 kí tự")]
     public string LearnDays { get; set; } = null!; //Example: "Monday,Wednesday,Friday"
 
     [Range(0, int.MaxValue, ErrorMessage = "Giá khóa học phải lớn hơn 0")]
