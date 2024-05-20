@@ -2,7 +2,4 @@
 
 namespace TutorDemand.Business;
 
-public class TutorBusiness : ITutorBusiness
-{
-
-}
+public class TutorBusiness : ITutorBusiness { }
