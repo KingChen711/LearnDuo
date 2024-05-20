@@ -11,6 +11,7 @@ namespace TutorDemand.RazorWebApp.Extensions
         {
 
             services.AddScoped<ITutorBusiness, TutorBusiness>();
+            services.AddScoped<ITeachingScheduleBusiness, TeachingScheduleBusiness>();
         }
 
         public static void ConfigureSqlContext(this IServiceCollection services,

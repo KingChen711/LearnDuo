@@ -15,10 +15,12 @@ public class TeachingSchedule
 
     public Guid SlotId { get; set; }
 
+    [Required]
     [MaxLength(50, ErrorMessage = "Mã phòng google meet tối đa 50 kí tự")]
     [DisplayName("Mã phòng google meet")]
     public string MeetRoomCode { get; set; } = null!;
 
+    [Required]
     [MaxLength(50, ErrorMessage = "Mật khẩu phòng google meet tối đa 50 kí tự")]
     [DisplayName("Mật khẩu phòng google meet")]
     public string RoomPassword { get; set; } = null!;

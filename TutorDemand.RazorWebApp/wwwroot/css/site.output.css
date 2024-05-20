@@ -772,6 +772,11 @@ video {
   letter-spacing: 0em;
 }
 
+.text-danger {
+  --tw-text-opacity: 1;
+  color: rgb(244 63 94 / var(--tw-text-opacity));
+}
+
 .text-gray-500 {
   --tw-text-opacity: 1;
   color: rgb(107 114 128 / var(--tw-text-opacity));
@@ -785,11 +790,6 @@ video {
 .text-primary {
   --tw-text-opacity: 1;
   color: rgb(102 165 147 / var(--tw-text-opacity));
-}
-
-.text-rose-500 {
-  --tw-text-opacity: 1;
-  color: rgb(244 63 94 / var(--tw-text-opacity));
 }
 
 .no-underline {
