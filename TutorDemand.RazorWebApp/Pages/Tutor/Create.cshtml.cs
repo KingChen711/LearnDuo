@@ -16,10 +16,10 @@ namespace TutorDemand.RazorWebApp.Pages.Tutor
         [BindProperty]
         public TutorAddDto Tutor { get; set; }
 
-        public async void OnPost()
+        public async Task OnPost()
         {
             Tutor.TutorId = Guid.NewGuid();
-           await tutorBusiness.Create(Tutor);
+            await tutorBusiness.Create(Tutor);
         }
     }
 }
