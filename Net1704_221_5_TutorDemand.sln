@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.9.34714.143
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TutorDemand.Data", "TutorDemand.Data\TutorDemand.Data.csproj", "{4FE16E06-C2B0-45F4-A979-0F9859BF4E2B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TutorDemand.Data", "TutorDemand.Data\TutorDemand.Data.csproj", "{4FE16E06-C2B0-45F4-A979-0F9859BF4E2B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TutorDemand.Business", "TutorDemand.Business\TutorDemand.Business.csproj", "{09327B54-56CD-4468-B224-988615675FCC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TutorDemand.Business", "TutorDemand.Business\TutorDemand.Business.csproj", "{09327B54-56CD-4468-B224-988615675FCC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TutorDemand.RazorWebApp", "TutorDemand.RazorWebApp\TutorDemand.RazorWebApp.csproj", "{4639C967-9712-4145-9406-D416872D4513}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TutorDemand.RazorWebApp", "TutorDemand.RazorWebApp\TutorDemand.RazorWebApp.csproj", "{4639C967-9712-4145-9406-D416872D4513}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

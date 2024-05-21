@@ -13,6 +13,7 @@
 
 	<ItemGroup>
 		<Folder Include="Extensions\" />
+		<Folder Include="Pages\Customer\" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -28,7 +29,7 @@
 	</ItemGroup>
 
 	<Target Name="tailwindcss" BeforeTargets="Build">
-		<Exec Command="npm run css:build"/>
+		<Exec Command="npm run css:build" />
 	</Target>
 
 </Project>
