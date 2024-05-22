@@ -7,13 +7,19 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+	  <Compile Remove="Pages\Customer\**" />
+	  <Content Remove="Pages\Customer\**" />
+	  <EmbeddedResource Remove="Pages\Customer\**" />
+	  <None Remove="Pages\Customer\**" />
+	</ItemGroup>
+
+	<ItemGroup>
 		<ProjectReference Include="..\TutorDemand.Business\TutorDemand.Business.csproj" />
 		<ProjectReference Include="..\TutorDemand.Data\TutorDemand.Data.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>
 		<Folder Include="Extensions\" />
-		<Folder Include="Pages\Customer\" />
 	</ItemGroup>
 
 	<ItemGroup>

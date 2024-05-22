@@ -2,6 +2,9 @@
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 using TutorDemand.Business.Abstractions;
+using TutorDemand.Business.Base;
+using TutorDemand.Common;
+using TutorDemand.Data.DAO;
 using TutorDemand.Data.Dtos.Tutor;
 using TutorDemand.Data.Entities;
 
@@ -9,38 +12,137 @@ namespace TutorDemand.Business
 {
     public class TutorBusiness : ITutorBusiness
     {
-        private readonly NET1704_221_5_TutorDemandContext tutorDemandContext;
+        private readonly TutorDAO tutorDAO;
 
-        public TutorBusiness(NET1704_221_5_TutorDemandContext tutorDemandContext)
+        public TutorBusiness(TutorDAO tutorDAO) 
         {
-            this.tutorDemandContext = tutorDemandContext;
+            this.tutorDAO = tutorDAO;
         }
-        public async Task<IEnumerable<Tutor>> GetAll() => await tutorDemandContext.Tutors.ToListAsync();
-        public async Task<IEnumerable<Tutor>> Find(Expression<Func<Tutor, bool>> expression) => await tutorDemandContext.Tutors.Where(expression).ToListAsync();
-        public async Task<Tutor?> FindOne(Expression<Func<Tutor, bool>> expression) => await tutorDemandContext.Tutors.Where(expression).FirstOrDefaultAsync();
-        public async Task Create(TutorAddDto dto)
+        public async Task<IBusinessResult> Create(TutorAddDto dto)
         {
-            var entity = dto.Adapt<Tutor>();
-            tutorDemandContext.Tutors.Add(entity);
-            await tutorDemandContext.SaveChangesAsync();
-        }
-        public async Task Delete(Guid tutorId)
-        {
-            var entity = await FindOne(t => t.TutorId == tutorId);
-
-            if (entity is null)
+            try
             {
-                throw new Exception($"Not found Tutor with id: ${tutorId}");
+                var entity = dto.Adapt<Tutor>();
+                tutorDAO.Create(entity);
+                var result = await tutorDAO.SaveChangesAsync() > 0;
+                if (result)
+                {
+                    return new BusinessResult(Const.SUCCESS_CREATE_CODE, Const.SUCCESS_CREATE_MSG);
+                }
+                else
+                {
+                    return new BusinessResult(Const.FAIL_CREATE_CODE, Const.FAIL_CREATE_MSG);
+                }
             }
-
-            tutorDemandContext.Tutors.Remove(entity);
-            await tutorDemandContext.SaveChangesAsync();
+            catch (Exception ex)
+            {
+                return new BusinessResult(Const.ERROR_EXCEPTION_CODE, ex.Message);
+            }
         }
-        public async Task Update(TutorUpdateDto dto)
+
+        public async Task<IBusinessResult> Delete(Guid tutorId)
         {
-            var entity = dto.Adapt<Tutor>();
-            tutorDemandContext.Tutors.Update(entity);
-            await tutorDemandContext.SaveChangesAsync();
+            var tutorEntity = await tutorDAO.GetByIdAsync(tutorId);
+            if (tutorEntity is null)
+            {
+                return new BusinessResult(Const.WARNING_NO_DATA_CODE, Const.WARNING_NO_DATA_MSG);
+            }
+            else
+            {
+                tutorDAO.Remove(tutorEntity);
+                await tutorDAO.SaveChangesAsync();
+
+                return new BusinessResult(Const.SUCCESS_DELETE_CODE, Const.SUCCESS_DELETE_MSG);
+            }
+        }
+
+        public async Task<IBusinessResult> Find(Expression<Func<Tutor, bool>> filter = null!,
+        Func<IQueryable<Tutor>, IOrderedQueryable<Tutor>> orderBy = null!,
+        string includeProperties = "")
+        {
+            try
+            {
+                var tutors = await tutorDAO.GetWithConditionAsync(filter, orderBy, includeProperties);
+
+                if (tutors != null)
+                {
+                    return new BusinessResult(Const.SUCCESS_UPDATE_CODE, Const.SUCCESS_UPDATE_MSG, tutors);
+                }
+                else
+                {
+                    return new BusinessResult(Const.FAIL_UPDATE_CODE, Const.FAIL_UPDATE_MSG);
+                }
+
+            }
+            catch (Exception ex)
+            {
+                return new BusinessResult(Const.ERROR_EXCEPTION_CODE, ex.Message);
+            }
+        }
+
+        public async Task<IBusinessResult> FindOne(Expression<Func<Tutor, bool>> expression)
+        {
+            try
+            {
+                var tutors = await tutorDAO.FindOne(expression);
+                if (tutors != null)
+                {
+                    return new BusinessResult(Const.SUCCESS_UPDATE_CODE, Const.SUCCESS_UPDATE_MSG, tutors);
+                }
+                else
+                {
+                    return new BusinessResult(Const.FAIL_UPDATE_CODE, Const.FAIL_UPDATE_MSG);
+                }
+            }
+            catch (Exception ex)
+            {
+                return new BusinessResult(Const.ERROR_EXCEPTION_CODE, ex.Message);
+            }
+        }
+
+        public async Task<IBusinessResult> GetAll()
+        {
+            try
+            {
+                var tutorEntities = tutorDAO.GetAll();
+
+                if (tutorEntities != null)
+                {
+                    return new BusinessResult(Const.SUCCESS_READ_CODE, Const.SUCCESS_READ_MSG, tutorEntities);
+                }
+                else
+                {
+                    return new BusinessResult(Const.FAIL_READ_CODE, Const.FAIL_READ_MSG);
+                }
+            }
+            catch (Exception ex)
+            {
+                return new BusinessResult(Const.ERROR_EXCEPTION_CODE, ex.Message);
+            }
+        }
+
+        public async Task<IBusinessResult> Update(TutorUpdateDto dto)
+        {
+            try
+            {
+                var entity = dto.Adapt<Tutor>();
+                await tutorDAO.UpdateAsync(entity);
+                var result = await tutorDAO.SaveChangesAsync() > 0;
+
+                if (result)
+                {
+                    return new BusinessResult(Const.SUCCESS_UPDATE_CODE, Const.SUCCESS_UPDATE_MSG);
+                }
+                else
+                {
+                    return new BusinessResult(Const.FAIL_UPDATE_CODE, Const.FAIL_UPDATE_MSG);
+                }
+
+            }
+            catch (Exception ex)
+            {
+                return new BusinessResult(Const.ERROR_EXCEPTION_CODE, ex.Message);
+            }
         }
     }
 };
