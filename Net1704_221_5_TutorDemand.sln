@@ -9,6 +9,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TutorDemand.Business", "Tut
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TutorDemand.RazorWebApp", "TutorDemand.RazorWebApp\TutorDemand.RazorWebApp.csproj", "{4639C967-9712-4145-9406-D416872D4513}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TutorDemand.Common", "TutorDemand.Common\TutorDemand.Common.csproj", "{53350F2C-961A-4927-B5A1-8817BF9F3484}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{4639C967-9712-4145-9406-D416872D4513}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4639C967-9712-4145-9406-D416872D4513}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4639C967-9712-4145-9406-D416872D4513}.Release|Any CPU.Build.0 = Release|Any CPU
+		{53350F2C-961A-4927-B5A1-8817BF9F3484}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{53350F2C-961A-4927-B5A1-8817BF9F3484}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{53350F2C-961A-4927-B5A1-8817BF9F3484}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{53350F2C-961A-4927-B5A1-8817BF9F3484}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

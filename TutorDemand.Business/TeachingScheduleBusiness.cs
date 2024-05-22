@@ -13,9 +13,9 @@ namespace TutorDemand.Business
 {
     public class TeachingScheduleBusiness : ITeachingScheduleBusiness
     {
-        private readonly TutorDemandContext _context;
+        private readonly NET1704_221_5_TutorDemandContext _context;
 
-        public TeachingScheduleBusiness(TutorDemandContext context)
+        public TeachingScheduleBusiness(NET1704_221_5_TutorDemandContext context)
         {
             _context = context;
         }

@@ -9,9 +9,9 @@ namespace TutorDemand.Business
 {
     public class TutorBusiness : ITutorBusiness
     {
-        private readonly TutorDemandContext tutorDemandContext;
+        private readonly NET1704_221_5_TutorDemandContext tutorDemandContext;
 
-        public TutorBusiness(TutorDemandContext tutorDemandContext)
+        public TutorBusiness(NET1704_221_5_TutorDemandContext tutorDemandContext)
         {
             this.tutorDemandContext = tutorDemandContext;
         }

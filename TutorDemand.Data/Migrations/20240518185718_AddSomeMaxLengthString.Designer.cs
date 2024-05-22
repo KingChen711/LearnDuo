@@ -11,7 +11,7 @@ using TutorDemand.Data.Entities;
 
 namespace TutorDemand.Data.Migrations
 {
-    [DbContext(typeof(TutorDemandContext))]
+    [DbContext(typeof(NET1704_221_5_TutorDemandContext))]
     [Migration("20240518185718_AddSomeMaxLengthString")]
     partial class AddSomeMaxLengthString
     {
