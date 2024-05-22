@@ -28,7 +28,7 @@ public class ReservationBusiness : IReservationBusiness
     public async Task<Reservation?> FindOne(Expression<Func<Reservation, bool>> expression)
         => await _context.Reservations.Where(expression).FirstOrDefaultAsync();
 
-    public async Task Create(ReservationCreateDTO dto)
+    public async Task Create(ReservationCreateDto dto)
     {
         var entity = dto.Adapt<Reservation>();
 
@@ -36,7 +36,7 @@ public class ReservationBusiness : IReservationBusiness
         await _context.SaveChangesAsync();
     }
 
-    public async Task Update(ReservationUpdateDTO dto)
+    public async Task Update(ReservationUpdateDto dto)
     {
         var entity = dto.Adapt<Reservation>();
         _context.Reservations.Update(entity);

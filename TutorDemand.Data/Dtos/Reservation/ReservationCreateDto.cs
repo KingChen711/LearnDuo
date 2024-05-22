@@ -4,7 +4,7 @@ using TutorDemand.Data.Enums;
 
 namespace TutorDemand.Data.Dtos.Reservation;
 
-public class ReservationCreateDTO
+public class ReservationCreateDto
 {
     [Required]
     public Guid CustomerId { get; set; }
