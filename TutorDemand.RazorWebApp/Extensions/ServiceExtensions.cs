@@ -18,7 +18,7 @@ namespace TutorDemand.RazorWebApp.Extensions
 
         public static void ConfigureSqlContext(this IServiceCollection services,
             IConfiguration configuration) =>
-            services.AddSqlServer<TutorDemandContext>(
+            services.AddSqlServer<NET1704_221_5_TutorDemandContext>(
                 configuration.GetConnectionString("TutorDemandContextConnection"));
 
         public static void RegisterMapsterConfiguration(this IServiceCollection _)
