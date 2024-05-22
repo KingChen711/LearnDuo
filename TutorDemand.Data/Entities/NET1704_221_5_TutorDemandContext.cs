@@ -1,11 +1,14 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using System.Security.Cryptography;
 using TutorDemand.Data.Configuration;
 
 namespace TutorDemand.Data.Entities;
 
-public class TutorDemandContext : DbContext
+public class NET1704_221_5_TutorDemandContext : DbContext
 {
-    public TutorDemandContext(DbContextOptions<TutorDemandContext> options) : base(options) { }
+    public NET1704_221_5_TutorDemandContext() { }
+    public NET1704_221_5_TutorDemandContext(DbContextOptions<NET1704_221_5_TutorDemandContext> options) : base(options) { }
 
     public DbSet<Company> Companies { get; set; }
     public DbSet<Customer> Customers { get; set; }
@@ -14,6 +17,21 @@ public class TutorDemandContext : DbContext
     public DbSet<Subject> Subjects { get; set; }
     public DbSet<TeachingSchedule> TeachingSchedules { get; set; }
     public DbSet<Tutor> Tutors { get; set; }
+
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    {
+        optionsBuilder.UseSqlServer(GetConnectionString());
+    }
+
+    private string GetConnectionString()
+    {
+        IConfiguration config = new ConfigurationBuilder()
+            .SetBasePath(Directory.GetCurrentDirectory())
+            .AddJsonFile("appsettings.json")
+            .Build();
+
+        return config.GetConnectionString("TutorDemandContextConnection")!;
+    }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

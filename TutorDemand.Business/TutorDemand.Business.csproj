@@ -13,6 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\TutorDemand.Common\TutorDemand.Common.csproj" />
     <ProjectReference Include="..\TutorDemand.Data\TutorDemand.Data.csproj" />
   </ItemGroup>
 
