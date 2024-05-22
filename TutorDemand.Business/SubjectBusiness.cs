@@ -144,39 +144,55 @@ public class SubjectBusiness : ISubjectBusiness
 
 
     public IBusinessResult GetWithCondition(
-        Expression<Func<Subject, bool>> filter = null!, 
-        Func<IQueryable<Subject>, IOrderedQueryable<Subject>> orderBy = null!, 
-        string includeProperties = "")
+            Expression<Func<Subject, bool>> filter = null!, 
+            Func<IQueryable<Subject>, IOrderedQueryable<Subject>> orderBy = null!, 
+            string includeProperties = "")
     {
-        IQueryable<TEntity> query = _dbSet;
-
-        if (filter != null)
-            query = query.Where(filter);
-
-        foreach (var includeProperty in includeProperties.Split(
-            new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+        try
         {
-            query = query.Include(includeProperty);
+            var subjects = _subjectDAO.GetWithCondition(filter, orderBy, includeProperties);
+            var result = _subjectDAO.SaveChanges() > 0;
+
+            if (result)
+            {
+                return new BusinessResult(Const.SUCCESS_UPDATE_CODE, Const.SUCCESS_UPDATE_MSG);
+            }
+            else
+            {
+                return new BusinessResult(Const.FAIL_UPDATE_CODE, Const.FAIL_UPDATE_MSG);
+            }
+
         }
-
-        var businessResult = new BusinessResult()
+        catch (Exception ex)
         {
-            Status = Const.SUCCESS_READ_CODE,
-            Message = Const.SUCCESS_READ_MSG
-        };
-
-        if (orderBy != null)
-            businessResult.Data = orderBy(query).ToList();
-        else
-            return query.ToList();
+            return new BusinessResult(Const.ERROR_EXCEPTION_CODE, ex.Message);
+        }
     }
 
-    public Task<IBusinessResult> GetWithConditionAysnc(
+    public async Task<IBusinessResult> GetWithConditionAysnc(
         Expression<Func<Subject, bool>> filter = null!, 
         Func<IQueryable<Subject>, IOrderedQueryable<Subject>> orderBy = null!, 
         string includeProperties = "")
     {
-        throw new NotImplementedException();
+        try
+        {
+            var subjects = await _subjectDAO.GetWithConditionAsync(filter, orderBy, includeProperties);
+            var result = await _subjectDAO.SaveChangesAsync() > 0;
+
+            if (result)
+            {
+                return new BusinessResult(Const.SUCCESS_UPDATE_CODE, Const.SUCCESS_UPDATE_MSG);
+            }
+            else
+            {
+                return new BusinessResult(Const.FAIL_UPDATE_CODE, Const.FAIL_UPDATE_MSG);
+            }
+
+        }
+        catch (Exception ex)
+        {
+            return new BusinessResult(Const.ERROR_EXCEPTION_CODE, ex.Message);
+        }
     }
 
     public IBusinessResult Insert(Subject subject)
