@@ -12,7 +12,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<Folder Include="Extensions\" />
 		<Folder Include="Pages\Customer\" />
 	</ItemGroup>
 
@@ -26,6 +25,12 @@
 	<ItemGroup>
 		<UpToDateCheckBuilt Include="wwwroot/css/site.css" Set="Css" />
 		<UpToDateCheckBuilt Include="tailwind.config.js" Set="Css" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Content Update="appsettings.json">
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  </Content>
 	</ItemGroup>
 
 	<Target Name="tailwindcss" BeforeTargets="Build">
