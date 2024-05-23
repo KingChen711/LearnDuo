@@ -20,7 +20,8 @@ public class NET1704_221_5_TutorDemandContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        optionsBuilder.UseSqlServer(GetConnectionString());
+        //optionsBuilder.UseSqlServer(GetConnectionString());
+        optionsBuilder.UseSqlServer("Server=localhost;Initial Catalog=Net1704_221_5_TutorDemand;User ID=sa;Password=12345;Trusted_Connection=True;MultipleActiveResultSets=True;TrustServerCertificate=true;");
     }
 
     private string GetConnectionString()

@@ -49,6 +49,12 @@ namespace TutorDemand.Data.Base
 
         public void Remove(T entity)
         {
+            // Provide access to tracking information and operations 
+            if (_context.Entry(entity).State == EntityState.Detached) // entity is not tracking by context 
+            {
+                // Ensure that entity is being track by context 
+                _context.Attach(entity); // Change entity's state to "Deleted"
+            }
             _dbSet.Remove(entity);
         }
 
@@ -94,9 +100,9 @@ namespace TutorDemand.Data.Base
             return _context.SaveChanges();
         }
 
-        public Task<int> SaveChangesAsync()
+        public async Task<int> SaveChangesAsync()
         {
-            return _context.SaveChangesAsync();
+            return await _context.SaveChangesAsync();
         }
 
         public IEnumerable<T> GetWithCondition(

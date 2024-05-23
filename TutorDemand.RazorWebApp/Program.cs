@@ -1,3 +1,4 @@
+using TutorDemand.Data;
 using TutorDemand.RazorWebApp.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -9,8 +10,18 @@ builder.Services.ConfigureSqlContext(builder.Configuration);
 builder.Services.ConfigureBusinesses();
 builder.Services.RegisterMapsterConfiguration();
 
+// Add Database Intializer
+builder.Services.AddScoped<IDatabaseInitializer, DatabaseInitializer>();
 
 var app = builder.Build();
+
+// Hook into application lifetime events and trigger only application fully started
+app.Lifetime.ApplicationStarted.Register(async () =>
+{
+    // Database Initialiser
+    await app.InitializeDatabaseAsync();
+});
+
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())

@@ -43,6 +43,29 @@ public class SubjectBusiness : ISubjectBusiness
         }
     }
 
+    public IBusinessResult Delete(int id)
+    {
+        try
+        {
+            var subjectEntity = _subjectDAO.GetById(id);
+            if (subjectEntity is null)
+            {
+                return new BusinessResult(Const.WARNING_NO_DATA_CODE, Const.WARNING_NO_DATA_MSG);
+            }
+            else
+            {
+                _subjectDAO.Remove(subjectEntity);
+                _subjectDAO.SaveChanges();
+
+                return new BusinessResult(Const.SUCCESS_DELETE_CODE, Const.SUCCESS_DELETE_MSG);
+            }
+        }
+        catch (Exception ex)
+        {
+            return new BusinessResult(Const.ERROR_EXCEPTION_CODE, ex.Message);
+        }
+    }
+
     public async Task<IBusinessResult> DeleteAsync(Guid subjectId)
     {
         var subjectEntity = await _subjectDAO.GetByIdAsync(subjectId);
@@ -274,6 +297,27 @@ public class SubjectBusiness : ISubjectBusiness
                 return new BusinessResult(Const.FAIL_UPDATE_CODE, Const.FAIL_UPDATE_MSG);
             }
 
+        }
+        catch (Exception ex)
+        {
+            return new BusinessResult(Const.ERROR_EXCEPTION_CODE, ex.Message);
+        }
+    }
+
+    public IBusinessResult GetById(int id)
+    {
+        try
+        {
+            var subjectEntity = _subjectDAO.GetById(id);
+
+            if (subjectEntity is not null)
+            {
+                return new BusinessResult(Const.SUCCESS_READ_CODE, Const.SUCCESS_READ_MSG, subjectEntity!);
+            }
+            else
+            {
+                return new BusinessResult(Const.FAIL_READ_CODE, Const.FAIL_READ_MSG);
+            }
         }
         catch (Exception ex)
         {

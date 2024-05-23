@@ -12,8 +12,10 @@ public interface ISubjectBusiness
     //      Synchronous methods 
     public IBusinessResult Insert(Subject subject);
     public IBusinessResult Delete(Guid subjectId);
+    public IBusinessResult Delete(int id);
     public IBusinessResult Update(Subject subject);
     public IBusinessResult GetById(Guid subjectId);
+    public IBusinessResult GetById(int id);
     public IBusinessResult GetAll();
     public IBusinessResult GetWithCondition(
         Expression<Func<Subject, bool>> filter = null!,
@@ -31,4 +33,5 @@ public interface ISubjectBusiness
         Expression<Func<Subject, bool>> filter = null!,
         Func<IQueryable<Subject>, IOrderedQueryable<Subject>> orderBy = null!,
         string includeProperties = "");
+
 }
