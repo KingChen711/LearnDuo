@@ -1,11 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.Identity.Client;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
 using TutorDemand.Data.Entities;
 
 namespace TutorDemand.Data.Base
@@ -153,6 +147,11 @@ namespace TutorDemand.Data.Base
                 return await orderBy(query).ToListAsync();
             else
                 return await query.ToListAsync();
+        }
+
+        public async Task<T> FindOne(Expression<Func<T, bool>> expression)
+        {
+            return await _dbSet.Where(expression).FirstOrDefaultAsync();
         }
     }
 }
