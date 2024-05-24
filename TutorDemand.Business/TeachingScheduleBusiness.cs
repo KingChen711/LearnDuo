@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Mapster;
 using Microsoft.EntityFrameworkCore;
 using TutorDemand.Business.Abstractions;
+using TutorDemand.Data.DAO;
 using TutorDemand.Data.Dtos.TeachingSchedule;
 using TutorDemand.Data.Entities;
 
@@ -13,38 +14,36 @@ namespace TutorDemand.Business
 {
     public class TeachingScheduleBusiness : ITeachingScheduleBusiness
     {
-        private readonly NET1704_221_5_TutorDemandContext _context;
+        private readonly TeachingScheduleDAO _teachingScheduleDAO;
 
-        public TeachingScheduleBusiness(NET1704_221_5_TutorDemandContext context)
+        public TeachingScheduleBusiness(TeachingScheduleDAO dao)
         {
-            _context = context;
+            _teachingScheduleDAO = dao;
         }
 
         public async Task<IEnumerable<TeachingSchedule>> GetAll() =>
-            await _context.TeachingSchedules.ToListAsync();
+            await _teachingScheduleDAO.GetAllAsync();
 
         public async Task<IEnumerable<TeachingSchedule>> Find(
             Expression<Func<TeachingSchedule, bool>> expression
-        ) => await _context.TeachingSchedules.Where(expression).ToListAsync();
+        ) => await _teachingScheduleDAO.GetWithConditionAsync(expression);
 
         public async Task<TeachingSchedule?> FindOne(
             Expression<Func<TeachingSchedule, bool>> expression
-        ) => await _context.TeachingSchedules.Where(expression).FirstOrDefaultAsync();
+        ) => await _teachingScheduleDAO.FindOneAsync(expression);
 
         public async Task Create(TeachingScheduleCreationDto dto)
         {
             var entity = dto.Adapt<TeachingSchedule>();
 
-            _context.TeachingSchedules.Add(entity);
-            await _context.SaveChangesAsync();
+            await _teachingScheduleDAO.CreateAsync(entity);
         }
 
         public async Task Update(TeachingScheduleUpdateDto dto)
         {
             var entity = dto.Adapt<TeachingSchedule>();
 
-            _context.TeachingSchedules.Update(entity);
-            await _context.SaveChangesAsync();
+            await _teachingScheduleDAO.UpdateAsync(entity);
         }
 
         public async Task Delete(Guid teachingScheduleId)
@@ -56,11 +55,10 @@ namespace TutorDemand.Business
                 throw new Exception($"Not found Teaching Schedule with id: ${teachingScheduleId}");
             }
 
-            _context.TeachingSchedules.Remove(entity);
-            await _context.SaveChangesAsync();
+            await _teachingScheduleDAO.RemoveAsync(entity);
         }
 
         public async Task<bool> Exist(Expression<Func<TeachingSchedule, bool>> expression) =>
-            await _context.TeachingSchedules.AnyAsync(expression);
+            await _teachingScheduleDAO.ExistAsync(expression);
     }
 }
