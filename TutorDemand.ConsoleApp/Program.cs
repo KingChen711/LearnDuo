@@ -7,19 +7,19 @@ var subjectBusiness = new SubjectBusiness();
 
 // Create new subject 
 
-subjectBusiness.Insert(new Subject
+subjectBusiness.Create(new Subject
 {
     SubjectId = Guid.Parse("8FCF5F48-1467-457A-8ECB-868861FA4C6A"),
     Name = "C#",
     SubjectCode = "SQ123D"
 });
-subjectBusiness.Insert(new Subject
+subjectBusiness.Create(new Subject
 {
     SubjectId = Guid.Parse("79DC8C83-A5A6-4DF3-A46F-6626C37D1870"),
     Name = "Java",
     SubjectCode = "J123D"
 });
-subjectBusiness.Insert(new Subject
+subjectBusiness.Create(new Subject
 {
     SubjectId = Guid.Parse("B2DAECA4-B090-4F12-8C79-CE6F09EFB1B0"),
     Name = "Unity",
