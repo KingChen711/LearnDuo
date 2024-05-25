@@ -7,12 +7,12 @@ namespace TutorDemand.Business.Abstractions;
 
 public interface ITutorBusiness 
 {
-    Task<IBusinessResult> GetAll();
-    Task<IBusinessResult> Find(Expression<Func<Tutor, bool>> filter = null!,
+    Task<IBusinessResult> GetAllAsync();
+    Task<IBusinessResult> FindAsync(Expression<Func<Tutor, bool>> filter = null!,
         Func<IQueryable<Tutor>, IOrderedQueryable<Tutor>> orderBy = null!,
         string includeProperties = "");
-    Task<IBusinessResult> FindOne(Expression<Func<Tutor, bool>> expression);
-    Task<IBusinessResult> Create(TutorAddDto entity);
-    Task<IBusinessResult> Update(TutorUpdateDto entity);
-    Task<IBusinessResult> Delete(Guid tutorId);
+    Task<IBusinessResult> FindOneAsync(Expression<Func<Tutor, bool>> expression);
+    Task<IBusinessResult> CreateAsync(TutorAddDto entity);
+    Task<IBusinessResult> UpdateAsync(TutorUpdateDto entity);
+    Task<IBusinessResult> DeleteAsync(Guid tutorId);
 }

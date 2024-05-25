@@ -19,9 +19,9 @@ namespace TutorDemand.Business
     {
         private readonly CustomerDAO customerDAO;
 
-        public CustomerBusiness(CustomerDAO customerDAO)
+        public CustomerBusiness()
         {
-            this.customerDAO = customerDAO;
+            this.customerDAO = new CustomerDAO();
         }
         public async Task<IBusinessResult> Create(CustomerAddDto dto)
         {
@@ -87,7 +87,7 @@ namespace TutorDemand.Business
         {
             try
             {
-                var customer = await customerDAO.FindOne(expression);
+                var customer = await customerDAO.FindOneAsync(expression);
                 if (customer != null)
                 {
                     return new BusinessResult(Const.SUCCESS_UPDATE_CODE, Const.SUCCESS_UPDATE_MSG, customer);
@@ -142,6 +142,11 @@ namespace TutorDemand.Business
                 }
 
             }
+            catch (Exception ex)
+            {
+                return new BusinessResult(Const.ERROR_EXCEPTION_CODE, ex.Message);
+            }
+
         }
     }
 }

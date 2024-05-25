@@ -14,11 +14,11 @@ namespace TutorDemand.Business
     {
         private readonly TutorDAO tutorDAO;
 
-        public TutorBusiness(TutorDAO tutorDAO) 
+        public TutorBusiness() 
         {
-            this.tutorDAO = tutorDAO;
+            this.tutorDAO = new TutorDAO();
         }
-        public async Task<IBusinessResult> Create(TutorAddDto dto)
+        public async Task<IBusinessResult> CreateAsync(TutorAddDto dto)
         {
             try
             {
@@ -40,7 +40,7 @@ namespace TutorDemand.Business
             }
         }
 
-        public async Task<IBusinessResult> Delete(Guid tutorId)
+        public async Task<IBusinessResult> DeleteAsync(Guid tutorId)
         {
             var tutorEntity = await tutorDAO.GetByIdAsync(tutorId);
             if (tutorEntity is null)
@@ -56,7 +56,7 @@ namespace TutorDemand.Business
             }
         }
 
-        public async Task<IBusinessResult> Find(Expression<Func<Tutor, bool>> filter = null!,
+        public async Task<IBusinessResult> FindAsync(Expression<Func<Tutor, bool>> filter = null!,
         Func<IQueryable<Tutor>, IOrderedQueryable<Tutor>> orderBy = null!,
         string includeProperties = "")
         {
@@ -80,11 +80,11 @@ namespace TutorDemand.Business
             }
         }
 
-        public async Task<IBusinessResult> FindOne(Expression<Func<Tutor, bool>> expression)
+        public async Task<IBusinessResult> FindOneAsync(Expression<Func<Tutor, bool>> expression)
         {
             try
             {
-                var tutors = await tutorDAO.FindOne(expression);
+                var tutors = await tutorDAO.FindOneAsync(expression);
                 if (tutors != null)
                 {
                     return new BusinessResult(Const.SUCCESS_UPDATE_CODE, Const.SUCCESS_UPDATE_MSG, tutors);
@@ -100,7 +100,7 @@ namespace TutorDemand.Business
             }
         }
 
-        public async Task<IBusinessResult> GetAll()
+        public async Task<IBusinessResult> GetAllAsync()
         {
             try
             {
@@ -121,7 +121,7 @@ namespace TutorDemand.Business
             }
         }
 
-        public async Task<IBusinessResult> Update(TutorUpdateDto dto)
+        public async Task<IBusinessResult> UpdateAsync(TutorUpdateDto dto)
         {
             try
             {

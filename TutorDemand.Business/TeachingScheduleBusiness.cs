@@ -16,9 +16,9 @@ namespace TutorDemand.Business
     {
         private readonly TeachingScheduleDAO _teachingScheduleDAO;
 
-        public TeachingScheduleBusiness(TeachingScheduleDAO dao)
+        public TeachingScheduleBusiness()
         {
-            _teachingScheduleDAO = dao;
+            _teachingScheduleDAO = new TeachingScheduleDAO();
         }
 
         public async Task<IEnumerable<TeachingSchedule>> GetAll() =>
