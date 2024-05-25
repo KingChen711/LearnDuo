@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using TutorDemand.Business.Abstractions;
 using TutorDemand.Business.Base;
 using TutorDemand.Common;
+using TutorDemand.Data;
 using TutorDemand.Data.DAO;
 using TutorDemand.Data.Entities;
 
@@ -13,26 +14,28 @@ namespace TutorDemand.Business;
 
 public class SubjectBusiness : ISubjectBusiness
 {
-    private readonly SubjectDAO _subjectDAO;
+    //private readonly SubjectDAO _unitOfWork.SubjectRepository;
+    private readonly UnitOfWork _unitOfWork;
 
     public SubjectBusiness()
     {
-        _subjectDAO = new SubjectDAO();
+        //_unitOfWork.SubjectRepository = new SubjectDAO();
+        _unitOfWork ??= new UnitOfWork();
     }
 
     public IBusinessResult Delete(Guid subjectId)
     {
         try
         {
-            var subjectEntity = _subjectDAO.GetById(subjectId);
+            var subjectEntity = _unitOfWork.SubjectRepository.GetById(subjectId);
             if (subjectEntity is null)
             {
                 return new BusinessResult(Const.WARNING_NO_DATA_CODE, Const.WARNING_NO_DATA_MSG);
             }
             else
             {
-                _subjectDAO.Remove(subjectEntity);
-                _subjectDAO.SaveChanges();
+                _unitOfWork.SubjectRepository.PrepareRemove(subjectEntity);
+                _unitOfWork.SubjectRepository.Save();
 
                 return new BusinessResult(Const.SUCCESS_DELETE_CODE, Const.SUCCESS_DELETE_MSG);
             }
@@ -47,15 +50,15 @@ public class SubjectBusiness : ISubjectBusiness
     {
         try
         {
-            var subjectEntity = _subjectDAO.GetById(id);
+            var subjectEntity = _unitOfWork.SubjectRepository.GetById(id);
             if (subjectEntity is null)
             {
                 return new BusinessResult(Const.WARNING_NO_DATA_CODE, Const.WARNING_NO_DATA_MSG);
             }
             else
             {
-                _subjectDAO.Remove(subjectEntity);
-                _subjectDAO.SaveChanges();
+                _unitOfWork.SubjectRepository.PrepareRemove(subjectEntity);
+                _unitOfWork.SubjectRepository.Save();
 
                 return new BusinessResult(Const.SUCCESS_DELETE_CODE, Const.SUCCESS_DELETE_MSG);
             }
@@ -68,15 +71,15 @@ public class SubjectBusiness : ISubjectBusiness
 
     public async Task<IBusinessResult> DeleteAsync(Guid subjectId)
     {
-        var subjectEntity = await _subjectDAO.GetByIdAsync(subjectId);
+        var subjectEntity = await _unitOfWork.SubjectRepository.GetByIdAsync(subjectId);
         if (subjectEntity is null)
         {
             return new BusinessResult(Const.WARNING_NO_DATA_CODE, Const.WARNING_NO_DATA_MSG);
         }
         else
         {
-            _subjectDAO.Remove(subjectEntity);
-            await _subjectDAO.SaveChangesAsync();
+            _unitOfWork.SubjectRepository.PrepareRemove(subjectEntity);
+            await _unitOfWork.SubjectRepository.SaveAsync();
 
             return new BusinessResult(Const.SUCCESS_DELETE_CODE, Const.SUCCESS_DELETE_MSG);
         }
@@ -86,7 +89,7 @@ public class SubjectBusiness : ISubjectBusiness
     {
         try
         {
-            var subjectEntity = _subjectDAO.GetById(subjectId);
+            var subjectEntity = _unitOfWork.SubjectRepository.GetById(subjectId);
 
             if(subjectEntity is null)
             {
@@ -106,7 +109,7 @@ public class SubjectBusiness : ISubjectBusiness
     {
         try
         {
-            var subjectEntity = await _subjectDAO.GetByIdAsync(subjectId);
+            var subjectEntity = await _unitOfWork.SubjectRepository.GetByIdAsync(subjectId);
 
             if (subjectEntity is null)
             {
@@ -127,7 +130,7 @@ public class SubjectBusiness : ISubjectBusiness
     {
         try
         {
-            var subjectEntities = _subjectDAO.GetAll();
+            var subjectEntities = _unitOfWork.SubjectRepository.GetAll();
 
             if (subjectEntities.Any())
             {
@@ -148,7 +151,7 @@ public class SubjectBusiness : ISubjectBusiness
     {
         try
         {
-            var subjectEntities = await _subjectDAO.GetAllAsync();
+            var subjectEntities = await _unitOfWork.SubjectRepository.GetAllAsync();
 
             if (subjectEntities.Any())
             {
@@ -166,64 +169,64 @@ public class SubjectBusiness : ISubjectBusiness
     }
 
 
-    public IBusinessResult GetWithCondition(
-            Expression<Func<Subject, bool>> filter = null!, 
-            Func<IQueryable<Subject>, IOrderedQueryable<Subject>> orderBy = null!, 
-            string includeProperties = "")
+    //public IBusinessResult GetWithCondition(
+    //        Expression<Func<Subject, bool>> filter = null!, 
+    //        Func<IQueryable<Subject>, IOrderedQueryable<Subject>> orderBy = null!, 
+    //        string includeProperties = "")
+    //{
+    //    try
+    //    {
+    //        var subjects = _unitOfWork.SubjectRepository.GetWithCondition(filter, orderBy, includeProperties);
+    //        var result = _unitOfWork.SubjectRepository.Save() > 0;
+
+    //        if (result)
+    //        {
+    //            return new BusinessResult(Const.SUCCESS_UPDATE_CODE, Const.SUCCESS_UPDATE_MSG);
+    //        }
+    //        else
+    //        {
+    //            return new BusinessResult(Const.FAIL_UPDATE_CODE, Const.FAIL_UPDATE_MSG);
+    //        }
+
+    //    }
+    //    catch (Exception ex)
+    //    {
+    //        return new BusinessResult(Const.ERROR_EXCEPTION_CODE, ex.Message);
+    //    }
+    //}
+
+    //public async Task<IBusinessResult> GetWithConditionAysnc(
+    //    Expression<Func<Subject, bool>> filter = null!, 
+    //    Func<IQueryable<Subject>, IOrderedQueryable<Subject>> orderBy = null!, 
+    //    string includeProperties = "")
+    //{
+    //    try
+    //    {
+    //        var subjects = await _unitOfWork.SubjectRepository.GetWithConditionAsync(filter, orderBy, includeProperties);
+    //        var result = await _unitOfWork.SubjectRepository.SaveAsync() > 0;
+
+    //        if (result)
+    //        {
+    //            return new BusinessResult(Const.SUCCESS_UPDATE_CODE, Const.SUCCESS_UPDATE_MSG);
+    //        }
+    //        else
+    //        {
+    //            return new BusinessResult(Const.FAIL_UPDATE_CODE, Const.FAIL_UPDATE_MSG);
+    //        }
+
+    //    }
+    //    catch (Exception ex)
+    //    {
+    //        return new BusinessResult(Const.ERROR_EXCEPTION_CODE, ex.Message);
+    //    }
+    //}
+
+    public IBusinessResult Create(Subject subject)
     {
         try
         {
-            var subjects = _subjectDAO.GetWithCondition(filter, orderBy, includeProperties);
-            var result = _subjectDAO.SaveChanges() > 0;
-
-            if (result)
-            {
-                return new BusinessResult(Const.SUCCESS_UPDATE_CODE, Const.SUCCESS_UPDATE_MSG);
-            }
-            else
-            {
-                return new BusinessResult(Const.FAIL_UPDATE_CODE, Const.FAIL_UPDATE_MSG);
-            }
-
-        }
-        catch (Exception ex)
-        {
-            return new BusinessResult(Const.ERROR_EXCEPTION_CODE, ex.Message);
-        }
-    }
-
-    public async Task<IBusinessResult> GetWithConditionAysnc(
-        Expression<Func<Subject, bool>> filter = null!, 
-        Func<IQueryable<Subject>, IOrderedQueryable<Subject>> orderBy = null!, 
-        string includeProperties = "")
-    {
-        try
-        {
-            var subjects = await _subjectDAO.GetWithConditionAsync(filter, orderBy, includeProperties);
-            var result = await _subjectDAO.SaveChangesAsync() > 0;
-
-            if (result)
-            {
-                return new BusinessResult(Const.SUCCESS_UPDATE_CODE, Const.SUCCESS_UPDATE_MSG);
-            }
-            else
-            {
-                return new BusinessResult(Const.FAIL_UPDATE_CODE, Const.FAIL_UPDATE_MSG);
-            }
-
-        }
-        catch (Exception ex)
-        {
-            return new BusinessResult(Const.ERROR_EXCEPTION_CODE, ex.Message);
-        }
-    }
-
-    public IBusinessResult Insert(Subject subject)
-    {
-        try
-        {
-            _subjectDAO.Create(subject);
-            var result = _subjectDAO.SaveChanges() > 0;
+            _unitOfWork.SubjectRepository.PrepareCreate(subject);
+            var result = _unitOfWork.SubjectRepository.Save() > 0;
             if (result)
             {
                 return new BusinessResult(Const.SUCCESS_CREATE_CODE, Const.SUCCESS_CREATE_MSG);
@@ -238,12 +241,12 @@ public class SubjectBusiness : ISubjectBusiness
         }
     }
 
-    public async Task<IBusinessResult> InsertAsync(Subject subject)
+    public async Task<IBusinessResult> CreateAsync(Subject subject)
     {
         try
         {
-            await _subjectDAO.CreateAsync(subject);
-            var result = await _subjectDAO.SaveChangesAsync() > 0;
+            await _unitOfWork.SubjectRepository.CreateAsync(subject);
+            var result = await _unitOfWork.SubjectRepository.SaveAsync() > 0;
             if (result)
             {
                 return new BusinessResult(Const.SUCCESS_CREATE_CODE, Const.SUCCESS_CREATE_MSG);
@@ -263,8 +266,8 @@ public class SubjectBusiness : ISubjectBusiness
     {
         try
         {
-            _subjectDAO.Update(subject);
-            var result = _subjectDAO.SaveChanges() > 0;
+            _unitOfWork.SubjectRepository.PrepareUpdate(subject);
+            var result = _unitOfWork.SubjectRepository.Save() > 0;
 
             if (result)
             {
@@ -285,8 +288,8 @@ public class SubjectBusiness : ISubjectBusiness
     {
         try
         {
-            await _subjectDAO.UpdateAsync(subject);
-            var result = await _subjectDAO.SaveChangesAsync() > 0;
+            _unitOfWork.SubjectRepository.PrepareUpdate(subject);
+            var result = await _unitOfWork.SubjectRepository.SaveAsync() > 0;
 
             if (result)
             {
@@ -308,7 +311,7 @@ public class SubjectBusiness : ISubjectBusiness
     {
         try
         {
-            var subjectEntity = _subjectDAO.GetById(id);
+            var subjectEntity = _unitOfWork.SubjectRepository.GetById(id);
 
             if (subjectEntity is not null)
             {
@@ -323,5 +326,15 @@ public class SubjectBusiness : ISubjectBusiness
         {
             return new BusinessResult(Const.ERROR_EXCEPTION_CODE, ex.Message);
         }
+    }
+
+    public int SaveChanges()
+    {
+        return _unitOfWork.SubjectRepository.Save();
+    }
+
+    public async Task<int> SaveChangeAsync()
+    {
+        return await _unitOfWork.SubjectRepository.SaveAsync();
     }
 }
