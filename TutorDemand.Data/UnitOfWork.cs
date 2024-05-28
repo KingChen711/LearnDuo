@@ -12,6 +12,7 @@ namespace TutorDemand.Data
     {
         private NET1704_221_5_TutorDemandContext _context;
         private SubjectRepository _subjectRepo;
+        private ReservationRepository _reservationRepository;
 
         public UnitOfWork()
         {
@@ -22,6 +23,14 @@ namespace TutorDemand.Data
             get
             {
                 return _subjectRepo ??= new SubjectRepository();
+            }
+        }
+
+        public ReservationRepository ReservationRepository
+        {
+            get
+            {
+                return _reservationRepository ??= new ReservationRepository();
             }
         }
     }
