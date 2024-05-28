@@ -1,5 +1,6 @@
 using System.Linq;
 using System.Linq.Expressions;
+using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -8,6 +9,7 @@ using TutorDemand.Business.Base;
 using TutorDemand.Common;
 using TutorDemand.Data;
 using TutorDemand.Data.DAO;
+using TutorDemand.Data.Dtos.Subject;
 using TutorDemand.Data.Entities;
 
 namespace TutorDemand.Business;
@@ -16,25 +18,34 @@ public class SubjectBusiness : ISubjectBusiness
 {
     //private readonly SubjectDAO _unitOfWork.SubjectRepository;
     private readonly UnitOfWork _unitOfWork;
+    private readonly IMapper _mapper;
 
-    public SubjectBusiness()
+    public SubjectBusiness(IMapper mapper)
     {
         //_unitOfWork.SubjectRepository = new SubjectDAO();
         _unitOfWork ??= new UnitOfWork();
+        _mapper = mapper;
     }
 
     public IBusinessResult Delete(Guid subjectId)
     {
         try
         {
-            var subjectEntity = _unitOfWork.SubjectRepository.GetById(subjectId);
-            if (subjectEntity is null)
+            // An Error occured: Cannot find entity by typeof(Guid) id, this not primary key -> GetByIdAsync run failed
+
+            //var subjectEntity = _unitOfWork.SubjectRepository.GetById(subjectId);
+
+            // -> Use custom function
+            var subjectEntities =  _unitOfWork.SubjectRepository.GetWithCondition(x =>
+                x.SubjectId.Equals(subjectId));
+
+            if (!subjectEntities.Any())
             {
                 return new BusinessResult(Const.WARNING_NO_DATA_CODE, Const.WARNING_NO_DATA_MSG);
             }
             else
             {
-                _unitOfWork.SubjectRepository.PrepareRemove(subjectEntity);
+                _unitOfWork.SubjectRepository.PrepareRemove(subjectEntities.First());
                 _unitOfWork.SubjectRepository.Save();
 
                 return new BusinessResult(Const.SUCCESS_DELETE_CODE, Const.SUCCESS_DELETE_MSG);
@@ -71,14 +82,20 @@ public class SubjectBusiness : ISubjectBusiness
 
     public async Task<IBusinessResult> DeleteAsync(Guid subjectId)
     {
-        var subjectEntity = await _unitOfWork.SubjectRepository.GetByIdAsync(subjectId);
-        if (subjectEntity is null)
+        // An Error occured: Cannot find entity by typeof(Guid) id, this not primary key -> GetByIdAsync run failed
+
+        //var subjectEntity = await _unitOfWork.SubjectRepository.GetByIdAsync(subjectId);
+
+        // -> Use custom function
+        var subjectEntities = await _unitOfWork.SubjectRepository.GetWithConditionAsync(x => 
+            x.SubjectId.Equals(subjectId));
+        if (!subjectEntities.Any())
         {
             return new BusinessResult(Const.WARNING_NO_DATA_CODE, Const.WARNING_NO_DATA_MSG);
         }
         else
         {
-            _unitOfWork.SubjectRepository.PrepareRemove(subjectEntity);
+            _unitOfWork.SubjectRepository.PrepareRemove(subjectEntities.First());
             await _unitOfWork.SubjectRepository.SaveAsync();
 
             return new BusinessResult(Const.SUCCESS_DELETE_CODE, Const.SUCCESS_DELETE_MSG);
@@ -109,11 +126,17 @@ public class SubjectBusiness : ISubjectBusiness
     {
         try
         {
-            var subjectEntity = await _unitOfWork.SubjectRepository.GetByIdAsync(subjectId);
+            // An Error occured: Cannot find entity by typeof(Guid) id, this not primary key -> GetByIdAsync run failed
 
-            if (subjectEntity is null)
+            //var subjectEntity = await _unitOfWork.SubjectRepository.GetByIdAsync(subjectId);
+
+            // -> Use custom function
+            var subjectEntities = await _unitOfWork.SubjectRepository.GetWithConditionAsync(x =>
+                x.SubjectId.Equals(subjectId));
+
+            if (subjectEntities.Any())
             {
-                return new BusinessResult(Const.SUCCESS_READ_CODE, Const.SUCCESS_READ_MSG, subjectEntity!);
+                return new BusinessResult(Const.SUCCESS_READ_CODE, Const.SUCCESS_READ_MSG, subjectEntities.First());
             }
             else
             {
@@ -169,63 +192,60 @@ public class SubjectBusiness : ISubjectBusiness
     }
 
 
-    //public IBusinessResult GetWithCondition(
-    //        Expression<Func<Subject, bool>> filter = null!, 
-    //        Func<IQueryable<Subject>, IOrderedQueryable<Subject>> orderBy = null!, 
-    //        string includeProperties = "")
-    //{
-    //    try
-    //    {
-    //        var subjects = _unitOfWork.SubjectRepository.GetWithCondition(filter, orderBy, includeProperties);
-    //        var result = _unitOfWork.SubjectRepository.Save() > 0;
-
-    //        if (result)
-    //        {
-    //            return new BusinessResult(Const.SUCCESS_UPDATE_CODE, Const.SUCCESS_UPDATE_MSG);
-    //        }
-    //        else
-    //        {
-    //            return new BusinessResult(Const.FAIL_UPDATE_CODE, Const.FAIL_UPDATE_MSG);
-    //        }
-
-    //    }
-    //    catch (Exception ex)
-    //    {
-    //        return new BusinessResult(Const.ERROR_EXCEPTION_CODE, ex.Message);
-    //    }
-    //}
-
-    //public async Task<IBusinessResult> GetWithConditionAysnc(
-    //    Expression<Func<Subject, bool>> filter = null!, 
-    //    Func<IQueryable<Subject>, IOrderedQueryable<Subject>> orderBy = null!, 
-    //    string includeProperties = "")
-    //{
-    //    try
-    //    {
-    //        var subjects = await _unitOfWork.SubjectRepository.GetWithConditionAsync(filter, orderBy, includeProperties);
-    //        var result = await _unitOfWork.SubjectRepository.SaveAsync() > 0;
-
-    //        if (result)
-    //        {
-    //            return new BusinessResult(Const.SUCCESS_UPDATE_CODE, Const.SUCCESS_UPDATE_MSG);
-    //        }
-    //        else
-    //        {
-    //            return new BusinessResult(Const.FAIL_UPDATE_CODE, Const.FAIL_UPDATE_MSG);
-    //        }
-
-    //    }
-    //    catch (Exception ex)
-    //    {
-    //        return new BusinessResult(Const.ERROR_EXCEPTION_CODE, ex.Message);
-    //    }
-    //}
-
-    public IBusinessResult Create(Subject subject)
+    public IBusinessResult GetWithCondition(
+            Expression<Func<Subject, bool>> filter = null!,
+            Func<IQueryable<Subject>, IOrderedQueryable<Subject>> orderBy = null!,
+            string includeProperties = "")
     {
         try
         {
-            _unitOfWork.SubjectRepository.PrepareCreate(subject);
+            var subjects = _unitOfWork.SubjectRepository.GetWithCondition(filter, orderBy, includeProperties);
+
+            if (subjects.Any())
+            {
+                return new BusinessResult(Const.SUCCESS_READ_CODE, Const.SUCCESS_READ_MSG, subjects);
+            }
+            else
+            {
+                return new BusinessResult(Const.FAIL_READ_CODE, Const.FAIL_READ_MSG);
+            }
+        }
+        catch (Exception ex)
+        {
+            return new BusinessResult(Const.ERROR_EXCEPTION_CODE, ex.Message);
+        }
+    }
+
+    public async Task<IBusinessResult> GetWithConditionAysnc(
+        Expression<Func<Subject, bool>> filter = null!,
+        Func<IQueryable<Subject>, IOrderedQueryable<Subject>> orderBy = null!,
+        string includeProperties = "")
+    {
+        try
+        {
+            var subjects = await _unitOfWork.SubjectRepository.GetWithConditionAsync(filter, orderBy, includeProperties);
+
+            if (subjects.Any())
+            {
+                return new BusinessResult(Const.SUCCESS_READ_CODE, Const.SUCCESS_READ_MSG, subjects);
+            }
+            else
+            {
+                return new BusinessResult(Const.FAIL_READ_CODE, Const.FAIL_READ_MSG);
+            }
+
+        }
+        catch (Exception ex)
+        {
+            return new BusinessResult(Const.ERROR_EXCEPTION_CODE, ex.Message);
+        }
+    }
+
+    public IBusinessResult Create(SubjectDto subjectDto)
+    {
+        try
+        {
+            _unitOfWork.SubjectRepository.PrepareCreate(_mapper.Map<Subject>(subjectDto));
             var result = _unitOfWork.SubjectRepository.Save() > 0;
             if (result)
             {
@@ -241,11 +261,11 @@ public class SubjectBusiness : ISubjectBusiness
         }
     }
 
-    public async Task<IBusinessResult> CreateAsync(Subject subject)
+    public async Task<IBusinessResult> CreateAsync(SubjectDto subjectDto)
     {
         try
         {
-            await _unitOfWork.SubjectRepository.CreateAsync(subject);
+            _unitOfWork.SubjectRepository.PrepareCreate(_mapper.Map<Subject>(subjectDto));
             var result = await _unitOfWork.SubjectRepository.SaveAsync() > 0;
             if (result)
             {
@@ -262,11 +282,11 @@ public class SubjectBusiness : ISubjectBusiness
         }
     }
 
-    public IBusinessResult Update(Subject subject)
+    public IBusinessResult Update(SubjectDto subjectDto)
     {
         try
         {
-            _unitOfWork.SubjectRepository.PrepareUpdate(subject);
+            _unitOfWork.SubjectRepository.PrepareUpdate(_mapper.Map<Subject>(subjectDto));
             var result = _unitOfWork.SubjectRepository.Save() > 0;
 
             if (result)
@@ -284,11 +304,28 @@ public class SubjectBusiness : ISubjectBusiness
         }
     }
 
-    public async Task<IBusinessResult> UpdateAsync(Subject subject)
+    public async Task<IBusinessResult> UpdateAsync(SubjectDto subjectDto)
     {
         try
         {
+            var subjectEntities = await _unitOfWork.SubjectRepository.GetWithConditionAsync(x =>
+                x.SubjectId.Equals(subjectDto.SubjectId));
+
+            if (!subjectEntities.Any())
+            {
+                return new BusinessResult(Const.FAIL_UPDATE_CODE, Const.FAIL_UPDATE_MSG);
+            }
+
+            var subject = subjectEntities.First();
+
             _unitOfWork.SubjectRepository.PrepareUpdate(subject);
+
+            // This just temporary update attach code... -> Fix later
+            subject.SubjectCode = subjectDto.SubjectCode;
+            subject.Name = subjectDto.Name;
+            subject.Description = subjectDto.Description;
+            subject.Image = subjectDto.Image;
+
             var result = await _unitOfWork.SubjectRepository.SaveAsync() > 0;
 
             if (result)
