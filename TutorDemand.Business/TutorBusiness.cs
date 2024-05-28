@@ -4,6 +4,7 @@ using System.Linq.Expressions;
 using TutorDemand.Business.Abstractions;
 using TutorDemand.Business.Base;
 using TutorDemand.Common;
+using TutorDemand.Data;
 using TutorDemand.Data.DAO;
 using TutorDemand.Data.Dtos.Tutor;
 using TutorDemand.Data.Entities;
@@ -12,19 +13,42 @@ namespace TutorDemand.Business
 {
     public class TutorBusiness : ITutorBusiness
     {
-        private readonly TutorDAO tutorDAO;
+        private readonly UnitOfWork _unitOfWork;
 
-        public TutorBusiness() 
+        public TutorBusiness()
         {
-            this.tutorDAO = new TutorDAO();
+            _unitOfWork ??= new UnitOfWork();
         }
+
+        public async Task<IBusinessResult> FindOneAsync(Expression<Func<Tutor, bool>> expression)
+        {
+            try
+            {
+                var tutors = await _unitOfWork.TutorRepository.GetWithConditionAsync(expression);
+
+                if (tutors != null)
+                {
+                    return new BusinessResult(Const.SUCCESS_UPDATE_CODE, Const.SUCCESS_UPDATE_MSG, tutors);
+                }
+                else
+                {
+                    return new BusinessResult(Const.FAIL_UPDATE_CODE, Const.FAIL_UPDATE_MSG);
+                }
+
+            }
+            catch (Exception ex)
+            {
+                return new BusinessResult(Const.ERROR_EXCEPTION_CODE, ex.Message);
+            }
+        }
+
         public async Task<IBusinessResult> CreateAsync(TutorAddDto dto)
         {
             try
             {
                 var entity = dto.Adapt<Tutor>();
-                tutorDAO.Create(entity);
-                var result = await tutorDAO.SaveChangesAsync() > 0;
+                _unitOfWork.TutorRepository.Create(entity);
+                var result = await _unitOfWork.TutorRepository.SaveAsync() > 0;
                 if (result)
                 {
                     return new BusinessResult(Const.SUCCESS_CREATE_CODE, Const.SUCCESS_CREATE_MSG);
@@ -42,61 +66,17 @@ namespace TutorDemand.Business
 
         public async Task<IBusinessResult> DeleteAsync(Guid tutorId)
         {
-            var tutorEntity = await tutorDAO.GetByIdAsync(tutorId);
+            var tutorEntity = await _unitOfWork.TutorRepository.GetByIdAsync(tutorId);
             if (tutorEntity is null)
             {
                 return new BusinessResult(Const.WARNING_NO_DATA_CODE, Const.WARNING_NO_DATA_MSG);
             }
             else
             {
-                tutorDAO.Remove(tutorEntity);
-                await tutorDAO.SaveChangesAsync();
+                await _unitOfWork.TutorRepository.RemoveAsync(tutorEntity);
+                await _unitOfWork.TutorRepository.SaveAsync();
 
                 return new BusinessResult(Const.SUCCESS_DELETE_CODE, Const.SUCCESS_DELETE_MSG);
-            }
-        }
-
-        public async Task<IBusinessResult> FindAsync(Expression<Func<Tutor, bool>> filter = null!,
-        Func<IQueryable<Tutor>, IOrderedQueryable<Tutor>> orderBy = null!,
-        string includeProperties = "")
-        {
-            try
-            {
-                var tutors = await tutorDAO.GetWithConditionAsync(filter, orderBy, includeProperties);
-
-                if (tutors != null)
-                {
-                    return new BusinessResult(Const.SUCCESS_UPDATE_CODE, Const.SUCCESS_UPDATE_MSG, tutors);
-                }
-                else
-                {
-                    return new BusinessResult(Const.FAIL_UPDATE_CODE, Const.FAIL_UPDATE_MSG);
-                }
-
-            }
-            catch (Exception ex)
-            {
-                return new BusinessResult(Const.ERROR_EXCEPTION_CODE, ex.Message);
-            }
-        }
-
-        public async Task<IBusinessResult> FindOneAsync(Expression<Func<Tutor, bool>> expression)
-        {
-            try
-            {
-                var tutors = await tutorDAO.FindOneAsync(expression);
-                if (tutors != null)
-                {
-                    return new BusinessResult(Const.SUCCESS_UPDATE_CODE, Const.SUCCESS_UPDATE_MSG, tutors);
-                }
-                else
-                {
-                    return new BusinessResult(Const.FAIL_UPDATE_CODE, Const.FAIL_UPDATE_MSG);
-                }
-            }
-            catch (Exception ex)
-            {
-                return new BusinessResult(Const.ERROR_EXCEPTION_CODE, ex.Message);
             }
         }
 
@@ -104,7 +84,7 @@ namespace TutorDemand.Business
         {
             try
             {
-                var tutorEntities = tutorDAO.GetAll();
+                var tutorEntities = await _unitOfWork.TutorRepository.GetAllAsync();
 
                 if (tutorEntities != null)
                 {
@@ -126,8 +106,8 @@ namespace TutorDemand.Business
             try
             {
                 var entity = dto.Adapt<Tutor>();
-                await tutorDAO.UpdateAsync(entity);
-                var result = await tutorDAO.SaveChangesAsync() > 0;
+                await _unitOfWork.TutorRepository.UpdateAsync(entity);
+                var result = await _unitOfWork.TutorRepository.SaveAsync() > 0;
 
                 if (result)
                 {
