@@ -1,16 +1,15 @@
+using AutoMapper;
 using TutorDemand.Business;
 using TutorDemand.Business.Abstractions;
 using TutorDemand.Data;
+using TutorDemand.Data.Mappings;
 using TutorDemand.RazorWebApp.Extensions;
+using TutorDemand.RazorWebApp.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-builder.Services.AddRazorPages();
-builder.Services.AddControllers();
-builder.Services.ConfigureSqlContext(builder.Configuration);
-builder.Services.ConfigureBusinesses();
-builder.Services.RegisterMapsterConfiguration();
+// Config appsettings
+builder.Services.Configure<AppSettings>(builder.Configuration.GetSection("AppSettings"));
 
 // Add Database Intializer
 builder.Services.AddScoped<IDatabaseInitializer, DatabaseInitializer>();
@@ -22,6 +21,20 @@ builder.Services.AddSingleton<IReservationBusiness, ReservationBusiness>();
 builder.Services.AddSingleton<ITeachingScheduleBusiness, TeachingScheduleBusiness>();
 builder.Services.AddSingleton<ICustomerBusiness, CustomerBusiness>();
 builder.Services.AddSingleton<IImageBusiness, ImageBusiness>();
+
+// Auto Mapper
+var mapperConfig = new MapperConfiguration(mc =>
+{
+    mc.AddProfile<ProfilesMapper>();
+});
+builder.Services.AddSingleton(mapperConfig.CreateMapper());
+
+// Add services to the container.
+builder.Services.AddRazorPages();
+builder.Services.AddControllers();
+builder.Services.ConfigureSqlContext(builder.Configuration);
+builder.Services.ConfigureBusinesses();
+builder.Services.RegisterMapsterConfiguration();
 
 var app = builder.Build();
 
@@ -53,20 +66,3 @@ app.MapControllers();
 
 app.Run();
 
-{
-    app.UseExceptionHandler("/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-    app.UseHsts();
-}
-
-app.UseHttpsRedirection();
-app.UseStaticFiles();
-
-app.UseRouting();
-
-app.UseAuthorization();
-
-app.MapRazorPages();
-app.MapControllers();
-
-app.Run();

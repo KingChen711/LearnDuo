@@ -1,0 +1,410 @@
+﻿@page "{pageIndex:int?}"
+@using System.Text.Json
+@model TutorDemand.RazorWebApp.Pages.Subject.ListModel
+@inject Microsoft.AspNetCore.Antiforgery.IAntiforgery Xsrf
+@functions {
+    public string GetAntiXsrfRequestToken()
+    {
+        return Xsrf.GetAndStoreTokens(HttpContext).RequestToken;
+    }
+}
+@{
+    // var json = JsonSerializer.Serialize(Model.Subjects);
+}
+
+<partial name="_DeletePopupConfirm" />
+
+
+<div class="bg-opacity-10 py-2 mt-5 mb-12">
+    <div class="container flex justify-between">
+        <h1 class="text-3xl font-bold">List of subjects</h1>
+        <a class="flex items-center py-2 px-4 bg-green-500 text-white rounded shadow-md hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-300 transition duration-200 ease-in-out" href="/subject/create">
+            <img src="https://img.icons8.com/?size=100&id=102544&format=png&color=000000" alt="icon" class="w-5 h-5 mr-2">
+            <span class="font-bold">Add</span>
+        </a>
+    </div>
+</div>
+
+@if (Model.Subjects.Any())
+{
+    <div>
+        @* <div class="relative overflow-x-auto shadow-md sm:rounded-lg mt-4">
+    <table class="w-full text-sm text-left text-black bg-white">
+    <thead class="text-xs text-black uppercase bg-gray-200">
+    <tr>
+    <th scope="col" class="px-6 py-3">
+    Product name
+    </th>
+    <th scope="col" class="px-6 py-3">
+    Color
+    </th>
+    <th scope="col" class="px-6 py-3">
+    Category
+    </th>
+    <th scope="col" class="px-6 py-3">
+    Price
+    </th>
+    <th scope="col" class="px-6 py-3">
+    Action
+    </th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr class="odd:bg-white even:bg-white border-b border-gray-700">
+    <th scope="row" class="px-6 py-4 font-medium text-black whitespace-nowrap">
+    Apple MacBook Pro 17"
+    </th>
+    <td class="px-6 py-4">
+    Silver
+    </td>
+    <td class="px-6 py-4">
+    Laptop
+    </td>
+    <td class="px-6 py-4">
+    $2999
+    </td>
+    <td class="px-6 py-4">
+    <a href="#" class="font-medium text-blue-600 hover:underline">Edit</a>
+    </td>
+    </tr>
+    </tbody>
+    </table>
+    </div> *@
+
+        <div class="relative overflow-x-auto sm:rounded-lg mt-4">
+            <div class="w-full flex justify-between items-center mb-4">
+                <div></div>
+                <form class="search-form max-w-md w-full md:w-auto" method="get" id="search-form">
+                    <label for="default-search" class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">Search</label>
+                    <div class="relative w-full">
+                        <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+                            <svg class="w-4 h-4 text-gray-500 dark:text-gray-400"
+                                 aria-hidden="true"
+                                 xmlns="http://www.w3.org/2000/svg"
+                                 fill="none" viewBox="0 0 20 20">
+                                <path stroke="currentColor"
+                                      stroke-linecap="round"
+                                      stroke-linejoin="round"
+                                      stroke-width="2"
+                                      d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
+                            </svg>
+                        </div>
+                        <input type="text"
+                               id="default-search"
+                               class="block w-full p-3 pl-10 text-sm text-black border border-gray-300 rounded-lg bg-white"
+                               placeholder="Search Code, Name..." />
+                    </div>
+                </form>
+            </div>
+            <table class="w-full items-center text-sm text-left text-black bg-white table-auto">
+                <thead class="text-xs text-black uppercase bg-gray-200">
+                    <tr>
+                        <th scope="col" class="px-6 py-3 flex">
+                            <span>Subject Code</span>
+                            <img width="13" height="13"
+                                 id="sorting-icon"
+                                 class="ml-2"
+                                 src="https://img.icons8.com/ios-glyphs/30/sort.png" alt="sort"
+                                 style="cursor: pointer" value="+" />
+                        </th>
+                        <th scope="col" class="px-6 py-3">
+                            Subject Name
+                        </th>
+                        <th scope="col" class="px-6 py-3">
+                            Action
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var subject in Model.Subjects)
+                    {
+                        <tr class="odd:bg-white even:bg-white border-b border-gray-700">
+                            <th scope="row" class="px-6 py-4 font-medium text-black whitespace-nowrap">
+                                @subject.SubjectCode
+                            </th>
+                            <td class="px-6 py-4">
+                                @subject.Name
+                            </td>
+                            <td class="px-6 py-4">
+                                <button class="action-btn bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded text-sm"
+                                        data-action="view" data-id="@subject.SubjectId" data-name="@subject.Name">
+                                    View
+                                </button>
+                                <button class="action-btn bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-1 px-2 rounded text-sm"
+                                        data-action="update" data-id="@subject.SubjectId" data-name="@subject.Name">
+                                    Update
+                                </button>
+                                <button class="action-btn bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded text-sm"
+                                        data-action="delete" data-id="@subject.SubjectId" data-name="@subject.Name">
+                                    Delete
+                                </button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            <partial name="_Pagination" />
+        </div>
+    </div>
+}
+else
+{
+    <div class="container mt-4">
+        <p>No subjects were found</p>
+    </div>
+}
+
+@section Scripts {
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            var pageIndex = @TempData["PageIndex"];
+            var totalPage = @TempData["TotalPage"];
+
+            $('#sorting-icon').on('click', function () {
+
+                var isDescending = this.getAttribute('value') == '-';
+                if (isDescending) {
+                    this.setAttribute('value', '+');
+                } else {
+                    this.setAttribute('value', '-');
+                }
+
+                var reqData = { "SearchValue": "", "OrderBy": isDescending ? '-' : '+', "PageIndex": pageIndex }
+
+                $.ajax({
+                    url: `/Subject/List?handler=Filter`,
+                    type: 'POST',
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    data: JSON.stringify(reqData),
+                    headers:
+                    {
+                        "RequestVerificationToken": "@GetAntiXsrfRequestToken()"
+                    },
+                    success: function (response) {
+                        updateData(response.subjects);
+                        updatePagingStatus(response.pageIndex, response.totalPage);
+                    }
+                })
+            })
+
+            $('#default-search').on('input', function () {
+                var searchText = $(this).val();
+
+                var reqData = { "SearchValue": searchText, "OrderBy": null, "PageIndex": pageIndex }
+
+                $.ajax({
+                    url: `/Subject/List?handler=Filter`,
+                    type: 'POST',
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    data: JSON.stringify(reqData),
+                    headers:
+                    {
+                        "RequestVerificationToken": "@GetAntiXsrfRequestToken()"
+                    },
+                    success: function (response) {
+                        updateData(response.subjects);
+                        updatePagingStatus(response.subjects.length > 0 ? response.pageIndex : 0, response.totalPage);
+                    }
+                })
+            });
+
+            $('#back-page').on('click', function () {
+
+                pageIndex = --pageIndex;
+                $(this).removeAttr("disabled");
+                $(this).css("opacity", "1");
+
+
+                var reqData = { "SearchValue": "", "OrderBy": null, "PageIndex": pageIndex }
+
+                $.ajax({
+                    url: `/Subject/List?handler=Filter`,
+                    type: 'POST',
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    data: JSON.stringify(reqData),
+                    headers:
+                    {
+                        "RequestVerificationToken": "@GetAntiXsrfRequestToken()"
+                    },
+                    success: function (response) {
+                        updateData(response.subjects);
+                        updatePagingStatus(response.pageIndex, response.totalPage)
+                    }
+                })
+            })
+
+            $('#next-page').on('click', function () {
+
+                pageIndex = ++pageIndex;
+                $(this).removeAttr("disabled");
+                $(this).css("opacity", "1");
+
+                var reqData = { "SearchValue": "", "OrderBy": null, "PageIndex": pageIndex }
+
+                $.ajax({
+                    url: `/Subject/List?handler=Filter`,
+                    type: 'POST',
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    data: JSON.stringify(reqData),
+                    headers:
+                    {
+                        "RequestVerificationToken": "@GetAntiXsrfRequestToken()"
+                    },
+                    success: function (response) {
+                        updateData(response.subjects);
+                        updatePagingStatus(response.pageIndex, response.totalPage)
+                    }
+                })
+            })
+
+            function addActionBtnListener() {
+                $('.action-btn').on('click', function () {
+                    var action = $(this).data('action');
+                    var subjectId = $(this).data('id');
+                    var subjectName = $(this).data('name');
+
+                    var url = "";
+                    switch (action) {
+                        case "view":
+                            break;
+                        case "update":
+                            // Redirect to update page 
+                            window.location.href = `/subject/update/${subjectId}`
+                            break;
+                        case "delete":
+                            // show confirm popup
+                            document.querySelector('#deleteModal').style.display = 'block';
+
+                            // Set message
+                            document.querySelector(".message").innerHTML = "Do you want to delete subject: ";
+                            document.querySelector(".message-detail").innerHTML = `${subjectName}`;
+
+                            document.querySelector('#confirm-button').addEventListener('click', async function () {
+                                const url = `/subject/delete/${subjectId}?pageIndex=${pageIndex}`;
+
+                                try {
+                                    // Process delete subject...
+                                    const response = await ajaxGetRequest(url);
+
+                                    // Handle the response if needed
+                                    updateData(response.subjects);
+                                    updatePagingStatus(response.pageIndex, response.totalPage);
+
+                                } catch (error) {
+                                    console.error("Error:", error);
+                                }
+                            });
+                            break;
+                    }
+                });
+            }
+
+            function updateData(response) {
+                let tableBody = document.querySelector('tbody');
+                tableBody.innerHTML = '';
+
+                var subjects = response;
+
+                console.log(subjects);
+
+                subjects.forEach(subject => {
+                    tableBody.innerHTML += `
+                                        <tr class="odd:bg-white even:bg-white border-b border-gray-700">
+                                            <th scope="row" class="px-6 py-4 font-medium text-black whitespace-nowrap">
+                                                ${subject.subjectCode}
+                                            </th>
+                                            <td class="px-6 py-4">
+                                                ${subject.name}
+                                            </td>
+                                            <td class="px-6 py-4">
+                                                <button class="action-btn bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded text-sm"
+                                                    data-action="view" data-id="${subject.subjectId}" data-name="${subject.name}">
+                                                    View
+                                                </button>
+                                                <button class="action-btn bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-1 px-2 rounded text-sm"
+                                                    data-action="update" data-id="${subject.subjectId}" data-name="${subject.name}">
+                                                    Update
+                                                </button>
+                                                <button class="action-btn bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded text-sm"
+                                                    data-action="delete" data-id="${subject.subjectId}" data-name="${subject.name}">
+                                                    Delete
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    `;
+                });
+
+                // Add event listeners after updating data
+                addActionBtnListener();
+            }
+
+            // function ajaxGetRequest(url) {
+            //     $.ajax({
+            //         url: `${url}`,
+            //         type: 'GET',
+            //         success: function (response) {
+            //             updateData(response.subjects);
+            //             updatePagingStatus(response.pageIndex, response.totalPage);
+            //         },
+            //         error: function (xhr, status, error) {
+            //             console("error", error);
+            //         }
+            //     });
+            // }
+
+
+            // Use Fetch instead, because delete, update, add required async to prevent interative call
+            async function ajaxGetRequest(url) {
+                try {
+                    const response = await fetch(url, { method: 'GET' });
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    const data = await response.json();
+                    updateData(data.subjects);
+                    updatePagingStatus(data.pageIndex, data.totalPage);
+                } catch (error) {
+                    console.error("error", error);
+                }
+            }
+
+            function updatePagingStatus(pageIndexParam, totalPageParam) {
+                if (pageIndexParam !== undefined && totalPageParam !== undefined) {
+                    pageIndex = pageIndexParam;
+                    totalPage = totalPageParam;
+                }
+
+                $('#current-index').text(`${pageIndex}`);
+                $('#total-page').text(`${totalPage}`);
+
+
+                // Paging default
+                $('#next-page').removeAttr("disabled");
+                $('#next-page').css("opacity", "1");
+                $('#back-page').removeAttr("disabled");
+                $('#back-page').css("opacity", "1");
+
+                if (pageIndex <= 1) {
+                    $('#back-page').attr("disabled", "disabled");
+                    $('#back-page').css("opacity", "0.5");
+
+                    $('#next-page').removeAttr("disabled");
+                    $('#next-page').css("opacity", "1");
+                }
+                if (pageIndex >= totalPage) {
+                    $('#next-page').attr("disabled", "disabled");
+                    $('#next-page').css("opacity", "0.5");
+                }
+            }
+
+            // Add event listeners
+            addActionBtnListener();
+            updatePagingStatus();
+        });
+    </script>
+}

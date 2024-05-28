@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.Diagnostics.CodeAnalysis;
 
 namespace TutorDemand.Data.Entities;
 
@@ -22,8 +23,10 @@ public class Subject
 
     [DisplayName("Ảnh đại diện môn học")]
     [MaxLength(500)]
-    public string Image { get; set; } = "/images/default-subject.jpg";
+    [AllowNull]
+    public string? Image { get; set; } = "/images/default-subject.jpg";
 
+    public string Description { get; set; } = string.Empty; 
 
     //navigator
     public ICollection<TeachingSchedule> TeachingSchedules { get; set; } = [];
