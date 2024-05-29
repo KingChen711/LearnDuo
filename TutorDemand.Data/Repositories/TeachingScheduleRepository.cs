@@ -3,7 +3,6 @@ using TutorDemand.Data.Entities;
 
 namespace TutorDemand.Data.Repositories;
 
-public class TeachingScheduleRepository: GenericRepository<TeachingSchedule>
+public class TeachingScheduleRepository : GenericRepository<TeachingSchedule>
 {
-    
 }

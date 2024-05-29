@@ -1,1 +1,6 @@
-{"ConfigurationFile":"tailwind.config.js","InputCssFile":null,"OutputCssFile":null,"UseCli":false}
+{
+  "ConfigurationFile": "tailwind.config.js",
+  "InputCssFile": null,
+  "OutputCssFile": null,
+  "UseCli": false
+}

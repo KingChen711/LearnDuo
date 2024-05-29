@@ -10,9 +10,11 @@ namespace TutorDemand.Data.Utils
     public class TeachingScheduleHelper
     {
         public static Random random = new Random();
+
         public static string GenerateMeetRoomCode()
         {
             var chars = "abcdefghijklmnopqrstuvwxyz";
+
             string Random3Char() => new string(new char[]
             {
                 chars[random.Next(chars.Length)],

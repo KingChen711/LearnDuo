@@ -1,0 +1,165 @@
+﻿@page "{id:Guid}"
+@model TutorDemand.RazorWebApp.Pages.Tutor.EditModel
+@{
+}
+<div class="mx-auto max-w-2xl rounded-lg bg-white p-8 shadow-lg">
+    <h1 class="mb-4 text-2xl font-bold">Add Tutor</h1>
+    <div class="bg-gray-100 p-8">
+        <form method="post">
+            <div class="mb-4">
+                <label asp-for="Tutor.Fullname" class="mb-2 block font-bold text-gray-700">Name</label>
+                <input asp-for="Tutor.Fullname" class="w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none focus:shadow-outline"/>
+                <span asp-validation-for="Tutor.Fullname" class="text-sm text-red-500"></span>
+            </div>
+
+            <div class="mb-4">
+                <label asp-for="Tutor.Email" class="mb-2 block font-bold text-gray-700">Email</label>
+                <input asp-for="Tutor.Email" class="w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none focus:shadow-outline"/>
+                <span asp-validation-for="Tutor.Email" class="text-sm text-red-500"></span>
+            </div>
+
+            <div class="mb-4">
+                <label asp-for="Tutor.Phone" class="mb-2 block font-bold text-gray-700">Phone</label>
+                <input asp-for="Tutor.Phone" class="w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none focus:shadow-outline"/>
+                <span asp-validation-for="Tutor.Phone" class="text-sm text-red-500"></span>
+            </div>
+
+            <div class="mb-4">
+                <label asp-for="Tutor.Address" class="mb-2 block font-bold text-gray-700">Address</label>
+                <input asp-for="Tutor.Address" class="w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none focus:shadow-outline"/>
+                <span asp-validation-for="Tutor.Address" class="text-sm text-red-500"></span>
+            </div>
+
+            <div class="mb-4">
+                <label asp-for="Tutor.Gender" class="mb-2 block font-bold text-gray-700">Gender</label>
+                <select asp-for="Tutor.Gender" class="w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none focus:shadow-outline">
+                    <option value="">Select Gender</option>
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                </select>
+                <span asp-validation-for="Tutor.Gender" class="text-sm text-red-500"></span>
+            </div>
+
+            <div class="mb-4">
+                <label asp-for="Tutor.Dob" class="mb-2 block font-bold text-gray-700">Dob</label>
+                <input asp-for="Tutor.Dob" type="date" class="w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none focus:shadow-outline"/>
+                <span asp-validation-for="Tutor.Dob" class="text-sm text-red-500"></span>
+            </div>
+
+            <div class="mb-4">
+                <label asp-for="Tutor.Avatar" class="mb-2 block font-bold text-gray-700">Avatar</label>
+                <input type="file" id="avatarImageUpload"/>
+                <input asp-for="Tutor.Avatar" type="text" id="avatarImageUrl" hidden/>
+                <span asp-validation-for="Tutor.Avatar" class="text-sm text-red-500"></span>
+                <img src="@Model.Tutor.Avatar" id="avatarImageDisplay" style="display:none" ; width="300px"/>
+            </div>
+
+            <div class="mb-4">
+                <label asp-for="Tutor.CertificateImage" class="mb-2 block font-bold text-gray-700">CertificateImage</label>
+                <input type="file" id="certificateImageUpload"/>
+                <input asp-for="Tutor.CertificateImage" type="text" id="certificateImageUrl" hidden/>
+                <span asp-validation-for="Tutor.CertificateImage" class="text-sm text-red-500"></span>
+                <img src="@Model.Tutor.CertificateImage" id="certificateImageDisplay" style="display:none" ; width="300px" />
+            </div>
+
+            <div class="mb-4">
+                <label asp-for="Tutor.IdentityCard" class="mb-2 block font-bold text-gray-700">IdentityCard</label>
+                <input type="file" id="identityCardImageUpload"/>
+                <input asp-for="Tutor.IdentityCard" type="text" id="identityCardImageUrl" hidden/>
+                <span asp-validation-for="Tutor.IdentityCard" class="text-sm text-red-500"></span>
+                <img src="@Model.Tutor.IdentityCard" id="identityCardImageDisplay" style="display:none" ; width="300px"/>
+            </div>
+
+            <div class="flex justify-end gap-x-4">
+                <a href="/tutor/list" class="w-32 cursor-pointer rounded-lg border border-primary bg-gray-100 px-4 py-2 text-center text-primary hover:opacity-85">
+                    Back to List
+                </a>
+                <input type="hidden" value="@Model.Tutor.TutorId" asp-for="@Model.idEdit" />
+                <button type="submit" class="w-32 cursor-pointer rounded-lg bg-primary px-4 py-2 text-white hover:opacity-85">Update</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts
+{
+@{
+<partial name="_ValidationScriptsPartial"/>
+}
+<script>
+    // upload avatar
+    const avatarImageUploadElement = document.getElementById('avatarImageUpload');
+    const avatarImageUrlElement = document.getElementById('avatarImageUrl');
+    const avatarImageDisplayElement = document.getElementById('avatarImageDisplay');
+    async function uploadAvatarImage(e) {
+        console.log(e.target.files[0]);
+
+        let data = new FormData();
+        data.append('file', e.target.files[0])
+
+        await fetch('/api/images', {
+            method: 'POST',
+            headers: {
+                'Accept': '*/*'
+            },
+            body: data
+        }).then(response => response.json()).then(result => {
+            console.log('result', result);
+            avatarImageUrlElement.value = result.link;
+            avatarImageDisplayElement.style.display = 'block';
+            avatarImageDisplayElement.src = result.link
+        })
+    }
+    avatarImageUploadElement.addEventListener('change', uploadAvatarImage)
+
+    // upload certificate
+    const certificateImageUploadElement = document.getElementById('certificateImageUpload');
+    const certificateImageUrlElement = document.getElementById('certificateImageUrl');
+    const certificateImageDisplayElement = document.getElementById('certificateImageDisplay');
+    async function uploadCertificateImage(e) {
+        console.log(e.target.files[0]);
+
+        let data = new FormData();
+        data.append('file', e.target.files[0])
+
+        await fetch('/api/images', {
+            method: 'POST',
+            headers: {
+                'Accept': '*/*'
+            },
+            body: data
+        }).then(response => response.json()).then(result => {
+            console.log('result CertificateImage', result);
+            certificateImageUrlElement.value = result.link;
+            certificateImageDisplayElement.style.display = 'block';
+            certificateImageDisplayElement.src = result.link
+        })
+    }
+    certificateImageUploadElement.addEventListener('change', uploadCertificateImage)
+
+    // upload identityCard
+    const identityCardImageUploadElement = document.getElementById('identityCardImageUpload');
+    const identityCardImageUrlElement = document.getElementById('identityCardImageUrl');
+    const identityCardImageDisplayElement = document.getElementById('identityCardImageDisplay');
+    async function uploadIdentityCardImage(e) {
+        console.log(e.target.files[0]);
+
+        let data = new FormData();
+        data.append('file', e.target.files[0])
+
+        await fetch('/api/images', {
+            method: 'POST',
+            headers: {
+                'Accept': '*/*'
+            },
+            body: data
+        }).then(response => response.json()).then(result => {
+            console.log('result identityCard', result);
+            identityCardImageUrlElement.value = result.link;
+            identityCardImageDisplayElement.style.display = 'block';
+            identityCardImageDisplayElement.src = result.link
+        })
+    }
+    identityCardImageUploadElement.addEventListener('change', uploadIdentityCardImage)
+</script>
+}

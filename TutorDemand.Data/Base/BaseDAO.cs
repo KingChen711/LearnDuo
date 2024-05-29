@@ -58,6 +58,7 @@ namespace TutorDemand.Data.Base
                 // Ensure that entity is being track by context
                 _context.Attach(entity); // Change entity's state to "Deleted"
             }
+
             _dbSet.Remove(entity);
         }
 

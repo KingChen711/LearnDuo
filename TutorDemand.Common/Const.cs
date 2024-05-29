@@ -8,14 +8,14 @@ namespace TutorDemand.Common
 {
     public class Const
     {
-        #region Error Codes 
-        
+        #region Error Codes
+
         public static int ERROR_EXCEPTION_CODE = 4;
-        
+
         #endregion
 
         #region Success Codes
-        
+
         public static int SUCCESS_CREATE_CODE = 1;
         public static string SUCCESS_CREATE_MSG = "Save data success";
 
@@ -28,10 +28,9 @@ namespace TutorDemand.Common
         public static int SUCCESS_DELETE_CODE = 1;
         public static string SUCCESS_DELETE_MSG = "Delete data success";
 
-
         #endregion
 
-        #region Fail Code 
+        #region Fail Code
 
         public static int FAIL_CREATE_CODE = -1;
         public static string FAIL_CREATE_MSG = "Save data fail";

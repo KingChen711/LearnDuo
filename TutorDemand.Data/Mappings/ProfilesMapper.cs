@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using TutorDemand.Data.Dtos.Subject;
+using TutorDemand.Data.Dtos.Tutor;
 using TutorDemand.Data.Entities;
 
 namespace TutorDemand.Data.Mappings
@@ -10,6 +11,7 @@ namespace TutorDemand.Data.Mappings
         {
             CreateMap<Subject, SubjectDto>().ReverseMap();
             CreateMap<SubjectDto, SubjectAddDto>().ReverseMap();
+            CreateMap<Tutor, TutorDto>().ReverseMap();
         }
     }
 }

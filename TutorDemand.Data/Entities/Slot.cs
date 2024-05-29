@@ -5,8 +5,7 @@ namespace TutorDemand.Data.Entities;
 
 public class Slot
 {
-    [Key]
-    public int Id { get; set; }
+    [Key] public int Id { get; set; }
 
     public Guid SlotId { get; set; }
 

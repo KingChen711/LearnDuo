@@ -14,6 +14,7 @@ public interface IReservationBusiness
     public IBusinessResult GetById(Guid reservationId);
     public IBusinessResult GetById(int id);
     public IBusinessResult GetAll();
+
     public IBusinessResult GetWithCondition(
         Expression<Func<Reservation, bool>> filter = null!,
         Func<IQueryable<Reservation>, IOrderedQueryable<Reservation>> orderBy = null!,
@@ -24,6 +25,7 @@ public interface IReservationBusiness
     public Task<IBusinessResult> UpdateAsync(Reservation reservation);
     public Task<IBusinessResult> GetByIdAsync(Guid reservationId);
     public Task<IBusinessResult> GetAllAsync();
+
     public Task<IBusinessResult> GetWithConditionAysnc(
         Expression<Func<Reservation, bool>> filter = null!,
         Func<IQueryable<Reservation>, IOrderedQueryable<Reservation>> orderBy = null!,

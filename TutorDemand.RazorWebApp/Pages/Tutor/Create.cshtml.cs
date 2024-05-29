@@ -1,3 +1,4 @@
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using TutorDemand.Business.Abstractions;
@@ -8,18 +9,21 @@ namespace TutorDemand.RazorWebApp.Pages.Tutor
     public class CreateModel : PageModel
     {
         private readonly ITutorBusiness tutorBusiness;
+        private readonly IMapper mapper;
 
-        public CreateModel(ITutorBusiness tutorBusiness)
+        public CreateModel(ITutorBusiness tutorBusiness, IMapper mapper)
         {
             this.tutorBusiness = tutorBusiness;
+            this.mapper = mapper;
         }
-        [BindProperty]
-        public TutorAddDto Tutor { get; set; }
 
-        public async Task OnPost()
+        [BindProperty] public TutorDto Tutor { get; set; }
+
+        public async Task<IActionResult> OnPost()
         {
             Tutor.TutorId = Guid.NewGuid();
             await tutorBusiness.CreateAsync(Tutor);
+            return RedirectToPage("/tutor/list");
         }
     }
 }

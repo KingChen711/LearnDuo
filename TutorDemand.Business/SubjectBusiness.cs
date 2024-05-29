@@ -36,7 +36,7 @@ public class SubjectBusiness : ISubjectBusiness
             //var subjectEntity = _unitOfWork.SubjectRepository.GetById(subjectId);
 
             // -> Use custom function
-            var subjectEntities =  _unitOfWork.SubjectRepository.GetWithCondition(x =>
+            var subjectEntities = _unitOfWork.SubjectRepository.GetWithCondition(x =>
                 x.SubjectId.Equals(subjectId));
 
             if (!subjectEntities.Any())
@@ -51,7 +51,7 @@ public class SubjectBusiness : ISubjectBusiness
                 return new BusinessResult(Const.SUCCESS_DELETE_CODE, Const.SUCCESS_DELETE_MSG);
             }
         }
-        catch(Exception ex)
+        catch (Exception ex)
         {
             return new BusinessResult(Const.ERROR_EXCEPTION_CODE, ex.Message);
         }
@@ -87,7 +87,7 @@ public class SubjectBusiness : ISubjectBusiness
         //var subjectEntity = await _unitOfWork.SubjectRepository.GetByIdAsync(subjectId);
 
         // -> Use custom function
-        var subjectEntities = await _unitOfWork.SubjectRepository.GetWithConditionAsync(x => 
+        var subjectEntities = await _unitOfWork.SubjectRepository.GetWithConditionAsync(x =>
             x.SubjectId.Equals(subjectId));
         if (!subjectEntities.Any())
         {
@@ -108,7 +108,7 @@ public class SubjectBusiness : ISubjectBusiness
         {
             var subjectEntity = _unitOfWork.SubjectRepository.GetById(subjectId);
 
-            if(subjectEntity is null)
+            if (subjectEntity is null)
             {
                 return new BusinessResult(Const.SUCCESS_READ_CODE, Const.SUCCESS_READ_MSG, subjectEntity!);
             }
@@ -116,7 +116,8 @@ public class SubjectBusiness : ISubjectBusiness
             {
                 return new BusinessResult(Const.FAIL_READ_CODE, Const.FAIL_READ_MSG);
             }
-        }catch(Exception ex)
+        }
+        catch (Exception ex)
         {
             return new BusinessResult(Const.ERROR_EXCEPTION_CODE, ex.Message);
         }
@@ -193,9 +194,9 @@ public class SubjectBusiness : ISubjectBusiness
 
 
     public IBusinessResult GetWithCondition(
-            Expression<Func<Subject, bool>> filter = null!,
-            Func<IQueryable<Subject>, IOrderedQueryable<Subject>> orderBy = null!,
-            string includeProperties = "")
+        Expression<Func<Subject, bool>> filter = null!,
+        Func<IQueryable<Subject>, IOrderedQueryable<Subject>> orderBy = null!,
+        string includeProperties = "")
     {
         try
         {
@@ -223,7 +224,8 @@ public class SubjectBusiness : ISubjectBusiness
     {
         try
         {
-            var subjects = await _unitOfWork.SubjectRepository.GetWithConditionAsync(filter, orderBy, includeProperties);
+            var subjects =
+                await _unitOfWork.SubjectRepository.GetWithConditionAsync(filter, orderBy, includeProperties);
 
             if (subjects.Any())
             {
@@ -233,7 +235,6 @@ public class SubjectBusiness : ISubjectBusiness
             {
                 return new BusinessResult(Const.FAIL_READ_CODE, Const.FAIL_READ_MSG);
             }
-
         }
         catch (Exception ex)
         {
@@ -255,7 +256,8 @@ public class SubjectBusiness : ISubjectBusiness
             {
                 return new BusinessResult(Const.FAIL_CREATE_CODE, Const.FAIL_CREATE_MSG);
             }
-        }catch(Exception ex)
+        }
+        catch (Exception ex)
         {
             return new BusinessResult(Const.ERROR_EXCEPTION_CODE, ex.Message);
         }
@@ -297,8 +299,8 @@ public class SubjectBusiness : ISubjectBusiness
             {
                 return new BusinessResult(Const.FAIL_UPDATE_CODE, Const.FAIL_UPDATE_MSG);
             }
-
-        }catch(Exception ex)
+        }
+        catch (Exception ex)
         {
             return new BusinessResult(Const.ERROR_EXCEPTION_CODE, ex.Message);
         }
@@ -336,7 +338,6 @@ public class SubjectBusiness : ISubjectBusiness
             {
                 return new BusinessResult(Const.FAIL_UPDATE_CODE, Const.FAIL_UPDATE_MSG);
             }
-
         }
         catch (Exception ex)
         {

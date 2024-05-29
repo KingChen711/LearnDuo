@@ -2,23 +2,22 @@
 using System.ComponentModel.DataAnnotations;
 using TutorDemand.Data.Enums;
 
-namespace TutorDemand.Data.Entities;
+namespace TutorDemand.Data.Dtos.Tutor;
 
-public class Customer
+public class TutorDto
 {
-    [Key] public int Id { get; set; }
-
-    public Guid CustomerId { get; set; }
+    [Required]
+    public Guid TutorId { get; set; } 
 
     [Required]
-    [DisplayName("Tên")]
-    [MaxLength(100, ErrorMessage = "Tên tối đa 100 kí tự.")]
+    [DisplayName("Tên giảng viên")]
+    [MaxLength(100, ErrorMessage = "Tên giảng viên tối đa 100 kí tự.")]
     public string Fullname { get; set; } = null!;
 
     [Required]
     [EmailAddress]
     [MaxLength(100, ErrorMessage = "Email tối đa 100 kí tự.")]
-    public string Email { get; set; } = null!; //UNIQUE, nếu có mua hàng lần 2 thì find by email trước
+    public string Email { get; set; } = null!;
 
     [Required]
     [RegularExpression(@"^(\+84|0)[1-9]\d{8}$", ErrorMessage = "Số điện thoại không hợp lệ")]
@@ -28,7 +27,7 @@ public class Customer
 
     [DisplayName("Địa chỉ")]
     [MaxLength(300, ErrorMessage = "Địa chỉ tối đa 300 kí tự.")]
-    public string? Address { get; set; } = null!;
+    public string? Address { get; set; }
 
     [DisplayName("Giới tính")]
     [MaxLength(10)]
@@ -37,6 +36,9 @@ public class Customer
 
     [DisplayName("Ngày sinh")] public DateOnly? Dob { get; set; }
 
-    //navigator
-    public ICollection<Reservation> Reservations { get; set; } = [];
+    [MaxLength(500)] public string? Avatar { get; set; }
+
+    [MaxLength(500)] public string? CertificateImage { get; set; }
+
+    [MaxLength(500)] public string? IdentityCard { get; set; }
 }
