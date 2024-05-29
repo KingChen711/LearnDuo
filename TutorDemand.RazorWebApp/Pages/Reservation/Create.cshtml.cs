@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using TutorDemand.Data.Dtos.Reservation;
 using TutorDemand.Data.Enums;
 
-namespace TutorDemand.Pages
+namespace TutorDemand.Pages.Reservations
 {
     public class CreateReservationModel : PageModel
     {
@@ -21,8 +21,7 @@ namespace TutorDemand.Pages
                 return Page();
             }
 
-            // Thực hiện logic lưu trữ dữ liệu
-            // ...
+            
 
             return RedirectToPage("Success"); // Redirect đến trang thành công
         }

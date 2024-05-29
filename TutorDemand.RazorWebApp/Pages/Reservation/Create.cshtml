@@ -1,5 +1,5 @@
 @page
-@model TutorDemand.Pages.CreateReservationModel
+@model TutorDemand.Pages.Reservations.CreateReservationModel
 
 <!DOCTYPE html>
 <html lang="en">
@@ -14,10 +14,39 @@
         <div class="bg-white p-8 rounded shadow-md">
             <h1 class="text-2xl font-bold mb-6">Đăng ký Gia sư</h1>
             <form method="post">
+                
+                <div class="mb-4">
+                    <label class="block text-gray-700">Customer ID</label>
+                    <input type="text" asp-for="Reservation.CustomerId" class="mt-1 block w-full rounded border-gray-300 shadow-sm" />
+                    <span asp-validation-for="Reservation.CustomerId" class="text-red-600"></span>
+                </div>
+                <div class="mb-4">
+                    <label class="block text-gray-700">Teaching Schedule ID</label>
+                    <input type="text" asp-for="Reservation.TeachingScheduleId" class="mt-1 block w-full rounded border-gray-300 shadow-sm" />
+                    <span asp-validation-for="Reservation.TeachingScheduleId" class="text-red-600"></span>
+                </div>
                 <div class="mb-4">
                     <label class="block text-gray-700">Giá khóa học</label>
                     <input type="number" asp-for="Reservation.PaidPrice" class="mt-1 block w-full rounded border-gray-300 shadow-sm" />
                     <span asp-validation-for="Reservation.PaidPrice" class="text-red-600"></span>
+                </div>
+                <div class="mb-4">
+                    <label class="block text-gray-700">Trạng thái đặt chỗ</label>
+                    <select asp-for="Reservation.ReservationStatus" class="mt-1 block w-full rounded border-gray-300 shadow-sm">
+                        <option value="Pending">Pending</option>
+                        <option value="Confirmed">Confirmed</option>
+                        <option value="Cancelled">Cancelled</option>
+                    </select>
+                    <span asp-validation-for="Reservation.ReservationStatus" class="text-red-600"></span>
+                </div>
+                <div class="mb-4">
+                    <label class="block text-gray-700">Trạng thái thanh toán</label>
+                    <select asp-for="Reservation.PaymentStatus" class="mt-1 block w-full rounded border-gray-300 shadow-sm">
+                        <option value="Pending">Pending</option>
+                        <option value="Paid">Paid</option>
+                        <option value="Failed">Failed</option>
+                    </select>
+                    <span asp-validation-for="Reservation.PaymentStatus" class="text-red-600"></span>
                 </div>
                 <div class="mb-4">
                     <label class="block text-gray-700">Phương pháp thanh toán</label>

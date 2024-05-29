@@ -1,0 +1,60 @@
+@page
+
+@model TutorDemand.Pages.Reservations.IndexModel
+@{
+    ViewData["Title"] = "Danh sách giao dịch";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Danh sách giao dịch</title>
+    <link href="~/css/site.css" rel="stylesheet" />
+</head>
+<body class="bg-gray-100">
+    <div class="container mx-auto p-6">
+        <div class="bg-white p-8 rounded shadow-md">
+            <h1 class="text-2xl font-bold mb-6">Danh sách giao dịch</h1>
+            @if (Model.Reservations != null && Model.Reservations.Any())
+            {
+                <table class="min-w-full bg-white">
+                    <thead>
+                        <tr>
+                            <th class="py-2 px-4 border-b">ID</th>
+                            <th class="py-2 px-4 border-b">Customer ID</th>
+                            <th class="py-2 px-4 border-b">Teaching Schedule ID</th>
+                            <th class="py-2 px-4 border-b">Paid Price</th>
+                            <th class="py-2 px-4 border-b">Status</th>
+                            <th class="py-2 px-4 border-b">Payment Status</th>
+                            <th class="py-2 px-4 border-b">Payment Method</th>
+                            <th class="py-2 px-4 border-b">Created At</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var reservation in Model.Reservations)
+                        {
+                            <tr>
+                                <td class="py-2 px-4 border-b">@reservation.Id</td>
+                                <td class="py-2 px-4 border-b">@reservation.CustomerId</td>
+                                <td class="py-2 px-4 border-b">@reservation.TeachingScheduleId</td>
+                                <td class="py-2 px-4 border-b">@reservation.PaidPrice</td>
+                                <td class="py-2 px-4 border-b">@reservation.ReservationStatus</td>
+                                <td class="py-2 px-4 border-b">@reservation.PaymentStatus</td>
+                                <td class="py-2 px-4 border-b">@reservation.PaymentMethod</td>
+                                <td class="py-2 px-4 border-b">@reservation.CreatedAt</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            }
+            else
+            {
+                <p>Không có giao dịch nào.</p>
+            }
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.js"></script>
+</body>
+</html>
