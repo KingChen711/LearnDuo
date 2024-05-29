@@ -5,5 +5,7 @@ using System.Threading.Tasks;
 
 namespace TutorDemand.Data.Dtos.TeachingSchedule
 {
-    public record TeachingScheduleUpdateDto { }
+    public record TeachingScheduleUpdateDto
+    {
+    }
 }

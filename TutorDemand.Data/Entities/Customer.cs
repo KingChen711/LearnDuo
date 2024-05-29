@@ -6,8 +6,7 @@ namespace TutorDemand.Data.Entities;
 
 public class Customer
 {
-    [Key]
-    public int Id { get; set; }
+    [Key] public int Id { get; set; }
 
     public Guid CustomerId { get; set; }
 
@@ -36,8 +35,7 @@ public class Customer
     [EnumDataType(typeof(Gender))]
     public string? Gender { get; set; }
 
-    [DisplayName("Ngày sinh")]
-    public DateOnly? Dob { get; set; }
+    [DisplayName("Ngày sinh")] public DateOnly? Dob { get; set; }
 
     //navigator
     public ICollection<Reservation> Reservations { get; set; } = [];

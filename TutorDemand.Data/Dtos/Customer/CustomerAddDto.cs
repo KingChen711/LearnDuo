@@ -38,7 +38,6 @@ namespace TutorDemand.Data.Dtos.Customer
         [EnumDataType(typeof(Gender))]
         public string? Gender { get; set; }
 
-        [DisplayName("Ngày sinh")]
-        public DateOnly? Dob { get; set; }
+        [DisplayName("Ngày sinh")] public DateOnly? Dob { get; set; }
     }
 }

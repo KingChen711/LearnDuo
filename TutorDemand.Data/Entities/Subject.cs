@@ -6,8 +6,7 @@ namespace TutorDemand.Data.Entities;
 
 public class Subject
 {
-    [Key]
-    public int Id { get; set; }
+    [Key] public int Id { get; set; }
 
     public Guid SubjectId { get; set; }
 
@@ -26,7 +25,7 @@ public class Subject
     [AllowNull]
     public string? Image { get; set; } = "/images/default-subject.jpg";
 
-    public string Description { get; set; } = string.Empty; 
+    public string Description { get; set; } = string.Empty;
 
     //navigator
     public ICollection<TeachingSchedule> TeachingSchedules { get; set; } = [];

@@ -23,6 +23,7 @@ namespace TutorDemand.RazorWebApp.Api
             {
                 return Problem("Something went wrong!", null, (int)HttpStatusCode.InternalServerError);
             }
+
             return Json(new { link = imageUrl });
         }
     }

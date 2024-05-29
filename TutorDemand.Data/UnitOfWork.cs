@@ -15,6 +15,7 @@ namespace TutorDemand.Data
         private TeachingScheduleRepository _teachingScheduleRepo;
         private TutorRepository _tutorRepository;
         private CustomerRepository _customerRepository;
+
         public UnitOfWork()
         {
         }
@@ -33,6 +34,7 @@ namespace TutorDemand.Data
         {
             get { return _tutorRepository ??= new TutorRepository(); }
         }
+
         public CustomerRepository CustomerRepository
         {
             get { return _customerRepository ??= new CustomerRepository(); }

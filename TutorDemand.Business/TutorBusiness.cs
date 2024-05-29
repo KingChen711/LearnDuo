@@ -1,4 +1,5 @@
-﻿using Mapster;
+﻿using AutoMapper;
+using Mapster;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 using TutorDemand.Business.Abstractions;
@@ -20,11 +21,11 @@ namespace TutorDemand.Business
             _unitOfWork ??= new UnitOfWork();
         }
 
-        public async Task<IBusinessResult> FindOneAsync(Expression<Func<Tutor, bool>> expression)
+        public async Task<IBusinessResult> FindOneAsync(Expression<Func<Tutor, bool>> condition)
         {
             try
             {
-                var tutors = await _unitOfWork.TutorRepository.GetWithConditionAsync(expression);
+                var tutors = await _unitOfWork.TutorRepository.GetOneWithConditionAsync(condition);
 
                 if (tutors != null)
                 {
@@ -34,7 +35,6 @@ namespace TutorDemand.Business
                 {
                     return new BusinessResult(Const.FAIL_UPDATE_CODE, Const.FAIL_UPDATE_MSG);
                 }
-
             }
             catch (Exception ex)
             {
@@ -42,7 +42,7 @@ namespace TutorDemand.Business
             }
         }
 
-        public async Task<IBusinessResult> CreateAsync(TutorAddDto dto)
+        public async Task<IBusinessResult> CreateAsync(TutorDto dto)
         {
             try
             {
@@ -66,7 +66,7 @@ namespace TutorDemand.Business
 
         public async Task<IBusinessResult> DeleteAsync(Guid tutorId)
         {
-            var tutorEntity = await _unitOfWork.TutorRepository.GetByIdAsync(tutorId);
+            var tutorEntity = _unitOfWork.TutorRepository.GetOneWithCondition(x => x.TutorId.Equals(tutorId));
             if (tutorEntity is null)
             {
                 return new BusinessResult(Const.WARNING_NO_DATA_CODE, Const.WARNING_NO_DATA_MSG);
@@ -101,7 +101,7 @@ namespace TutorDemand.Business
             }
         }
 
-        public async Task<IBusinessResult> UpdateAsync(TutorUpdateDto dto)
+        public async Task<IBusinessResult> UpdateAsync(TutorDto dto)
         {
             try
             {
@@ -117,7 +117,6 @@ namespace TutorDemand.Business
                 {
                     return new BusinessResult(Const.FAIL_UPDATE_CODE, Const.FAIL_UPDATE_MSG);
                 }
-
             }
             catch (Exception ex)
             {
@@ -126,4 +125,3 @@ namespace TutorDemand.Business
         }
     }
 };
-

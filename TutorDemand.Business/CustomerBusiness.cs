@@ -57,13 +57,13 @@ namespace TutorDemand.Business
             else
             {
                 await _unitOfWork.CustomerRepository.RemoveAsync(customerEntity);
-                await _unitOfWork.CustomerRepository.SaveAsync(); 
+                await _unitOfWork.CustomerRepository.SaveAsync();
 
                 return new BusinessResult(Const.SUCCESS_DELETE_CODE, Const.SUCCESS_DELETE_MSG);
             }
         }
 
-        public async Task<IBusinessResult> FindOneAsync(Expression<Func<Customer, bool>> expression )
+        public async Task<IBusinessResult> FindOneAsync(Expression<Func<Customer, bool>> expression)
         {
             try
             {
@@ -77,14 +77,13 @@ namespace TutorDemand.Business
                 {
                     return new BusinessResult(Const.FAIL_UPDATE_CODE, Const.FAIL_UPDATE_MSG);
                 }
-
             }
             catch (Exception ex)
             {
                 return new BusinessResult(Const.ERROR_EXCEPTION_CODE, ex.Message);
             }
         }
-        
+
         public async Task<IBusinessResult> GetAllAsync()
         {
             try
@@ -122,13 +121,11 @@ namespace TutorDemand.Business
                 {
                     return new BusinessResult(Const.FAIL_UPDATE_CODE, Const.FAIL_UPDATE_MSG);
                 }
-
             }
             catch (Exception ex)
             {
                 return new BusinessResult(Const.ERROR_EXCEPTION_CODE, ex.Message);
             }
-
         }
     }
 }

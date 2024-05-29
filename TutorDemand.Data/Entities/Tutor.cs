@@ -6,8 +6,7 @@ namespace TutorDemand.Data.Entities;
 
 public class Tutor
 {
-    [Key]
-    public int Id { get; set; }
+    [Key] public int Id { get; set; }
 
     public Guid TutorId { get; set; }
 
@@ -36,17 +35,13 @@ public class Tutor
     [EnumDataType(typeof(Gender))]
     public string? Gender { get; set; }
 
-    [DisplayName("Ngày sinh")]
-    public DateOnly? Dob { get; set; }
+    [DisplayName("Ngày sinh")] public DateOnly? Dob { get; set; }
 
-    [MaxLength(500)]
-    public string? Avatar { get; set; }
+    [MaxLength(500)] public string? Avatar { get; set; }
 
-    [MaxLength(500)]
-    public string? CertificateImage { get; set; }
+    [MaxLength(500)] public string? CertificateImage { get; set; }
 
-    [MaxLength(500)]
-    public string? IdentityCard { get; set; }
+    [MaxLength(500)] public string? IdentityCard { get; set; }
 
     //navigator
     public ICollection<TeachingSchedule> TeachingSchedules { get; set; } = [];

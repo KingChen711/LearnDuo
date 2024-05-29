@@ -7,8 +7,13 @@ namespace TutorDemand.Data.Entities;
 
 public class NET1704_221_5_TutorDemandContext : DbContext
 {
-    public NET1704_221_5_TutorDemandContext() { }
-    public NET1704_221_5_TutorDemandContext(DbContextOptions<NET1704_221_5_TutorDemandContext> options) : base(options) { }
+    public NET1704_221_5_TutorDemandContext()
+    {
+    }
+
+    public NET1704_221_5_TutorDemandContext(DbContextOptions<NET1704_221_5_TutorDemandContext> options) : base(options)
+    {
+    }
 
     public DbSet<Company> Companies { get; set; }
     public DbSet<Customer> Customers { get; set; }
@@ -46,5 +51,4 @@ public class NET1704_221_5_TutorDemandContext : DbContext
         modelBuilder.ApplyConfiguration(new TeachingScheduleConfiguration());
         modelBuilder.ApplyConfiguration(new TutorConfiguration());
     }
-
 }
