@@ -55,7 +55,6 @@ namespace TutorDemand.Data
             {
                 throw;
             }
-
         }
 
         //  Summary:
@@ -83,7 +82,9 @@ namespace TutorDemand.Data
                 {
                     Console.WriteLine("Data has been already seed. Skip seeding process.");
                     return;
-                };
+                }
+
+                ;
 
                 Console.WriteLine("--> Seeding Data");
 
@@ -98,6 +99,7 @@ namespace TutorDemand.Data
                 // Customer (Only 1)
                 if (!_context.Customers.Any()) await SeedCustomerAsync();
                 // Reservation (UI Only)
+                if (!_context.Reservations.Any()) await SeedReservationAsync();
                 // Company
 
                 Console.WriteLine("--> Seeding Data Successfully");
@@ -116,22 +118,69 @@ namespace TutorDemand.Data
             // List of subjects to seed
             var subjects = new List<Subject>
             {
-                new Subject { Name = "ReactJs", SubjectCode = "RC201", SubjectId = Guid.NewGuid(), Image = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR4d-qz5zSkMYCbYyezUQ0MQmP1pcVG6dAAlX06SeXDcA&s" },
-                new Subject { Name = "NestJs", SubjectCode = "NJ921", SubjectId = Guid.NewGuid(), Image = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRd9dnsXqD_YMxZ0cYV2TDOfVBncH9SSIl_3pgnIMhzzA&s" },
-                new Subject { Name = "NodeJs", SubjectCode = "ND213" ,SubjectId = Guid.NewGuid(), Image = "https://maychusaigon.vn/wp-content/uploads/2023/06/dinh-nghia-nodejs-la-gi-maychusaigon.jpg" },
+                new Subject
+                {
+                    Name = "ReactJs", SubjectCode = "RC201", SubjectId = Guid.NewGuid(),
+                    Image =
+                        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR4d-qz5zSkMYCbYyezUQ0MQmP1pcVG6dAAlX06SeXDcA&s"
+                },
+                new Subject
+                {
+                    Name = "NestJs", SubjectCode = "NJ921", SubjectId = Guid.NewGuid(),
+                    Image =
+                        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRd9dnsXqD_YMxZ0cYV2TDOfVBncH9SSIl_3pgnIMhzzA&s"
+                },
+                new Subject
+                {
+                    Name = "NodeJs", SubjectCode = "ND213", SubjectId = Guid.NewGuid(),
+                    Image =
+                        "https://maychusaigon.vn/wp-content/uploads/2023/06/dinh-nghia-nodejs-la-gi-maychusaigon.jpg"
+                },
                 new Subject { Name = "C#", SubjectCode = "CS101", SubjectId = Guid.NewGuid() },
-                new Subject { Name = "Java", SubjectCode = "JV202", SubjectId = Guid.NewGuid(), Image = "https://example.com/random-image" },
-                new Subject { Name = "Python", SubjectCode = "PY303", SubjectId = Guid.NewGuid(), Image = "https://example.com/random-image" },
+                new Subject
+                {
+                    Name = "Java", SubjectCode = "JV202", SubjectId = Guid.NewGuid(),
+                    Image = "https://example.com/random-image"
+                },
+                new Subject
+                {
+                    Name = "Python", SubjectCode = "PY303", SubjectId = Guid.NewGuid(),
+                    Image = "https://example.com/random-image"
+                },
                 new Subject { Name = "Ruby", SubjectCode = "RB404", SubjectId = Guid.NewGuid() },
                 new Subject { Name = "Go", SubjectCode = "GO505", SubjectId = Guid.NewGuid() },
-                new Subject { Name = "Swift", SubjectCode = "SW606", SubjectId = Guid.NewGuid(), Image = "https://example.com/random-image" },
+                new Subject
+                {
+                    Name = "Swift", SubjectCode = "SW606", SubjectId = Guid.NewGuid(),
+                    Image = "https://example.com/random-image"
+                },
                 new Subject { Name = "Kotlin", SubjectCode = "KT707", SubjectId = Guid.NewGuid() },
-                new Subject { Name = "Scala", SubjectCode = "SC808", SubjectId = Guid.NewGuid(), Image = "https://example.com/random-image" },
-                new Subject { Name = "Rust", SubjectCode = "RS909", SubjectId = Guid.NewGuid()},
-                new Subject { Name = "PHP", SubjectCode = "PH101", SubjectId = Guid.NewGuid(), Image = "https://example.com/random-image" },
-                new Subject { Name = "PHP1", SubjectCode = "PH1012", SubjectId = Guid.NewGuid(), Image = "https://example.com/random-image" },
-                new Subject { Name = "PHP2", SubjectCode = "PH1014", SubjectId = Guid.NewGuid(), Image = "https://example.com/random-image" },
-                new Subject { Name = "PHP3", SubjectCode = "PH1013", SubjectId = Guid.NewGuid(), Image = "https://example.com/random-image" }
+                new Subject
+                {
+                    Name = "Scala", SubjectCode = "SC808", SubjectId = Guid.NewGuid(),
+                    Image = "https://example.com/random-image"
+                },
+                new Subject { Name = "Rust", SubjectCode = "RS909", SubjectId = Guid.NewGuid() },
+                new Subject
+                {
+                    Name = "PHP", SubjectCode = "PH101", SubjectId = Guid.NewGuid(),
+                    Image = "https://example.com/random-image"
+                },
+                new Subject
+                {
+                    Name = "PHP1", SubjectCode = "PH1012", SubjectId = Guid.NewGuid(),
+                    Image = "https://example.com/random-image"
+                },
+                new Subject
+                {
+                    Name = "PHP2", SubjectCode = "PH1014", SubjectId = Guid.NewGuid(),
+                    Image = "https://example.com/random-image"
+                },
+                new Subject
+                {
+                    Name = "PHP3", SubjectCode = "PH1013", SubjectId = Guid.NewGuid(),
+                    Image = "https://example.com/random-image"
+                }
             };
             foreach (var subject in subjects)
             {
@@ -153,16 +202,16 @@ namespace TutorDemand.Data
         {
             var tutorInfos = new List<(string email, string fullName)>
             {
-                new ("levanbuoi@gmail.com", "Le Van Buoi"),
-                new ("nguyenvana@gmail.com", "Nguyen Van A"),
-                new ("tranthibanh@gmail.com", "Tran Thi Banh"),
-                new ("lehoangcam@gmail.com", "Le Hoang Cam"),
-                new ("phamthidung@gmail.com", "Pham Thi Dung"),
-                new ("nguyenhuuem@gmail.com", "Nguyen Huu Em"),
-                new ("phanvantai@gmail.com", "Phan Van Tai"),
-                new ("doananhgia@gmail.com", "Doan Anh Gia"),
-                new ("ngothihuyen@gmail.com", "Ngo Thi Huyen"),
-                new ("vutuanhung@gmail.com", "Vu Tuan Hung")
+                new("levanbuoi@gmail.com", "Le Van Buoi"),
+                new("nguyenvana@gmail.com", "Nguyen Van A"),
+                new("tranthibanh@gmail.com", "Tran Thi Banh"),
+                new("lehoangcam@gmail.com", "Le Hoang Cam"),
+                new("phamthidung@gmail.com", "Pham Thi Dung"),
+                new("nguyenhuuem@gmail.com", "Nguyen Huu Em"),
+                new("phanvantai@gmail.com", "Phan Van Tai"),
+                new("doananhgia@gmail.com", "Doan Anh Gia"),
+                new("ngothihuyen@gmail.com", "Ngo Thi Huyen"),
+                new("vutuanhung@gmail.com", "Vu Tuan Hung")
             };
 
             var tutors = new List<Tutor>();
@@ -189,6 +238,50 @@ namespace TutorDemand.Data
 
             var result = await _context.SaveChangesAsync() > 0;
             if (!result) Console.WriteLine("Something went wrong when seeding tutor data");
+        }
+
+        private async Task SeedReservationAsync()
+        {
+            var customer = await _context.Customers.FirstOrDefaultAsync();
+            var tutor = await _context.Tutors.ToListAsync();
+            var teachingSchedule = await _context.TeachingSchedules.ToListAsync();
+
+            List<Reservation> reservations = new List<Reservation>()
+            {
+                new()
+                {
+                    CustomerId = customer.CustomerId,
+                    TeachingScheduleId = teachingSchedule[0].TeachingScheduleId,
+                    PaidPrice = 100,
+                    CreatedAt = DateTime.Parse("10-10-2022"),
+                    ReservationStatus = nameof(ReservationStatus.Completed),
+                    PaymentMethod = nameof(PaymentMethod.Cash),
+                    PaymentStatus = nameof(PaymentStatus.Paid)
+                },
+                new()
+                {
+                    CustomerId = customer.CustomerId,
+                    TeachingScheduleId = teachingSchedule[1].TeachingScheduleId,
+                    PaidPrice = 300,
+                    CreatedAt = DateTime.Parse("05-20-2024"),
+                    ReservationStatus = nameof(ReservationStatus.Processing),
+                    PaymentMethod = nameof(PaymentMethod.DebitCard),
+                    PaymentStatus = nameof(PaymentStatus.Paid)
+                },
+                new()
+                {
+                    CustomerId = customer.CustomerId,
+                    TeachingScheduleId = teachingSchedule[2].TeachingScheduleId,
+                    PaidPrice = 500,
+                    CreatedAt = DateTime.Now,
+                    ReservationStatus = nameof(ReservationStatus.Processing),
+                    PaymentMethod = nameof(PaymentMethod.CreditCard),
+                    PaymentStatus = nameof(PaymentStatus.Unpaid)
+                }
+            };
+            await _context.Reservations.AddRangeAsync(reservations);
+            var result = await _context.SaveChangesAsync() > 0;
+            if(!result) Console.WriteLine("Something went wrong when seeding Reservation");
         }
 
         //  Summary:
