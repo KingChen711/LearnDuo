@@ -105,23 +105,35 @@ namespace TutorDemand.Business
         {
             try
             {
-                var entity = dto.Adapt<Tutor>();
-                await _unitOfWork.TutorRepository.UpdateAsync(entity);
-                var result = await _unitOfWork.TutorRepository.SaveAsync() > 0;
+                var entity = await _unitOfWork.TutorRepository.GetOneWithConditionAsync(x => x.TutorId.Equals(dto.TutorId));
 
-                if (result)
-                {
-                    return new BusinessResult(Const.SUCCESS_UPDATE_CODE, Const.SUCCESS_UPDATE_MSG);
-                }
-                else
+                if (entity == null)
                 {
                     return new BusinessResult(Const.FAIL_UPDATE_CODE, Const.FAIL_UPDATE_MSG);
                 }
+
+                entity.Fullname = dto.Fullname;
+                entity.Address = dto.Address;
+                entity.Email = dto.Email;
+                entity.Phone = dto.Phone;
+                entity.Gender = dto.Gender;
+                entity.CertificateImage = dto.CertificateImage;
+                entity.IdentityCard = dto.IdentityCard;
+                entity.Avatar = dto.Avatar;
+
+                await _unitOfWork.TutorRepository.UpdateAsync(entity);
+        
+                var result = await _unitOfWork.TutorRepository.SaveAsync();
+
+                return result > 0 
+                    ? new BusinessResult(Const.SUCCESS_UPDATE_CODE, Const.SUCCESS_UPDATE_MSG) 
+                    : new BusinessResult(Const.FAIL_UPDATE_CODE, Const.FAIL_UPDATE_MSG);
             }
             catch (Exception ex)
             {
                 return new BusinessResult(Const.ERROR_EXCEPTION_CODE, ex.Message);
             }
         }
+
     }
 };
