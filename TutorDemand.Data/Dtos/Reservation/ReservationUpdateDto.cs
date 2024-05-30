@@ -6,10 +6,8 @@ namespace TutorDemand.Data.Dtos.Reservation;
 
 public class ReservationUpdateDto
 {
-    [Required]
-    public Guid CustomerId { get; set; }
-    [Required]
-    public Guid TeachingScheduleId { get; set; }
+    [Required] public Guid CustomerId { get; set; }
+    [Required] public Guid TeachingScheduleId { get; set; }
 
     [Range(0, int.MaxValue, ErrorMessage = "Giá khóa học phải lớn hơn 0")]
     [DisplayName("Giá khóa học")]

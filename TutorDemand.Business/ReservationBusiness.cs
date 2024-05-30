@@ -13,9 +13,10 @@ namespace TutorDemand.Business;
 public class ReservationBusiness : IReservationBusiness
 {
     private readonly ReservationDAO _reservationDAO;
+
     public ReservationBusiness()
     {
-        _reservationDAO = new ReservationDAO();    
+        _reservationDAO = new ReservationDAO();
     }
 
     public IBusinessResult Delete(Guid reservationId)
@@ -166,9 +167,9 @@ public class ReservationBusiness : IReservationBusiness
 
 
     public IBusinessResult GetWithCondition(
-            Expression<Func<Reservation, bool>> filter = null!,
-            Func<IQueryable<Reservation>, IOrderedQueryable<Reservation>> orderBy = null!,
-            string includeProperties = "")
+        Expression<Func<Reservation, bool>> filter = null!,
+        Func<IQueryable<Reservation>, IOrderedQueryable<Reservation>> orderBy = null!,
+        string includeProperties = "")
     {
         try
         {
@@ -183,7 +184,6 @@ public class ReservationBusiness : IReservationBusiness
             {
                 return new BusinessResult(Const.FAIL_UPDATE_CODE, Const.FAIL_UPDATE_MSG);
             }
-
         }
         catch (Exception ex)
         {
@@ -209,7 +209,6 @@ public class ReservationBusiness : IReservationBusiness
             {
                 return new BusinessResult(Const.FAIL_UPDATE_CODE, Const.FAIL_UPDATE_MSG);
             }
-
         }
         catch (Exception ex)
         {
@@ -274,7 +273,6 @@ public class ReservationBusiness : IReservationBusiness
             {
                 return new BusinessResult(Const.FAIL_UPDATE_CODE, Const.FAIL_UPDATE_MSG);
             }
-
         }
         catch (Exception ex)
         {
@@ -297,7 +295,6 @@ public class ReservationBusiness : IReservationBusiness
             {
                 return new BusinessResult(Const.FAIL_UPDATE_CODE, Const.FAIL_UPDATE_MSG);
             }
-
         }
         catch (Exception ex)
         {

@@ -39,9 +39,9 @@ namespace TutorDemand.Data.Repositories
         }
 
         public async Task<IEnumerable<Subject>> GetWithConditionAsync(
-           Expression<Func<Subject, bool>> filter = null!,
-           Func<IQueryable<Subject>, IOrderedQueryable<Subject>> orderBy = null!,
-           string includeProperties = "")
+            Expression<Func<Subject, bool>> filter = null!,
+            Func<IQueryable<Subject>, IOrderedQueryable<Subject>> orderBy = null!,
+            string includeProperties = "")
         {
             IQueryable<Subject> query = _dbSet;
 
@@ -49,8 +49,8 @@ namespace TutorDemand.Data.Repositories
                 query = query.Where(filter);
 
             foreach (var includeProperty in includeProperties.Split(
-                    new char[] { ',' },
-                    StringSplitOptions.RemoveEmptyEntries))
+                         new char[] { ',' },
+                         StringSplitOptions.RemoveEmptyEntries))
             {
                 query = query.Include(includeProperty);
             }
