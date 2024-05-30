@@ -1,9 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using TutorDemand.Data.Entities;
 using TutorDemand.Data.Enums;
 using TutorDemand.Data.Utils;
@@ -325,7 +320,7 @@ namespace TutorDemand.Data
                 // Assign weekdays
                 schedules[i].LearnDays = TeachingScheduleHelper.GenerateRandomWeekdays();
                 // Assign price
-                schedules[i].PaidPrice = random.Next(500000, 5000000); // Price from [500.000 - 5.000.000] VND
+                //schedules[i].PaidPrice = random.Next(500000, 5000000); // Price from [500.000 - 5.000.000] VND
             }
 
             // Save to DB

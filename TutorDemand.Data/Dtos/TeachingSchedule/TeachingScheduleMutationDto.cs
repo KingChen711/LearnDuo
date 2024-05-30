@@ -1,19 +1,15 @@
-using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace TutorDemand.Data.Dtos.TeachingSchedule
 {
-    public record TeachingScheduleCreationDto
+    public record TeachingScheduleMutationDto
     {
-        [Required] public Guid TutorId { get; set; }
+        [Required(ErrorMessage = "Giảng viên bắt buộc")] public Guid TutorId { get; set; }
 
-        [Required] public Guid SubjectId { get; set; }
+        [Required(ErrorMessage = "Môn học bắt buộc")] public Guid SubjectId { get; set; }
 
-        [Required] public Guid SlotId { get; set; }
+        [Required(ErrorMessage = "Slot bắt buộc")] public Guid SlotId { get; set; }
 
         [Required(ErrorMessage = "Mã phòng Google Meet bắt buộc")]
         [MaxLength(50, ErrorMessage = "Mã phòng Google Meet tối đa 50 kí tự")]
@@ -27,11 +23,6 @@ namespace TutorDemand.Data.Dtos.TeachingSchedule
 
         [DisplayName("Các ngày học trong tuần*")]
         public string? LearnDays { get; set; } //Example: "Monday,Wednesday,Friday"
-
-        [Required(ErrorMessage = "Giá khóa học bắt buộc")]
-        [Range(0, int.MaxValue, ErrorMessage = "Giá khóa học phải lớn hơn 0")]
-        [DisplayName("Giá khóa học(VNĐ)*")]
-        public int PaidPrice { get; set; }
 
         [Required(ErrorMessage = "Ngày bắt đầu bắt buộc")]
         [DisplayName("Ngày bắt đầu*")]

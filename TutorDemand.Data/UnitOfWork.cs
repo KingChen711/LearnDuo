@@ -15,9 +15,11 @@ namespace TutorDemand.Data
         private TeachingScheduleRepository _teachingScheduleRepo;
         private TutorRepository _tutorRepository;
         private CustomerRepository _customerRepository;
+        private SlotRepository _slotRepository;
 
         public UnitOfWork()
         {
+            _context ??= new NET1704_221_5_TutorDemandContext();
         }
 
         public SubjectRepository SubjectRepository
@@ -38,6 +40,16 @@ namespace TutorDemand.Data
         public CustomerRepository CustomerRepository
         {
             get { return _customerRepository ??= new CustomerRepository(); }
+        }
+
+        public SlotRepository SlotRepository
+        {
+            get { return _slotRepository ??= new SlotRepository(); }
+        }
+
+        public async Task SaveChangesAsync()
+        {
+            await _context.SaveChangesAsync();
         }
     }
 }
