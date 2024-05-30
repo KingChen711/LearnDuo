@@ -24,7 +24,7 @@ namespace TutorDemand.Business.Base
             Message = message;
         }
 
-        public BusinessResult(int status, string message, object data)
+        public BusinessResult(int status, string message, object? data)
         {
             Status = status;
             Message = message;

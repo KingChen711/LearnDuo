@@ -167,7 +167,7 @@ namespace TutorDemand.Data.Base
             return await _dbSet.AnyAsync(condition);
         }
 
-        public IQueryable<T> GetQueryableWithCondition(Expression<Func<T, bool>> condition, bool trackChanges)
-            => trackChanges ? _dbSet.Where(condition) : _dbSet.AsTracking().Where(condition);
+        public IQueryable<T> GetQueryable(bool trackChanges)
+            => trackChanges ? _dbSet.AsQueryable() : _dbSet.AsTracking().AsQueryable();
     }
 }
