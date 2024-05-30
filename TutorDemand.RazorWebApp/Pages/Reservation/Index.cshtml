@@ -1,5 +1,4 @@
-@page
-
+@page "{currentPage:int?}"
 @model TutorDemand.Pages.Reservations.IndexModel
 @{
     ViewData["Title"] = "Danh sách giao dịch";
@@ -10,7 +9,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Danh sách giao dịch</title>
+    <title>@ViewData["Title"]</title>
     <link href="~/css/site.css" rel="stylesheet" />
 </head>
 <body class="bg-gray-100">
@@ -22,31 +21,46 @@
                 <table class="min-w-full bg-white">
                     <thead>
                         <tr>
-                            <th class="py-2 px-4 border-b">ID</th>
-                            <th class="py-2 px-4 border-b">Teaching Schedule ID</th>
-                            <th class="py-2 px-4 border-b">Paid Price</th>
-                            <th class="py-2 px-4 border-b">Status</th>
-                            <th class="py-2 px-4 border-b">Payment Status</th>
-                            <th class="py-2 px-4 border-b">Payment Method</th>
-                            <th class="py-2 px-4 border-b">Created At</th>
+                            <th class="py-2 px-4 border-b">Ngày tạo</th>
+                            <th class="py-2 px-4 border-b">Giá đã trả</th>
+                            <th class="py-2 px-4 border-b">Phương pháp thanh toán</th>
+                            <th class="py-2 px-4 border-b">Trạng thái thanh toán</th>
+                            <th class="py-2 px-4 border-b">Trạng thái đặt chỗ</th>
+                            <th class="py-2 px-4 border-b">Tên gia sư</th>
+                            <th class="py-2 px-4 border-b">Tên môn học</th>
+                            <th class="py-2 px-4 border-b">Hành động</th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach (var reservation in Model.Reservations)
                         {
                             <tr>
-                                <td class="py-2 px-4 border-b">@reservation.Id</td>
-                                <td class="py-2 px-4 border-b">@reservation.CustomerId</td>
-                                <td class="py-2 px-4 border-b">@reservation.TeachingScheduleId</td>
-                                <td class="py-2 px-4 border-b">@reservation.PaidPrice</td>
-                                <td class="py-2 px-4 border-b">@reservation.ReservationStatus</td>
-                                <td class="py-2 px-4 border-b">@reservation.PaymentStatus</td>
-                                <td class="py-2 px-4 border-b">@reservation.PaymentMethod</td>
                                 <td class="py-2 px-4 border-b">@reservation.CreatedAt</td>
+                                <td class="py-2 px-4 border-b">@reservation.PaidPrice</td>
+                                <td class="py-2 px-4 border-b">@reservation.PaymentMethod</td>
+                                <td class="py-2 px-4 border-b">@reservation.PaymentStatus</td>
+                                <td class="py-2 px-4 border-b">@reservation.ReservationStatus</td>
+                                <td class="py-2 px-4 border-b">@reservation.TutorName</td>
+                                <td class="py-2 px-4 border-b">@reservation.SubjectName</td>
+                                <td class="py-2 px-4 border-b">
+                                    <a href="/Reservations/Edit?id=@reservation.Id" class="text-blue-500 hover:underline">Update</a>
+                                    <a href="/Reservations/Delete?id=@reservation.Id" class="text-red-500 hover:underline ml-4">Delete</a>
+                                </td>
                             </tr>
                         }
                     </tbody>
                 </table>
+
+                <div class="mt-4">
+                    <nav class="flex justify-between">
+                        <a class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" href="?currentPage=@(Model.CurrentPage - 1)" @(Model.CurrentPage == 1 ? "disabled" : "")>
+                            Previous
+                        </a>
+                        <a class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" href="?currentPage=@(Model.CurrentPage + 1)" @(Model.CurrentPage == Model.TotalPages ? "disabled" : "")>
+                            Next
+                        </a>
+                    </nav>
+                </div>
             }
             else
             {

@@ -6,6 +6,7 @@ namespace TutorDemand.Data.Dtos.Reservation;
 
 public class ReservationDetailDTO
 {
+    public Guid Id { get; set; }
     public string TutorName { get; set; }
     public string SubjectName { get; set; }
     public int PaidPrice { get; set; }
