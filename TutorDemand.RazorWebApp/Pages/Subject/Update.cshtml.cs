@@ -25,17 +25,16 @@ namespace TutorDemand.RazorWebApp.Pages.Subject
             _appSettings = monitor.CurrentValue;
         }
 
-        [BindProperty]
-        public SubjectDto SubjectDto { get; set; } = null!;
+        [BindProperty] public SubjectDto SubjectDto { get; set; } = null!;
 
 
         public async Task OnGet(Guid subjectId)
         {
-            if(subjectId != Guid.Empty)
+            if (subjectId != Guid.Empty)
             {
                 var businessResult = await _subjectBusiness.GetByIdAsync(subjectId);
 
-                if(businessResult.Status == Const.SUCCESS_READ_CODE)
+                if (businessResult.Status == Const.SUCCESS_READ_CODE)
                 {
                     SubjectDto = _mapper.Map<SubjectDto>(businessResult.Data);
                 }
@@ -48,7 +47,7 @@ namespace TutorDemand.RazorWebApp.Pages.Subject
             {
                 var businessResult = await _subjectBusiness.UpdateAsync(SubjectDto);
 
-                if(businessResult.Status == Const.SUCCESS_UPDATE_CODE)
+                if (businessResult.Status == Const.SUCCESS_UPDATE_CODE)
                 {
                     ViewData["Notification"] = new Notification
                     {

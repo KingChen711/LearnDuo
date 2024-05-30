@@ -33,11 +33,9 @@ public class TeachingSchedule
     [DisplayName("Giá khóa học")]
     public int PaidPrice { get; set; }
 
-    [Required]
-    public DateOnly StartDate { get; set; }
+    [Required] public DateOnly StartDate { get; set; }
 
-    [Required]
-    public DateOnly EndDate { get; set; }
+    [Required] public DateOnly EndDate { get; set; }
 
     //navigator
     public Subject Subject { get; set; } = null!;

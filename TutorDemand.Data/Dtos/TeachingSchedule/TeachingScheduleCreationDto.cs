@@ -24,7 +24,7 @@ namespace TutorDemand.Data.Dtos.TeachingSchedule
         [MaxLength(50, ErrorMessage = "Mật khẩu phòng Google Meet tối đa 50 kí tự")]
         [DisplayName("Mật khẩu phòng Google Meet*")]
         public string RoomPassword { get; set; } = null!;
-        
+
         [DisplayName("Các ngày học trong tuần*")]
         public string? LearnDays { get; set; } //Example: "Monday,Wednesday,Friday"
 

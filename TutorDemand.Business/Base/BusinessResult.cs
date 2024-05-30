@@ -17,7 +17,7 @@ namespace TutorDemand.Business.Base
             Status = -1;
             Message = "Action fail";
         }
-        
+
         public BusinessResult(int status, string message)
         {
             Status = status;

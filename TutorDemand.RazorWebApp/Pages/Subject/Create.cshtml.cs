@@ -27,8 +27,7 @@ namespace TutorDemand.RazorWebApp.Pages.Subject
             _appSettings = monitor.CurrentValue;
         }
 
-        [BindProperty]
-        public SubjectAddDto SubjectAddDto { get; set; } = null!;
+        [BindProperty] public SubjectAddDto SubjectAddDto { get; set; } = null!;
 
         public void OnGet()
         {
@@ -42,7 +41,7 @@ namespace TutorDemand.RazorWebApp.Pages.Subject
             }
 
             // Process create subject...
-            
+
             // Subject id 
             SubjectAddDto.SubjectId = Guid.NewGuid();
 
@@ -50,7 +49,7 @@ namespace TutorDemand.RazorWebApp.Pages.Subject
             var businessResult = await _subjectBusiness.CreateAsync(
                 _mapper.Map<SubjectDto>(SubjectAddDto)); // Map subject request obj into subject DTO
 
-            if(businessResult.Status == Const.SUCCESS_CREATE_CODE)
+            if (businessResult.Status == Const.SUCCESS_CREATE_CODE)
             {
                 var notification = new Notification()
                 {
@@ -63,7 +62,7 @@ namespace TutorDemand.RazorWebApp.Pages.Subject
                 // Count total subject to forward user to last page, where new subject has been added
                 businessResult = await _subjectBusiness.GetAllAsync();
                 var subjectEntities = _mapper.Map<List<SubjectDto>>(businessResult.Data);
-                var totalPage = (int)Math.Ceiling((double) subjectEntities.Count / _appSettings.PageSize);
+                var totalPage = (int)Math.Ceiling((double)subjectEntities.Count / _appSettings.PageSize);
 
                 return RedirectToPage($"/subject/list", new { PageIndex = totalPage });
             }

@@ -4,7 +4,6 @@ using TutorDemand.Data.Entities;
 var subjectBusiness = new SubjectBusiness();
 
 
-
 // Create new subject 
 
 subjectBusiness.Create(new Subject
@@ -25,7 +24,6 @@ subjectBusiness.Create(new Subject
     Name = "Unity",
     SubjectCode = "UN123S"
 });
-
 
 
 // Get all subject
@@ -52,5 +50,3 @@ var updateResult = subjectBusiness.Update(subject);
 
 Console.WriteLine($"{updateResult.Message}");
 Console.WriteLine($"Current total data: {result.Count}");
-
-

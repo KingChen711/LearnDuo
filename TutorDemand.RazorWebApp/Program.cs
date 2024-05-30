@@ -23,10 +23,7 @@ builder.Services.AddSingleton<ICustomerBusiness, CustomerBusiness>();
 builder.Services.AddSingleton<IImageBusiness, ImageBusiness>();
 
 // Auto Mapper
-var mapperConfig = new MapperConfiguration(mc =>
-{
-    mc.AddProfile<ProfilesMapper>();
-});
+var mapperConfig = new MapperConfiguration(mc => { mc.AddProfile<ProfilesMapper>(); });
 builder.Services.AddSingleton(mapperConfig.CreateMapper());
 
 // Add services to the container.
@@ -42,16 +39,16 @@ var app = builder.Build();
 app.Lifetime.ApplicationStarted.Register(async () =>
 {
 // Database Initialiser
-await app.InitializeDatabaseAsync();
+    await app.InitializeDatabaseAsync();
 });
 
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
-app.UseExceptionHandler("/Error");
+    app.UseExceptionHandler("/Error");
 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-app.UseHsts();
+    app.UseHsts();
 }
 
 app.UseHttpsRedirection();
@@ -65,4 +62,3 @@ app.MapRazorPages();
 app.MapControllers();
 
 app.Run();
-
