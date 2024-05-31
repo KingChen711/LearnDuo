@@ -5,8 +5,7 @@ namespace TutorDemand.Data.Entities;
 
 public class Company
 {
-    [Key]
-    public int Id { get; set; }
+    [Key] public int Id { get; set; }
 
     public Guid CompanyId { get; set; }
 

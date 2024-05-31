@@ -29,10 +29,6 @@ public class TeachingSchedule
     [MaxLength(100, ErrorMessage = "Các thứ học trong tuần tối đa 100 kí tự")]
     public string LearnDays { get; set; } = null!; //Example: "Monday,Wednesday,Friday"
 
-    [Range(0, int.MaxValue, ErrorMessage = "Giá khóa học phải lớn hơn 0")]
-    [DisplayName("Giá khóa học")]
-    public int PaidPrice { get; set; }
-
     [Required]
     public DateOnly StartDate { get; set; }
 

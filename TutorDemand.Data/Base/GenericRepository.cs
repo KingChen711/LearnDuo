@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 using TutorDemand.Data.Entities;
@@ -60,10 +61,12 @@ namespace TutorDemand.Data.Base
         {
             return _dbSet.ToList();
         }
+
         public async Task<List<T>> GetAllAsync()
         {
             return await _dbSet.ToListAsync();
         }
+
         public void Create(T entity)
         {
             _dbSet.Add(entity);
@@ -104,34 +107,67 @@ namespace TutorDemand.Data.Base
             return true;
         }
 
-        public T GetById(int id)
+        public T? GetById(int id)
         {
             return _dbSet.Find(id);
         }
 
-        public async Task<T> GetByIdAsync(int id)
+        public async Task<T?> GetByIdAsync(int id)
         {
             return await _dbSet.FindAsync(id);
         }
 
-        public T GetById(string code)
+        public T? GetById(string code)
         {
             return _dbSet.Find(code);
         }
 
-        public async Task<T> GetByIdAsync(string code)
+        public async Task<T?> GetByIdAsync(string code)
         {
             return await _dbSet.FindAsync(code);
         }
 
-        public T GetById(Guid code)
+        public T? GetById(Guid code)
         {
             return _dbSet.Find(code);
         }
 
-        public async Task<T> GetByIdAsync(Guid code)
+        public async Task<T?> GetByIdAsync(Guid code)
         {
             return await _dbSet.FindAsync(code);
         }
+
+        public List<T> GetWithCondition(Expression<Func<T, bool>> condition)
+        {
+            return _dbSet.Where(condition).ToList();
+        }
+
+        public async Task<List<T>> GetWithConditionAsync(Expression<Func<T, bool>> condition)
+        {
+            return await _dbSet.Where(condition).ToListAsync();
+        }
+
+        public T? GetOneWithCondition(Expression<Func<T, bool>> condition)
+        {
+            return _dbSet.Where(condition).FirstOrDefault();
+        }
+
+        public async Task<T?> GetOneWithConditionAsync(Expression<Func<T, bool>> condition)
+        {
+            return await _dbSet.Where(condition).FirstOrDefaultAsync();
+        }
+
+        public bool Exist(Expression<Func<T, bool>> condition)
+        {
+            return _dbSet.Any(condition);
+        }
+
+        public async Task<bool> ExistAsync(Expression<Func<T, bool>> condition)
+        {
+            return await _dbSet.AnyAsync(condition);
+        }
+
+        public IQueryable<T> GetQueryable(bool trackChanges)
+            => trackChanges ? _dbSet.AsQueryable() : _dbSet.AsTracking().AsQueryable();
     }
 }

@@ -17,14 +17,14 @@ namespace TutorDemand.Business.Base
             Status = -1;
             Message = "Action fail";
         }
-        
+
         public BusinessResult(int status, string message)
         {
             Status = status;
             Message = message;
         }
 
-        public BusinessResult(int status, string message, object data)
+        public BusinessResult(int status, string message, object? data)
         {
             Status = status;
             Message = message;

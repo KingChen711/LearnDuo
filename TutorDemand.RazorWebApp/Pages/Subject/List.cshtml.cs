@@ -31,7 +31,7 @@ namespace TutorDemand.RazorWebApp.Pages.Subject
         private readonly AppSettings _appSettings;
 
         public ListModel(ISubjectBusiness subjectBusiness,
-            IMapper mapper, 
+            IMapper mapper,
             IOptionsMonitor<AppSettings> monitor)
         {
             _subjectBusiness = subjectBusiness;
@@ -41,14 +41,15 @@ namespace TutorDemand.RazorWebApp.Pages.Subject
 
         public async Task OnGet(int? pageIndex = 1)
         {
-
             IBusinessResult businessResult = null!;
-            
+
             businessResult = await _subjectBusiness.GetAllAsync();
             Subjects = _mapper.Map<List<SubjectDto>>(businessResult.Data);
 
             // Paging
-            var pagination = PaginatedList<SubjectDto>.Paging(Subjects, pageIndex ??= 1 , _appSettings.PageSize); // Default 7 record each page
+            var pagination =
+                PaginatedList<SubjectDto>.Paging(Subjects, pageIndex ??= 1,
+                    _appSettings.PageSize); // Default 7 record each page
             Subjects = pagination;
             TempData["PageIndex"] = pageIndex ??= 1;
             TempData["TotalPage"] = pagination.TotalPage;
@@ -61,14 +62,14 @@ namespace TutorDemand.RazorWebApp.Pages.Subject
             // Process search subject...
             var toLowerSearchTerm = reqObj.SearchValue.ToLower();
             businessResult = _subjectBusiness.GetWithCondition(x =>
-                        x.Name.ToLower().Contains(toLowerSearchTerm)
-                     || x.SubjectCode.ToLower().Contains(toLowerSearchTerm));
+                x.Name.ToLower().Contains(toLowerSearchTerm)
+                || x.SubjectCode.ToLower().Contains(toLowerSearchTerm));
 
             // Access data from business data (if any) and map to List<SubjectDto>
             Subjects = _mapper.Map<List<SubjectDto>>(businessResult.Data);
 
             // Process filter subject...
-            if (!String.IsNullOrEmpty(reqObj.OrderBy)) 
+            if (!String.IsNullOrEmpty(reqObj.OrderBy))
             {
                 var isDescendingOrder = reqObj.OrderBy.StartsWith("-");
 
@@ -78,12 +79,13 @@ namespace TutorDemand.RazorWebApp.Pages.Subject
             }
 
             // Pagination
-            var pagination = PaginatedList<SubjectDto>.Paging(Subjects, reqObj.PageIndex, _appSettings.PageSize); 
+            var pagination = PaginatedList<SubjectDto>.Paging(Subjects, reqObj.PageIndex, _appSettings.PageSize);
             Subjects = pagination;
             TempData["TotalPage"] = pagination.TotalPage;
             TempData["PageIndex"] = reqObj.PageIndex;
 
-            return new JsonResult(new { PageIndex = pagination.PageIndex, TotalPage = pagination.TotalPage, Subjects = Subjects });
+            return new JsonResult(new
+                { PageIndex = pagination.PageIndex, TotalPage = pagination.TotalPage, Subjects = Subjects });
             //return new JsonResult(Subjects);
         }
     }

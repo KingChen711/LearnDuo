@@ -8,7 +8,6 @@ namespace TutorDemand.Business.Abstractions;
 
 public interface ISubjectBusiness
 {
-
     //  Summary:
     //      Synchronous methods 
     public IBusinessResult Create(SubjectDto subject);
@@ -18,6 +17,7 @@ public interface ISubjectBusiness
     public IBusinessResult GetById(Guid subjectId);
     public IBusinessResult GetById(int id);
     public IBusinessResult GetAll();
+
     public IBusinessResult GetWithCondition(
         Expression<Func<Subject, bool>> filter = null!,
         Func<IQueryable<Subject>, IOrderedQueryable<Subject>> orderBy = null!,
@@ -28,8 +28,9 @@ public interface ISubjectBusiness
     public Task<IBusinessResult> CreateAsync(SubjectDto subject);
     public Task<IBusinessResult> DeleteAsync(Guid subjectId);
     public Task<IBusinessResult> UpdateAsync(SubjectDto subject);
-    public Task<IBusinessResult> GetByIdAsync(Guid subjectId);  
+    public Task<IBusinessResult> GetByIdAsync(Guid subjectId);
     public Task<IBusinessResult> GetAllAsync();
+
     public Task<IBusinessResult> GetWithConditionAysnc(
         Expression<Func<Subject, bool>> filter = null!,
         Func<IQueryable<Subject>, IOrderedQueryable<Subject>> orderBy = null!,

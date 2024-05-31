@@ -1,8 +1,3 @@
-@* !Out Scope, just a demo to how to create a form *@
-@* !Out Scope, just a demo to how to create a form *@
-@* !Out Scope, just a demo to how to create a form *@
-@* !Out Scope, just a demo to how to create a form *@
-@* !Out Scope, just a demo to how to create a form *@
 @page
 @model TutorDemand.RazorWebApp.Pages.TeachingSchedules.Create
 
@@ -14,10 +9,41 @@
 }
 
 <form method="post" enctype="multipart/form-data" class="pt-6">
-    <h2 class="text-primary font-medium text-3xl">Tạo Lịch Học</h2>
+    <h2 class="font-bold text-3xl">Tạo lịch học</h2>
     <hr/>
 
-    @* TODO:wait for subject,tutor,slot business to add those input to form *@
+    <div class="flex items-center gap-x-6 mt-4">
+        <div class="flex flex-col gap-y-2">
+            <div class="flex items-center gap-x-2">
+                <label asp-for="TeachingSchedule.SubjectId" class="text-lg font-medium">Môn học</label>
+                <select asp-for="TeachingSchedule.SubjectId" asp-items="Model.SelectListSubject" class="border rounded-md py-2 px-3">
+                    <option selected disabled>Chọn môn học</option>
+                </select>
+            </div>
+            <span asp-validation-for="TeachingSchedule.SubjectId" class="text-danger d-block"></span>
+        </div>
+
+        <div class="flex flex-col gap-y-2">
+            <div class="flex items-center gap-x-2">
+                <label asp-for="TeachingSchedule.TutorId" class="text-lg font-medium">Giảng viên</label>
+                <select asp-for="TeachingSchedule.TutorId" asp-items="Model.SelectListTutor" class="border rounded-md py-2 px-3">
+                    <option selected disabled>Chọn giảng viên</option>
+                </select>
+            </div>
+            <span asp-validation-for="TeachingSchedule.TutorId" class="text-danger d-block"></span>
+        </div>
+
+        <div class="flex flex-col gap-y-2">
+            <div class="flex items-center gap-x-2">
+                <label asp-for="TeachingSchedule.SlotId" class="text-lg font-medium">Slot</label>
+                <select asp-for="TeachingSchedule.SlotId" asp-items="Model.SelectListSlot" class="border rounded-md py-2 px-3">
+                    <option selected disabled>Chọn slot</option>
+                </select>
+            </div>
+            <span asp-validation-for="TeachingSchedule.SlotId" class="text-danger d-block"></span>
+        </div>
+    </div>
+
 
     <div class="flex flex-col gap-y-3 mt-4">
         <div class="flex flex-col gap-y-2">
@@ -30,12 +56,7 @@
             <input asp-for="TeachingSchedule.RoomPassword" class="bg-transparent py-2 px-4 rounded-lg border border-slate-300 outline-none focus:border-primary focus:border-2"/>
             <span asp-validation-for="TeachingSchedule.RoomPassword" class="text-danger"></span>
         </div>
-        <div class="flex flex-col gap-y-2">
-            <label asp-for="TeachingSchedule.PaidPrice" class="text-lg font-medium"></label>
-            <input asp-for="TeachingSchedule.PaidPrice" class="bg-transparent py-2 px-4 rounded-lg border border-slate-300 outline-none focus:border-primary focus:border-2"/>
-            <span asp-validation-for="TeachingSchedule.PaidPrice" class="text-danger"></span>
-        </div>
-
+        
         <div class="flex gap-x-4">
             <div class="flex flex-col gap-y-2">
                 <label asp-for="TeachingSchedule.StartDate" class="text-lg font-medium"></label>
@@ -69,10 +90,10 @@
     </div>
 
     <div class="flex justify-end gap-x-4">
-        <a asp-asp-page="/TeachingSchedules" class="py-2 px-4 rounded-lg border border-primary text-primary bg-gray-100 w-32 cursor-pointer hover:opacity-85 text-center">
-            Back to List
+        <a asp-page="/teachingschedules/index" class="py-2 px-4 rounded-lg border border-primary text-primary bg-gray-100 w-32 cursor-pointer hover:opacity-85 text-center">
+            Trở về danh sách
         </a>
-        <button type="submit" class="py-2 px-4 rounded-lg bg-primary w-32 text-white cursor-pointer hover:opacity-85">Create</button>
+        <button type="submit" class="py-2 px-4 rounded-lg bg-primary w-32 text-white cursor-pointer hover:opacity-85">Tạo</button>
     </div>
 </form>
 

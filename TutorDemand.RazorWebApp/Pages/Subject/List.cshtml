@@ -2,17 +2,21 @@
 @using System.Text.Json
 @model TutorDemand.RazorWebApp.Pages.Subject.ListModel
 @inject Microsoft.AspNetCore.Antiforgery.IAntiforgery Xsrf
+
 @functions {
+
     public string GetAntiXsrfRequestToken()
     {
         return Xsrf.GetAndStoreTokens(HttpContext).RequestToken;
     }
+
 }
+
 @{
     // var json = JsonSerializer.Serialize(Model.Subjects);
 }
 
-<partial name="_DeletePopupConfirm" />
+<partial name="_DeletePopupConfirm"/>
 
 <div class="bg-opacity-10 py-2 mt-5 mb-12">
     <div class="container flex justify-between">
@@ -42,64 +46,64 @@
                                       stroke-linecap="round"
                                       stroke-linejoin="round"
                                       stroke-width="2"
-                                      d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
+                                      d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
                             </svg>
                         </div>
                         <input type="text"
                                id="default-search"
                                class="block w-full p-3 pl-10 text-sm text-black border border-gray-300 rounded-lg bg-white"
-                               placeholder="Search Code, Name..." />
+                               placeholder="Search Code, Name..."/>
                     </div>
                 </form>
             </div>
             <table class="w-full items-center text-sm text-left text-black bg-white table-auto">
                 <thead class="text-xs text-black uppercase bg-gray-200">
-                    <tr>
-                        <th scope="col" class="px-6 py-3 flex">
-                            <span>Subject Code</span>
-                            <img width="13" height="13"
-                                 id="sorting-icon"
-                                 class="ml-2"
-                                 src="https://img.icons8.com/ios-glyphs/30/sort.png" alt="sort"
-                                 style="cursor: pointer" value="+" />
-                        </th>
-                        <th scope="col" class="px-6 py-3">
-                            Subject Name
-                        </th>
-                        <th scope="col" class="px-6 py-3">
-                            Action
-                        </th>
-                    </tr>
+                <tr>
+                    <th scope="col" class="px-6 py-3 flex">
+                        <span>Subject Code</span>
+                        <img width="13" height="13"
+                             id="sorting-icon"
+                             class="ml-2"
+                             src="https://img.icons8.com/ios-glyphs/30/sort.png" alt="sort"
+                             style="cursor: pointer" value="+"/>
+                    </th>
+                    <th scope="col" class="px-6 py-3">
+                        Subject Name
+                    </th>
+                    <th scope="col" class="px-6 py-3">
+                        Action
+                    </th>
+                </tr>
                 </thead>
                 <tbody>
-                    @foreach (var subject in Model.Subjects)
-                    {
-                        <tr class="odd:bg-white even:bg-white border-b border-gray-700">
-                            <th scope="row" class="px-6 py-4 font-medium text-black whitespace-nowrap">
-                                @subject.SubjectCode
-                            </th>
-                            <td class="px-6 py-4">
-                                @subject.Name
-                            </td>
-                            <td class="px-6 py-4">
-                                <button class="action-btn bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded text-sm"
-                                        data-action="view" data-id="@subject.SubjectId" data-name="@subject.Name">
-                                    View
-                                </button>
-                                <button class="action-btn bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-1 px-2 rounded text-sm"
-                                        data-action="update" data-id="@subject.SubjectId" data-name="@subject.Name">
-                                    Update
-                                </button>
-                                <button class="action-btn bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded text-sm"
-                                        data-action="delete" data-id="@subject.SubjectId" data-name="@subject.Name">
-                                    Delete
-                                </button>
-                            </td>
-                        </tr>
-                    }
+                @foreach (var subject in Model.Subjects)
+                {
+                    <tr class="odd:bg-white even:bg-white border-b border-gray-700">
+                        <th scope="row" class="px-6 py-4 font-medium text-black whitespace-nowrap">
+                            @subject.SubjectCode
+                        </th>
+                        <td class="px-6 py-4">
+                            @subject.Name
+                        </td>
+                        <td class="px-6 py-4">
+                            <button class="action-btn bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded text-sm"
+                                    data-action="view" data-id="@subject.SubjectId" data-name="@subject.Name">
+                                View
+                            </button>
+                            <button class="action-btn bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-1 px-2 rounded text-sm"
+                                    data-action="update" data-id="@subject.SubjectId" data-name="@subject.Name">
+                                Update
+                            </button>
+                            <button class="action-btn bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded text-sm"
+                                    data-action="delete" data-id="@subject.SubjectId" data-name="@subject.Name">
+                                Delete
+                            </button>
+                        </td>
+                    </tr>
+                }
                 </tbody>
             </table>
-            <partial name="_Pagination" />
+            <partial name="_Pagination"/>
         </div>
     </div>
 }

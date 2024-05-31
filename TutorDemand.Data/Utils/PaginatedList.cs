@@ -24,8 +24,8 @@ namespace TutorDemand.Data.Utils
 
             // Get items by pageIndex, pageSize
             var items = source.Skip((pageIndex - 1) * pageSize) // offset
-                              .Take(pageSize)
-                              .ToList();
+                .Take(pageSize)
+                .ToList();
 
             // Paging
             return new PaginatedList<T>(items, pageIndex, totalPage);

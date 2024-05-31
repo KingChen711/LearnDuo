@@ -10,43 +10,52 @@
             <input type="text" class="form-control" id="Id" asp-for="SubjectDto.SubjectId" hidden>
             <div class="mb-4">
                 <label asp-for="SubjectDto.SubjectCode"
-                       class="mb-2 block font-bold text-gray-700">Code</label>
+                       class="mb-2 block font-bold text-gray-700">
+                    Code
+                </label>
                 <input asp-for="SubjectDto.SubjectCode" type="text"
-                       class="w-1/2 appearance-none rounded border px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none focus:shadow-outline" /><br />
+                       class="w-1/2 appearance-none rounded border px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none focus:shadow-outline"/><br/>
                 <span asp-validation-for="SubjectDto.SubjectCode"
-                      class="text-sm italic text-red-500"></span>
+                      class="text-sm italic text-red-500">
+                </span>
             </div>
 
             <div class="mb-4">
                 <label asp-for="SubjectDto.Name"
-                       class="mb-2 block font-bold text-gray-700">Name</label>
+                       class="mb-2 block font-bold text-gray-700">
+                    Name
+                </label>
                 <input asp-for="SubjectDto.Name" type="text"
-                       class="w-1/2 appearance-none border px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none focus:shadow-outline" /><br />
+                       class="w-1/2 appearance-none border px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none focus:shadow-outline"/><br/>
                 <span asp-validation-for="SubjectDto.Name"
-                      class="text-sm italic text-red-500"></span>
+                      class="text-sm italic text-red-500">
+                </span>
             </div>
 
             <div class="mb-4">
                 <label asp-for="SubjectDto.Image"
-                       class="mb-2 block font-bold text-gray-700"></label>
+                       class="mb-2 block font-bold text-gray-700">
+                </label>
 
                 <!-- Show image URL (if any)-->
                 <span id="showImageUrl"
                       class="text-sm underline cursor-pointer"
-                      style="display:none">Show image URL</span>
+                      style="display:none">
+                    Show image URL
+                </span>
                 <input asp-for="SubjectDto.Image" type="text"
                        id="imageUrl"
                        class="w-full border-none mb-4 bg-gray-100 text-blue-500 font-bold italic break-all focus:outline-none"
-                       style="display:none" /><br />
+                       style="display:none"/><br/>
 
                 <!-- Show subject image -->
                 @if (Model.SubjectDto.Image != null)
                 {
-                    <img src="@Model.SubjectDto.Image" style="width: 300px;" id="subjectImageDisplay" />
+                    <img src="@Model.SubjectDto.Image" style="width: 300px;" id="subjectImageDisplay"/>
                 }
                 else
                 {
-                    <img src="#" style="display: none;" id="subjectImageDisplay" />
+                    <img src="#" style="display: none;" id="subjectImageDisplay"/>
                 }
 
                 <!-- Select file handling-->
@@ -54,14 +63,16 @@
                        id="subjectImageTarget"
                        value="Browse"
                        class="text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-3 py-2 me-2 mb-2 cursor-pointer"
-                       onclick="document.getElementById('file').click();" />
-                <input type="file" style="display:none;" id="file" />
+                       onclick="document.getElementById('file').click();"/>
+                <input type="file" style="display:none;" id="file"/>
 
             </div>
 
             <div class="mb-4">
                 <label asp-for="SubjectDto.Description" for="descriptionEditor"
-                       class="mb-2 block font-bold text-gray-700">Description</label>
+                       class="mb-2 block font-bold text-gray-700">
+                    Description
+                </label>
                 <textarea type="text" id="descriptionEditor" asp-for="SubjectDto.Description"></textarea>
             </div>
 

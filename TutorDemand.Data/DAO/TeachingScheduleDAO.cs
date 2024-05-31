@@ -5,6 +5,8 @@ namespace TutorDemand.Data.DAO
 {
     public class TeachingScheduleDAO : BaseDAO<TeachingSchedule>
     {
-        public TeachingScheduleDAO() { }
+        public TeachingScheduleDAO()
+        {
+        }
     }
 }

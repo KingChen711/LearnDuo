@@ -6,8 +6,7 @@ namespace TutorDemand.Data.Entities;
 
 public class Subject
 {
-    [Key]
-    public int Id { get; set; }
+    [Key] public int Id { get; set; }
 
     public Guid SubjectId { get; set; }
 

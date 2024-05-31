@@ -57,7 +57,6 @@ namespace TutorDemand.Data
             {
                 throw;
             }
-
         }
 
         //  Summary:
@@ -85,7 +84,9 @@ namespace TutorDemand.Data
                 {
                     Console.WriteLine("Data has been already seed. Skip seeding process.");
                     return;
-                };
+                }
+
+                ;
 
                 Console.WriteLine("--> Seeding Data");
 

@@ -39,9 +39,9 @@ namespace TutorDemand.Data.Repositories
         }
 
         public async Task<IEnumerable<Subject>> GetWithConditionAsync(
-           Expression<Func<Subject, bool>> filter = null!,
-           Func<IQueryable<Subject>, IOrderedQueryable<Subject>> orderBy = null!,
-           string includeProperties = "")
+            Expression<Func<Subject, bool>> filter = null!,
+            Func<IQueryable<Subject>, IOrderedQueryable<Subject>> orderBy = null!,
+            string includeProperties = "")
         {
             IQueryable<Subject> query = _dbSet;
 

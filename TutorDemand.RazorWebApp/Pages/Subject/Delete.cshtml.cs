@@ -33,9 +33,14 @@ namespace TutorDemand.RazorWebApp.Pages.Subject
                 // Get all subjects
                 result = await _subjectBusiness.GetAllAsync();
 
-                var pagination = PaginatedList<SubjectDto>.Paging(_mapper.Map<List<SubjectDto>>(result.Data), pageIndex, 7); // Default 7 record each page
+                var pagination =
+                    PaginatedList<SubjectDto>.Paging(_mapper.Map<List<SubjectDto>>(result.Data), pageIndex,
+                        7); // Default 7 record each page
 
-                return new JsonResult(new { PageIndex = pagination.PageIndex, TotalPage = pagination.TotalPage, Subjects = pagination.ToList() });
+                return new JsonResult(new
+                {
+                    PageIndex = pagination.PageIndex, TotalPage = pagination.TotalPage, Subjects = pagination.ToList()
+                });
             }
 
             return RedirectToAction("/Subject/List");

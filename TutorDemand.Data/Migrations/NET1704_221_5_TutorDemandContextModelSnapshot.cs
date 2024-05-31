@@ -271,9 +271,6 @@ namespace TutorDemand.Data.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<int>("PaidPrice")
-                        .HasColumnType("int");
-
                     b.Property<string>("RoomPassword")
                         .IsRequired()
                         .HasMaxLength(50)
