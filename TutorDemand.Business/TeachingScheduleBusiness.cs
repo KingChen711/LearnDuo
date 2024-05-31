@@ -5,6 +5,7 @@ using TutorDemand.Business.Abstractions;
 using TutorDemand.Business.Base;
 using TutorDemand.Common;
 using TutorDemand.Data;
+using TutorDemand.Data.DAO;
 using TutorDemand.Data.Dtos;
 using TutorDemand.Data.Dtos.TeachingSchedule;
 using TutorDemand.Data.Entities;
@@ -124,6 +125,31 @@ namespace TutorDemand.Business
             catch (Exception e)
             {
                 return new BusinessResult(Const.FAIL_DELETE_CODE, Const.FAIL_READ_MSG);
+            }
+        }
+
+        public async Task<IBusinessResult> GetWithConditionAysnc(
+        Expression<Func<TeachingSchedule, bool>> filter = null!,
+        Func<IQueryable<TeachingSchedule>, IOrderedQueryable<TeachingSchedule>> orderBy = null!,
+        string includeProperties = "")
+        {
+            try
+            {
+                var teachingSchedules = await _unitOfWork.TeachingScheduleRepository.GetWithConditionAsync(filter, orderBy, includeProperties);
+
+                if (teachingSchedules.Any())
+                {
+                    return new BusinessResult(Const.SUCCESS_READ_CODE, Const.SUCCESS_READ_MSG, teachingSchedules);
+                }
+                else
+                {
+                    return new BusinessResult(Const.FAIL_READ_CODE, Const.FAIL_READ_MSG);
+                }
+
+            }
+            catch (Exception ex)
+            {
+                return new BusinessResult(Const.ERROR_EXCEPTION_CODE, ex.Message);
             }
         }
     }

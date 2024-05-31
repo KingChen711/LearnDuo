@@ -7,11 +7,16 @@ namespace TutorDemand.Business.Abstractions;
 
 public interface ITeachingScheduleBusiness
 {
-    Task<IBusinessResult> GetAll();
+     Task<IBusinessResult> GetAll();
     Task<IBusinessResult> GetTeachingSchedules(QueryTeachingScheduleDto dto);
     Task<IBusinessResult> Find(Expression<Func<TeachingSchedule, bool>> expression);
     Task<IBusinessResult> FindOne(Expression<Func<TeachingSchedule, bool>> expression);
     Task<IBusinessResult> Create(TeachingScheduleMutationDto entity);
     Task<IBusinessResult> Update(Guid id, TeachingScheduleMutationDto entity);
     Task<IBusinessResult> Delete(Guid teachingScheduleId);
+
+    public Task<IBusinessResult> GetWithConditionAysnc(
+        Expression<Func<TeachingSchedule, bool>> filter = null!,
+        Func<IQueryable<TeachingSchedule>, IOrderedQueryable<TeachingSchedule>> orderBy = null!,
+        string includeProperties = "");
 }

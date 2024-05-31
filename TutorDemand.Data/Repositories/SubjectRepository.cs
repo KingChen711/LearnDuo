@@ -48,11 +48,14 @@ namespace TutorDemand.Data.Repositories
             if (filter != null)
                 query = query.Where(filter);
 
-            foreach (var includeProperty in includeProperties.Split(
-                         new char[] { ',' },
-                         StringSplitOptions.RemoveEmptyEntries))
+            if(includeProperties != null)
             {
-                query = query.Include(includeProperty);
+                foreach (var includeProperty in includeProperties.Split(
+                    new char[] { ',' },
+                    StringSplitOptions.RemoveEmptyEntries))
+                {
+                    query = query.Include(includeProperty);
+                }
             }
 
             if (orderBy != null)

@@ -18,7 +18,6 @@
 
 <partial name="_DeletePopupConfirm"/>
 
-
 <div class="bg-opacity-10 py-2 mt-5 mb-12">
     <div class="container flex justify-between">
         <h1 class="text-3xl font-bold">List of subjects</h1>
@@ -32,49 +31,6 @@
 @if (Model.Subjects.Any())
 {
     <div>
-        @* <div class="relative overflow-x-auto shadow-md sm:rounded-lg mt-4">
-    <table class="w-full text-sm text-left text-black bg-white">
-    <thead class="text-xs text-black uppercase bg-gray-200">
-    <tr>
-    <th scope="col" class="px-6 py-3">
-    Product name
-    </th>
-    <th scope="col" class="px-6 py-3">
-    Color
-    </th>
-    <th scope="col" class="px-6 py-3">
-    Category
-    </th>
-    <th scope="col" class="px-6 py-3">
-    Price
-    </th>
-    <th scope="col" class="px-6 py-3">
-    Action
-    </th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr class="odd:bg-white even:bg-white border-b border-gray-700">
-    <th scope="row" class="px-6 py-4 font-medium text-black whitespace-nowrap">
-    Apple MacBook Pro 17"
-    </th>
-    <td class="px-6 py-4">
-    Silver
-    </td>
-    <td class="px-6 py-4">
-    Laptop
-    </td>
-    <td class="px-6 py-4">
-    $2999
-    </td>
-    <td class="px-6 py-4">
-    <a href="#" class="font-medium text-blue-600 hover:underline">Edit</a>
-    </td>
-    </tr>
-    </tbody>
-    </table>
-    </div> *@
-
         <div class="relative overflow-x-auto sm:rounded-lg mt-4">
             <div class="w-full flex justify-between items-center mb-4">
                 <div></div>
@@ -162,8 +118,15 @@ else
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script>
         $(document).ready(function () {
+
             var pageIndex = @TempData["PageIndex"];
             var totalPage = @TempData["TotalPage"];
+
+            function add() {
+                function add() {
+                    $('#modal').modal('show');
+                }
+            }
 
             $('#sorting-icon').on('click', function () {
 
@@ -275,9 +238,11 @@ else
                     var url = "";
                     switch (action) {
                         case "view":
+                            // Redirect to view detail page 
+                            window.location.href = `/subject/view/${subjectId}`;
                             break;
                         case "update":
-                            // Redirect to update page 
+                            // Redirect to update page
                             window.location.href = `/subject/update/${subjectId}`
                             break;
                         case "delete":
@@ -318,29 +283,29 @@ else
 
                 subjects.forEach(subject => {
                     tableBody.innerHTML += `
-                                        <tr class="odd:bg-white even:bg-white border-b border-gray-700">
-                                            <th scope="row" class="px-6 py-4 font-medium text-black whitespace-nowrap">
-                                                ${subject.subjectCode}
-                                            </th>
-                                            <td class="px-6 py-4">
-                                                ${subject.name}
-                                            </td>
-                                            <td class="px-6 py-4">
-                                                <button class="action-btn bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded text-sm"
-                                                    data-action="view" data-id="${subject.subjectId}" data-name="${subject.name}">
-                                                    View
-                                                </button>
-                                                <button class="action-btn bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-1 px-2 rounded text-sm"
-                                                    data-action="update" data-id="${subject.subjectId}" data-name="${subject.name}">
-                                                    Update
-                                                </button>
-                                                <button class="action-btn bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded text-sm"
-                                                    data-action="delete" data-id="${subject.subjectId}" data-name="${subject.name}">
-                                                    Delete
-                                                </button>
-                                            </td>
-                                        </tr>
-                                    `;
+                                                                <tr class="odd:bg-white even:bg-white border-b border-gray-700">
+                                                                    <th scope="row" class="px-6 py-4 font-medium text-black whitespace-nowrap">
+                                                                        ${subject.subjectCode}
+                                                                    </th>
+                                                                    <td class="px-6 py-4">
+                                                                        ${subject.name}
+                                                                    </td>
+                                                                    <td class="px-6 py-4">
+                                                                        <button class="action-btn bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded text-sm"
+                                                                            data-action="view" data-id="${subject.subjectId}" data-name="${subject.name}">
+                                                                            View
+                                                                        </button>
+                                                                        <button class="action-btn bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-1 px-2 rounded text-sm"
+                                                                            data-action="update" data-id="${subject.subjectId}" data-name="${subject.name}">
+                                                                            Update
+                                                                        </button>
+                                                                        <button class="action-btn bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded text-sm"
+                                                                            data-action="delete" data-id="${subject.subjectId}" data-name="${subject.name}">
+                                                                            Delete
+                                                                        </button>
+                                                                    </td>
+                                                                </tr>
+                                                            `;
                 });
 
                 // Add event listeners after updating data
