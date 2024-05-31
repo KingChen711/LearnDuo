@@ -21,6 +21,7 @@ builder.Services.AddSingleton<IReservationBusiness, ReservationBusiness>();
 builder.Services.AddSingleton<ITeachingScheduleBusiness, TeachingScheduleBusiness>();
 builder.Services.AddSingleton<ICustomerBusiness, CustomerBusiness>();
 builder.Services.AddSingleton<IImageBusiness, ImageBusiness>();
+builder.Services.AddSingleton<ITeachingScheduleBusiness, TeachingScheduleBusiness>();
 
 // Auto Mapper
 var mapperConfig = new MapperConfiguration(mc =>
@@ -30,7 +31,12 @@ var mapperConfig = new MapperConfiguration(mc =>
 builder.Services.AddSingleton(mapperConfig.CreateMapper());
 
 // Add services to the container.
-builder.Services.AddRazorPages();
+builder.Services.AddRazorPages()
+        .AddRazorPagesOptions(options =>
+        {
+            options.Conventions.AddPageRoute("/Index", "");
+        });
+
 builder.Services.AddControllers();
 builder.Services.ConfigureSqlContext(builder.Configuration);
 builder.Services.ConfigureBusinesses();

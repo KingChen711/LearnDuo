@@ -19,6 +19,8 @@ namespace TutorDemand.RazorWebApp.Pages.Subject
         // Bind Properties
         [BindProperty]
         public List<SubjectDto> Subjects { get; set; } = null!;
+        
+
         //[BindProperty]
         //public int PageIndex { get; set; } = 1;
         //[BindProperty]

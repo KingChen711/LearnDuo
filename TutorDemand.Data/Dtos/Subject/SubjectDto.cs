@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TutorDemand.Data.Dtos.TeachingSchedule;
 
 namespace TutorDemand.Data.Dtos.Subject
 {
@@ -19,10 +20,17 @@ namespace TutorDemand.Data.Dtos.Subject
         public string Name { get; set; } = string.Empty;
 
         public string? Image { get; set; } = string.Empty;
-        
+
         public string Description { get; set; } = string.Empty;
 
+        public decimal? Duration { get; set; }
 
-        //public ICollection<TeachingScheduleDto> TeachingSchedules { get; set; } = [];
+        public decimal CostPrice { get; set; }
+
+        public DateTime? StartDate { get; set; }
+        
+        public DateTime? EndDate { get; set; }
+
+        public ICollection<TeachingScheduleDto> TeachingSchedules { get; set; } = [];
     }
 }
