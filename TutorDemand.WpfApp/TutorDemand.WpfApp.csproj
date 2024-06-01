@@ -8,4 +8,9 @@
     <UseWPF>true</UseWPF>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\TutorDemand.Business\TutorDemand.Business.csproj" />
+    <ProjectReference Include="..\TutorDemand.Common\TutorDemand.Common.csproj" />
+  </ItemGroup>
+
 </Project>
