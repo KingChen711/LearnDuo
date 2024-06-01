@@ -11,7 +11,7 @@ namespace TutorDemand.Data.Base
 {
     public class GenericRepository<T> where T : class
     {
-        protected readonly NET1704_221_5_TutorDemandContext _context;
+        protected NET1704_221_5_TutorDemandContext _context;
         protected readonly DbSet<T> _dbSet;
 
         public GenericRepository()
