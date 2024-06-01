@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TutorDemand.Data.Entities;
 
@@ -11,9 +12,11 @@ using TutorDemand.Data.Entities;
 namespace TutorDemand.Data.Migrations
 {
     [DbContext(typeof(NET1704_221_5_TutorDemandContext))]
-    partial class NET1704_221_5_TutorDemandContextModelSnapshot : ModelSnapshot
+    [Migration("20240530030006_Initial Database")]
+    partial class InitialDatabase
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -270,6 +273,9 @@ namespace TutorDemand.Data.Migrations
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
+
+                    b.Property<int>("PaidPrice")
+                        .HasColumnType("int");
 
                     b.Property<string>("RoomPassword")
                         .IsRequired()

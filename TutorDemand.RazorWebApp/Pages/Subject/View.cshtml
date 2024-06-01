@@ -1,0 +1,181 @@
+﻿@page "{subjectId:Guid}"
+@model TutorDemand.RazorWebApp.Pages.Subject.ViewModel
+
+@{
+    var subject = Model.Subject;
+    var tutors = Model.Tutors;
+    var otherSubjects = Model.OtherSubjects;
+}
+
+@if (subject is not null)
+{
+    <div class="container bg-gray-100 mt-10">
+        <div class="grid grid-cols-12 flex mt-5 px-3 py-2 bg-gray-100">
+            <div class="flex col-span-9">
+                @if (!string.IsNullOrEmpty(subject.Image))
+                {
+                    <img src="@subject.Image"
+                         class="size-[250px] object-cover" />
+                }
+
+                <div class="flex flex-col p-3 ml-3 text-gray-600">
+                    <span class="text-2xl tracking-wider">Subject Name: </span>
+                    <h1 class="font-bold text-6xl mt-3 tracking-widest">@subject.Name</h1>
+                </div>
+            </div>
+            <div class="flex flex-col col-span-3 p-10 justify-center text-md font-bold">
+                <div class="flex text-gray-500">
+                    <img src="https://img.icons8.com/?size=100&id=11168&format=png&color=000000"
+                         class="size-[25px] object-cover fill-gray-50" />
+                    <span class="ml-3 mr-1 text-blue-500 font-bold">126</span> Learners
+                </div>
+                <div class="flex text-gray-500 mt-3">
+                    <img src="https://img.icons8.com/?size=100&id=23171&format=png&color=000000"
+                         class="size-[25px] object-cover fill-gray-50" />
+                    <span id="costPrice" class="ml-3 mr-1 text-red-500 font-bold">@subject.CostPrice</span>
+                </div>
+                <div class="flex text-gray-500 mt-3">
+                    <img src="https://img.icons8.com/?size=100&id=H0JqzxqGxPQm&format=png&color=000000"
+                         class="size-[25px] object-cover fill-gray-50" />
+                    <span id="duration" class="ml-3 mr-1 text-green-500 font-bold">@subject.Duration</span> Hours/Day
+                </div>
+                <div class="flex text-gray-500 mt-3 font-bold">
+                    <img src="https://img.icons8.com/?size=100&id=85102&format=png&color=000000"
+                         class="size-[25px] object-cover fill-gray-50" />
+                    <span class="ml-3 mr-2">From:</span>
+                    <p class="text-yellow-500 font-bold startDate">@subject.StartDate</p>
+                </div>
+                <div class="flex text-gray-500 mt-3 font-bold">
+                    <img src="https://img.icons8.com/?size=100&id=85102&format=png&color=000000"
+                         class="size-[25px] object-cover fill-gray-50" />
+                    <span class="ml-3 mr-2">To:</span>
+                    <p id="endDate" class="text-yellow-500 font-bold">@subject.EndDate</p>
+                </div>
+                <div class="flex flex-col items-center mt-5 mr-10">
+                    @* <span class="text-2xl text-bold text-gray-700 startDate">@subject.StartDate</span> *@
+                    <a type="button" class="text-white bg-gradient-to-r from-green-400 via-green-500 to-green-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-green-300 dark:focus:ring-green-800 shadow-lg shadow-green-500/50 dark:shadow-lg dark:shadow-green-800/80 font-medium rounded-3xl text-md px-20 py-2.5 text-center me-2 mb-2 mt-5 tracking-widest cursor-pointer">Enroll</a>
+                </div>
+            </div>
+        </div>
+        <hr />
+
+        <!-- 1. Description -->
+        <div class="w-full container mb-10">
+            <h2 class="text-2xl font-bold text-blue-500 mt-10 ml-5">1. Subject Description</h2>
+            <div class="grid grid-cols-12 px-3 py-2 mt-5">
+                <div class="col-span-9 p-7 bg-white mr-7">
+                    <!-- Description -->
+                    <div id="subjectDescription" data-desc="@subject.Description"></div>
+                </div>
+                <div class="flex flex-col col-span-3 p-10 bg-white">
+                    <h2 class="text-2xl mb-5 font-medium">Related subjects</h2>
+                    <ul class="list-disc list-inside space-y-2">
+                        @foreach (var s in otherSubjects)
+                        {
+                            <li>
+                                <a href="/subject/view/@s.SubjectId" class="font-medium text-blue-500 hover:text-blue-800">@s.Name</a>
+                            </li>
+                        }
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <!-- 2. Instructors -->
+        <div class="w-full container mb-32 p-3">
+            <h2 class="text-2xl font-bold text-blue-500 mt-10 ml-5">2. Instructors</h2>
+            @if (tutors.Any())
+            {
+                <div class="flex grid grid-cols-12 mt-10 bg-white">
+                    @foreach (var tutor in tutors)
+                    {
+                        <div class="flex flex-col col-span-4 items-center mt-10 p-5 border-r-2 border-gray-200">
+                            @if (!string.IsNullOrEmpty(tutor.Avatar))
+                            {
+                                <img src="@tutor.Avatar"
+                                     class="size-[220px] object-cover" />
+                            }
+                            <div class="flex flex-col ml-10">
+                                <div class="flex mt-5 grid grid-cols-12">
+                                    <span class="text-md mr-3 col-span-3">Name:</span>
+                                    <span class="text-md font-medium col-span-9 justify-start">@tutor.Fullname</span>
+                                </div>
+                                <div class="flex mt-2 grid grid-cols-12">
+                                    <span class="text-md mr-3 col-span-3">Email:</span>
+                                    <span class="text-md font-medium col-span-9 justify-start overflow-hidden">@tutor.Email</span>
+                                </div>
+                                <div class="flex mt-2 grid grid-cols-12">
+                                    <span class="text-md mr-3 col-span-3">Phone:</span>
+                                    <span class="text-md font-medium col-span-9 justify-start">@tutor.Phone</span>
+                                </div>
+                                <div class="flex mt-10">
+                                    <button type="button" class="text-blue-700 hover:text-white border border-blue-700 hover:bg-blue-800 focus:outline-none font-medium rounded-lg text-sm px-20 py-2.5 text-center me-2 mb-2 dark:border-blue-500 dark:text-blue-500 dark:hover:text-white dark:hover:bg-blue-500">View Schedule</button>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            }
+            else
+            {
+                <div class="ml-5 mt-7 mb-10">
+                    <span class="text-md font-medium text-red-500">Not found any teacher in this course</span>
+                </div>
+            }
+        </div>
+    </div>
+}
+
+<div class="container">
+    <div class="row">
+    </div>
+</div>
+
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            // Format cost price to Vietnamese currency
+            var costPriceElement = document.getElementById('costPrice');
+            costPriceElement.textContent = formatToCurrency(costPriceElement.textContent);
+
+            // Round and display duration
+            var durationElement = document.getElementById('duration');
+            durationElement.textContent = Math.round(parseFloat(durationElement.textContent));
+
+            // Format to VN region and parse them to Vietnamese currency
+            function formatToCurrency(amount) {
+                return parseFloat(amount).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' }).replace(/,/g, '.');
+            }
+
+            // Format Datetime to DateOnly
+            var startDateElements = document.querySelectorAll('.startDate');
+            startDateElements.forEach(e => {
+                e.textContent = formatToDateOnly(e.textContent);
+            });
+
+            // startDate.textContent = formatToDateOnly(startDate.textContent);
+            const endDate = document.getElementById('endDate');
+            endDate.textContent = formatToDateOnly(endDate.textContent);
+
+
+            function formatToDateOnly(datetime) {
+                var date = new Date(datetime);
+
+                const yyyy = date.getFullYear();
+                let mm = date.getMonth() + 1;
+                let dd = date.getDate();
+
+                if (dd < 10) dd = '0' + dd;
+                if (mm < 10) mm = '0' + mm;
+
+                return dd + '/' + mm + '/' + yyyy;
+            }
+
+
+            // Format subject description
+            var desc = $('#subjectDescription').data('desc');
+            document.getElementById('subjectDescription').innerHTML = desc;
+
+        })
+    </script>
+}
