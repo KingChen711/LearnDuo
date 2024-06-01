@@ -56,15 +56,14 @@ namespace TutorDemand.Pages.Reservations
                     }
 
                     var listTutor = await _tutorBusiness.FindOneAsync(x =>
-                        x.TutorId.Equals(teachingSchedule.TeachingScheduleId));
+                        x.TutorId.Equals(teachingSchedule.TutorId));
                     
-                    var tutorData = (List<Tutor>)listTutor.Data;
-                    if (tutorData.Count == 0)
+                    var tutorData = (Tutor)listTutor.Data!;
+                    if (tutorData is null)
                     {
                         return RedirectToPage("/Error");
                     }
-
-                    var tutor = tutorData.First();
+;
                     var subject = await _subjectBusiness.GetByIdAsync(teachingSchedule.SubjectId);
                     var subjectData = (Subject)subject.Data;
 
@@ -76,7 +75,7 @@ namespace TutorDemand.Pages.Reservations
                         PaymentMethod = reservation.PaymentMethod,
                         PaymentStatus = reservation.PaymentStatus,
                         ReservationStatus = reservation.ReservationStatus,
-                        TutorName = tutor.Fullname,
+                        TutorName = tutorData.Fullname,
                         SubjectName = subjectData.Name
                     };
 
