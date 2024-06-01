@@ -12,6 +12,17 @@ namespace TutorDemand.Data.Repositories
 {
     public class TeachingScheduleRepository : GenericRepository<TeachingSchedule>
     {
+        private readonly NET1704_221_5_TutorDemandContext _context;
+        public TeachingScheduleRepository()
+        {
+            
+        }
+
+        public TeachingScheduleRepository(NET1704_221_5_TutorDemandContext context)
+        {
+            _context = context;
+        }
+
         public async Task<IEnumerable<TeachingSchedule>> GetWithConditionAsync(
            Expression<Func<TeachingSchedule, bool>> filter = null!,
            Func<IQueryable<TeachingSchedule>, IOrderedQueryable<TeachingSchedule>> orderBy = null!,

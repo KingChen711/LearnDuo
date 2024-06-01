@@ -12,6 +12,12 @@ namespace TutorDemand.Data.Repositories
 {
     public class SubjectRepository : GenericRepository<Subject>
     {
+        private readonly NET1704_221_5_TutorDemandContext _context;
+
+        public SubjectRepository() { }
+
+        public SubjectRepository(NET1704_221_5_TutorDemandContext context) => _context = context;
+
         public IEnumerable<Subject> GetWithCondition(
             Expression<Func<Subject, bool>> filter = null!,
             Func<IQueryable<Subject>, IOrderedQueryable<Subject>> orderBy = null!,
