@@ -48,8 +48,9 @@ namespace TutorDemand.Pages.Reservations
 
                 foreach (var reservation in paginatedReservations)
                 {
-                    var teachingSchedule = await _teachingScheduleBusiness.FindOne(ts
+                    var teachingScheduleData = await _teachingScheduleBusiness.FindOne(ts
                         => ts.TeachingScheduleId.Equals(reservation.TeachingScheduleId));
+                    var teachingSchedule = (TeachingSchedule)teachingScheduleData;
                     if (teachingSchedule is null)
                     {
                         return RedirectToPage("/Error");

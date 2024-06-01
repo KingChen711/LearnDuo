@@ -338,7 +338,7 @@ namespace TutorDemand.Data
                 // Assign weekdays
                 schedules[i].LearnDays = TeachingScheduleHelper.GenerateRandomWeekdays();
                 // Assign price
-                schedules[i].PaidPrice = random.Next(500000, 5000000); // Price from [500.000 - 5.000.000] VND
+                // schedules[i].PaidPrice = random.Next(500000, 5000000); // Price from [500.000 - 5.000.000] VND
             }
 
             // Add more tutor for python subject
@@ -361,7 +361,7 @@ namespace TutorDemand.Data
                     // Assign weekdays
                     LearnDays = TeachingScheduleHelper.GenerateRandomWeekdays(),
                     // Assign price
-                    PaidPrice = random.Next(500000, 5000000) // Price from [500.000 - 5.000.000] VND
+                    // PaidPrice = random.Next(500000, 5000000) // Price from [500.000 - 5.000.000] VND
                 });
             }
 
@@ -394,7 +394,7 @@ namespace TutorDemand.Data
                         // Assign weekdays
                         LearnDays = TeachingScheduleHelper.GenerateRandomWeekdays(),
                         // Assign price
-                        PaidPrice = random.Next(500000, 5000000) // Price from [500.000 - 5.000.000] VND
+                        // PaidPrice = random.Next(500000, 5000000) // Price from [500.000 - 5.000.000] VND
                     });
                 }
             }
