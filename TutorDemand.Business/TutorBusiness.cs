@@ -21,6 +21,8 @@ namespace TutorDemand.Business
             _unitOfWork ??= new UnitOfWork();
         }
 
+        public TutorBusiness(IMapper mapper) => _unitOfWork ??= new UnitOfWork();
+
         public async Task<IBusinessResult> FindOneAsync(Expression<Func<Tutor, bool>> condition)
         {
             try
