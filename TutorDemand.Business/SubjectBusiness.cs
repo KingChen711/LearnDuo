@@ -28,6 +28,11 @@ public class SubjectBusiness : ISubjectBusiness
         _mapper = mapper;
     }
 
+    public SubjectBusiness(IMapper mapper) => _unitOfWork ??= new UnitOfWork();
+
+    public SubjectBusiness() { }
+
+
     public IBusinessResult Delete(Guid subjectId)
     {
         try

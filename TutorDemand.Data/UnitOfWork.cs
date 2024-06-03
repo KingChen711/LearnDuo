@@ -19,7 +19,7 @@ namespace TutorDemand.Data
 
         public UnitOfWork()
         {
-            _context ??= new NET1704_221_5_TutorDemandContext();
+            _unitOfWorkContext ??= new NET1704_221_5_TutorDemandContext();
         }
 
         public UnitOfWork(NET1704_221_5_TutorDemandContext context) => _unitOfWorkContext = context;
