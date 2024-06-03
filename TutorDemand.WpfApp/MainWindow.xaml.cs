@@ -34,5 +34,12 @@ namespace TutorDemand.WpfApp
             p.Owner = this;
             p.Show();
         }
+
+        private void Open_wTutor_Click(object sender, RoutedEventArgs e)
+        {
+            var p = new wTutor();
+            p.Owner = this;
+            p.Show();
+        }
     }
 }

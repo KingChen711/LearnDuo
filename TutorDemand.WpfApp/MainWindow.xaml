@@ -12,6 +12,9 @@
                 <MenuItem Header="Subject" IsCheckable="False" FontSize="12" Click="Open_wSubject_Click">
                     
                 </MenuItem>
+                <MenuItem Header="Tutor" IsCheckable="False" FontSize="12" Click="Open_wTutor_Click">
+
+                </MenuItem>
             </MenuItem>
         </Menu>
     </Grid>
