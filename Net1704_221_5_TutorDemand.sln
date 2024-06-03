@@ -11,6 +11,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TutorDemand.RazorWebApp", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TutorDemand.Common", "TutorDemand.Common\TutorDemand.Common.csproj", "{53350F2C-961A-4927-B5A1-8817BF9F3484}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TutorDemand.WpfApp", "TutorDemand.WpfApp\TutorDemand.WpfApp.csproj", "{A096474E-5E8D-4DBA-8B15-562C029C2B0F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{53350F2C-961A-4927-B5A1-8817BF9F3484}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{53350F2C-961A-4927-B5A1-8817BF9F3484}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{53350F2C-961A-4927-B5A1-8817BF9F3484}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A096474E-5E8D-4DBA-8B15-562C029C2B0F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A096474E-5E8D-4DBA-8B15-562C029C2B0F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A096474E-5E8D-4DBA-8B15-562C029C2B0F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A096474E-5E8D-4DBA-8B15-562C029C2B0F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

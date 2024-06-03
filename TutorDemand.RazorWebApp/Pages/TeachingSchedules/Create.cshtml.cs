@@ -8,6 +8,7 @@ using TutorDemand.Business;
 using TutorDemand.Business.Abstractions;
 using TutorDemand.Common;
 using TutorDemand.Data.Dtos.TeachingSchedule;
+using TutorDemand.Data.Entities;
 
 namespace TutorDemand.RazorWebApp.Pages.TeachingSchedules
 {
@@ -19,11 +20,11 @@ namespace TutorDemand.RazorWebApp.Pages.TeachingSchedules
         private readonly ITutorBusiness _tutorBusiness;
         private readonly ISlotBusiness _slotBusiness;
 
-        public Create(ILogger<Create> logger, IMapper mapper)
+        public Create(ILogger<Create> logger, IMapper mapper, NET1704_221_5_TutorDemandContext context)
         {
             _logger = logger;
             _teachingScheduleBusiness ??= new TeachingScheduleBusiness();
-            _subjectBusiness ??= new SubjectBusiness(mapper);
+            _subjectBusiness ??= new SubjectBusiness(mapper, context);
             _tutorBusiness ??= new TutorBusiness();
             _slotBusiness ??= new SlotBusiness();
         }

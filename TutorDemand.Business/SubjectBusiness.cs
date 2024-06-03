@@ -1,5 +1,6 @@
 using System.Linq;
 using System.Linq.Expressions;
+using System.Runtime.CompilerServices;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
@@ -20,12 +21,17 @@ public class SubjectBusiness : ISubjectBusiness
     private readonly UnitOfWork _unitOfWork;
     private readonly IMapper _mapper;
 
-    public SubjectBusiness(IMapper mapper)
+    public SubjectBusiness(IMapper mapper, NET1704_221_5_TutorDemandContext context)
     {
         //_unitOfWork.SubjectRepository = new SubjectDAO();
-        _unitOfWork ??= new UnitOfWork();
+        _unitOfWork ??= new UnitOfWork(context);
         _mapper = mapper;
     }
+
+    public SubjectBusiness(IMapper mapper) => _unitOfWork ??= new UnitOfWork();
+
+    public SubjectBusiness() { }
+
 
     public IBusinessResult Delete(Guid subjectId)
     {

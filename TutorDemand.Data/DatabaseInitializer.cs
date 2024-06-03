@@ -18,7 +18,7 @@ namespace TutorDemand.Data
         Task TrySeedAsync();
         Task SeedAsync();
     }
-
+    
     public class DatabaseInitializer : IDatabaseInitializer
     {
         private readonly NET1704_221_5_TutorDemandContext _context;
