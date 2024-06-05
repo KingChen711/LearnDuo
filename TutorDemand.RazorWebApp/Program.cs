@@ -15,13 +15,6 @@ builder.Services.Configure<AppSettings>(builder.Configuration.GetSection("AppSet
 builder.Services.AddScoped<IDatabaseInitializer, DatabaseInitializer>();
 
 // Add Business Service
-builder.Services.AddSingleton<ISubjectBusiness, SubjectBusiness>();
-builder.Services.AddSingleton<ITutorBusiness, TutorBusiness>();
-builder.Services.AddSingleton<IReservationBusiness, ReservationBusiness>();
-builder.Services.AddSingleton<ITeachingScheduleBusiness, TeachingScheduleBusiness>();
-builder.Services.AddSingleton<ICustomerBusiness, CustomerBusiness>();
-builder.Services.AddSingleton<IImageBusiness, ImageBusiness>();
-builder.Services.AddSingleton<ITeachingScheduleBusiness, TeachingScheduleBusiness>();
 
 // Auto Mapper
 var mapperConfig = new MapperConfiguration(mc => { mc.AddProfile<ProfilesMapper>(); });

@@ -81,11 +81,19 @@ namespace TutorDemand.WpfApp.UI
                     TutorId = Guid.NewGuid() // Generating a new GUID for the TutorId
                 };
 
+                var isExits = await tutorBusiness.FindOneAsync(x => x.Email == txtEmail.Text);
+                if (isExits != null)
+                {
+                    MessageBox.Show("Tutor is exits!");
+                    return;
+                }
+
                 // Call the create method
-                await tutorBusiness.CreateAsync(tutor);
+               var tutorCreated =  await tutorBusiness.CreateAsync(tutor);
 
                 // Notify the user about the successful creation
                 MessageBox.Show("Tutor created successfully.");
+                LoadTutors();
             }
             catch (Exception ex)
             {
@@ -93,7 +101,7 @@ namespace TutorDemand.WpfApp.UI
             }
             finally
             {
-                LoadTutors();
+               
             }
         }
 
@@ -144,6 +152,26 @@ namespace TutorDemand.WpfApp.UI
         {
             try
             {
+                if ((cboGender.SelectedItem as ComboBoxItem)?.Tag.ToString() == "default")
+                {
+                    MessageBox.Show("Please select a gender.");
+                    return;
+                }
+
+                // Validate email format
+                if (!IsValidEmail(txtEmail.Text))
+                {
+                    MessageBox.Show("Invalid email format.");
+                    return;
+                }
+
+                // Validate phone number format and length
+                if (!IsValidPhoneNumber(txtPhone.Text))
+                {
+                    MessageBox.Show("Invalid phone number format. Phone number must contain exactly 10 digits.");
+                    return;
+                }
+
                 if (txtId.Text.Length > 0)
                 {
                     // Creating a new TutorDto object and populating it with values from the form
@@ -162,6 +190,7 @@ namespace TutorDemand.WpfApp.UI
 
                     // Notify the user about the successful update
                     MessageBox.Show("Tutor updated successfully.");
+                    LoadTutors();
                 }
                 else
                 {
@@ -174,7 +203,7 @@ namespace TutorDemand.WpfApp.UI
             }
             finally
             {
-                LoadTutors();
+                
             }
         }
 
@@ -193,6 +222,7 @@ namespace TutorDemand.WpfApp.UI
                         // Proceed with deletion if user confirms
                         await tutorBusiness.DeleteAsync(Guid.Parse(txtId.Text));
                         MessageBox.Show("Tutor deleted successfully.");
+                        LoadTutors();
                     }
                 }
                 else
@@ -206,7 +236,7 @@ namespace TutorDemand.WpfApp.UI
             }
             finally
             {
-                LoadTutors();
+               
             }
         }
 
