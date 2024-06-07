@@ -42,7 +42,7 @@ public class Update : PageModel
             return NotFound();
         }
 
-        var result = await _teachingScheduleBusiness.FindOne(t => t.TeachingScheduleId == id);
+        var result = await _teachingScheduleBusiness.FindOneAsync(t => t.TeachingScheduleId == id);
 
         if (result.Status != Const.SUCCESS_READ_CODE)
         {
@@ -86,7 +86,7 @@ public class Update : PageModel
         }
 
         TeachingSchedule.LearnDays = learnDays;
-        await _teachingScheduleBusiness.Create(TeachingSchedule);
+        await _teachingScheduleBusiness.CreateAsync(TeachingSchedule);
 
         return RedirectToPage("/TeachingSchedules/Index");
     }

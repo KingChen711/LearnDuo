@@ -1,19 +1,4 @@
-﻿using AutoMapper;
-using System.CodeDom;
-using System.Text;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using TutorDemand.Business;
-using TutorDemand.Business.Abstractions;
-using TutorDemand.Data.Entities;
-using TutorDemand.Data.Mappings;
+﻿using System.Windows;
 using TutorDemand.WpfApp.UI;
 
 namespace TutorDemand.WpfApp
@@ -44,7 +29,7 @@ namespace TutorDemand.WpfApp
 
         private void Open_wTeachingSchedule_Click(object sender, RoutedEventArgs e)
         {
-            var p = new wTeachingSchedule();
+            var p = new WTeachingSchedule();
             p.Owner = this;
             p.Show();
         }
