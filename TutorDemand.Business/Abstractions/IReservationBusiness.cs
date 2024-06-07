@@ -7,10 +7,10 @@ namespace TutorDemand.Business.Abstractions;
 
 public interface IReservationBusiness
 {
-    public IBusinessResult Create(Reservation reservation);
+    IBusinessResult Create(Reservation reservation);
     public IBusinessResult Delete(Guid reservationId);
-    public IBusinessResult Delete(int id);
-    public IBusinessResult Update(Reservation reservation);
+    IBusinessResult Delete(int id);
+    IBusinessResult Update(Reservation reservation);
     public IBusinessResult GetById(Guid reservationId);
     public IBusinessResult GetById(int id);
     public IBusinessResult GetAll();
@@ -18,6 +18,8 @@ public interface IReservationBusiness
     //     Expression<Func<Reservation, bool>> filter = null!,
     //     Func<IQueryable<Reservation>, IOrderedQueryable<Reservation>> orderBy = null!,
     //     string includeProperties = "");
+
+    Task<IBusinessResult> FindOneAsync(Expression<Func<Reservation, bool>> condition);
 
     public Task<IBusinessResult> CreateAsync(Reservation reservation);
     public Task<IBusinessResult> DeleteAsync(Guid reservationId);

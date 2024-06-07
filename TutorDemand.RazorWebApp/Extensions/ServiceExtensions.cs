@@ -1,5 +1,6 @@
 ﻿using TutorDemand.Business;
 using TutorDemand.Business.Abstractions;
+using TutorDemand.Data;
 using TutorDemand.Data.Entities;
 
 namespace TutorDemand.RazorWebApp.Extensions
@@ -8,11 +9,14 @@ namespace TutorDemand.RazorWebApp.Extensions
     {
         public static void ConfigureBusinesses(this IServiceCollection services)
         {
+            // Add Business Service 
             services.AddScoped<ITutorBusiness, TutorBusiness>();
             services.AddScoped<ITeachingScheduleBusiness, TeachingScheduleBusiness>();
             services.AddScoped<ICustomerBusiness, CustomerBusiness>();
             services.AddScoped<IImageBusiness, ImageBusiness>();
             services.AddScoped<IReservationBusiness, ReservationBusiness>();
+            services.AddScoped<ISubjectBusiness, SubjectBusiness>();
+            services.AddScoped<IDatabaseInitializer, DatabaseInitializer>();
         }
 
         public static void ConfigureSqlContext(this IServiceCollection services,

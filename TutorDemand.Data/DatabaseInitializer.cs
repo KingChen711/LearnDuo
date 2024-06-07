@@ -218,6 +218,7 @@ namespace TutorDemand.Data
             {
                 new()
                 {
+                    ReservationId = Guid.NewGuid(),
                     CustomerId = customer.CustomerId,
                     TeachingScheduleId = teachingSchedule[0].TeachingScheduleId,
                     PaidPrice = 100,
@@ -228,6 +229,7 @@ namespace TutorDemand.Data
                 },
                 new()
                 {
+                    ReservationId = Guid.NewGuid(),
                     CustomerId = customer.CustomerId,
                     TeachingScheduleId = teachingSchedule[1].TeachingScheduleId,
                     PaidPrice = 300,
@@ -238,6 +240,7 @@ namespace TutorDemand.Data
                 },
                 new()
                 {
+                    ReservationId = Guid.NewGuid(),
                     CustomerId = customer.CustomerId,
                     TeachingScheduleId = teachingSchedule[2].TeachingScheduleId,
                     PaidPrice = 500,

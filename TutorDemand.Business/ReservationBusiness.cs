@@ -15,13 +15,17 @@ public class ReservationBusiness : IReservationBusiness
 {
     // private readonly ReservationDAO _reservationDAO;
     private readonly UnitOfWork _unitOfWork;
-    public ReservationBusiness()
+
+    public ReservationBusiness(NET1704_221_5_TutorDemandContext context)
     {
         // _reservationDAO = new ReservationDAO();
-        _unitOfWork ??= new UnitOfWork();
+        _unitOfWork ??= new UnitOfWork(context);
     }
 
+    public ReservationBusiness() => _unitOfWork = new UnitOfWork();
+
     #region Business logic using DAO
+
     // public IBusinessResult Delete(Guid reservationId)
     // {
     //     try
@@ -329,7 +333,6 @@ public class ReservationBusiness : IReservationBusiness
     //         return new BusinessResult(Const.ERROR_EXCEPTION_CODE, ex.Message);
     //     }
     // }
-    
 
     #endregion
 
@@ -350,7 +353,7 @@ public class ReservationBusiness : IReservationBusiness
                 return new BusinessResult(Const.SUCCESS_DELETE_CODE, Const.SUCCESS_DELETE_MSG);
             }
         }
-        catch(Exception ex)
+        catch (Exception ex)
         {
             return new BusinessResult(Const.ERROR_EXCEPTION_CODE, ex.Message);
         }
@@ -401,7 +404,7 @@ public class ReservationBusiness : IReservationBusiness
         {
             var reservationEntity = _unitOfWork.ReservationRepository.GetById(reservationId);
 
-            if(reservationEntity is null)
+            if (reservationEntity is null)
             {
                 return new BusinessResult(Const.SUCCESS_READ_CODE, Const.SUCCESS_READ_MSG, reservationEntity!);
             }
@@ -409,7 +412,8 @@ public class ReservationBusiness : IReservationBusiness
             {
                 return new BusinessResult(Const.FAIL_READ_CODE, Const.FAIL_READ_MSG);
             }
-        }catch(Exception ex)
+        }
+        catch (Exception ex)
         {
             return new BusinessResult(Const.ERROR_EXCEPTION_CODE, ex.Message);
         }
@@ -479,31 +483,26 @@ public class ReservationBusiness : IReservationBusiness
     }
 
 
-    //public IBusinessResult GetWithCondition(
-    //        Expression<Func<reservation, bool>> filter = null!, 
-    //        Func<IQueryable<reservation>, IOrderedQueryable<reservation>> orderBy = null!, 
-    //        string includeProperties = "")
-    //{
-    //    try
-    //    {
-    //        var reservations = _unitOfWork.ReservationRepository.GetWithCondition(filter, orderBy, includeProperties);
-    //        var result = _unitOfWork.ReservationRepository.Save() > 0;
+    public async Task<IBusinessResult> FindOneAsync(Expression<Func<Reservation, bool>> condition)
+    {
+        try
+        {
+            var tutors = await _unitOfWork.ReservationRepository.GetOneWithConditionAsync(condition);
 
-    //        if (result)
-    //        {
-    //            return new BusinessResult(Const.SUCCESS_UPDATE_CODE, Const.SUCCESS_UPDATE_MSG);
-    //        }
-    //        else
-    //        {
-    //            return new BusinessResult(Const.FAIL_UPDATE_CODE, Const.FAIL_UPDATE_MSG);
-    //        }
-
-    //    }
-    //    catch (Exception ex)
-    //    {
-    //        return new BusinessResult(Const.ERROR_EXCEPTION_CODE, ex.Message);
-    //    }
-    //}
+            if (tutors != null)
+            {
+                return new BusinessResult(Const.SUCCESS_UPDATE_CODE, Const.SUCCESS_UPDATE_MSG, tutors);
+            }
+            else
+            {
+                return new BusinessResult(Const.FAIL_UPDATE_CODE, Const.FAIL_UPDATE_MSG);
+            }
+        }
+        catch (Exception ex)
+        {
+            return new BusinessResult(Const.ERROR_EXCEPTION_CODE, ex.Message);
+        }
+    }
 
     //public async Task<IBusinessResult> GetWithConditionAysnc(
     //    Expression<Func<reservation, bool>> filter = null!, 
@@ -545,7 +544,8 @@ public class ReservationBusiness : IReservationBusiness
             {
                 return new BusinessResult(Const.FAIL_CREATE_CODE, Const.FAIL_CREATE_MSG);
             }
-        }catch(Exception ex)
+        }
+        catch (Exception ex)
         {
             return new BusinessResult(Const.ERROR_EXCEPTION_CODE, ex.Message);
         }
@@ -587,8 +587,8 @@ public class ReservationBusiness : IReservationBusiness
             {
                 return new BusinessResult(Const.FAIL_UPDATE_CODE, Const.FAIL_UPDATE_MSG);
             }
-
-        }catch(Exception ex)
+        }
+        catch (Exception ex)
         {
             return new BusinessResult(Const.ERROR_EXCEPTION_CODE, ex.Message);
         }
@@ -609,7 +609,6 @@ public class ReservationBusiness : IReservationBusiness
             {
                 return new BusinessResult(Const.FAIL_UPDATE_CODE, Const.FAIL_UPDATE_MSG);
             }
-
         }
         catch (Exception ex)
         {

@@ -15,6 +15,9 @@
                 <MenuItem Header="Tutor" IsCheckable="False" FontSize="12" Click="Open_wTutor_Click">
 
                 </MenuItem>
+                <MenuItem Header="Reservation" IsCheckable="False" FontSize="12" Click="Open_wReservation_Click">
+
+                </MenuItem>
             </MenuItem>
         </Menu>
     </Grid>

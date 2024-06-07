@@ -41,5 +41,11 @@ namespace TutorDemand.WpfApp
             p.Owner = this;
             p.Show();
         }
+        private void Open_wReservation_Click(object sender, RoutedEventArgs e) 
+        {
+            var p = new wReservation();
+            p.Owner = this;
+            p.Show();
+        }
     }
 }

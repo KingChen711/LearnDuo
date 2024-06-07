@@ -1,7 +1,9 @@
 using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using TutorDemand.Business;
 using TutorDemand.Business.Abstractions;
 using TutorDemand.Data;
+using TutorDemand.Data.Entities;
 using TutorDemand.Data.Mappings;
 using TutorDemand.RazorWebApp.Extensions;
 using TutorDemand.RazorWebApp.Models;
@@ -10,18 +12,6 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Config appsettings
 builder.Services.Configure<AppSettings>(builder.Configuration.GetSection("AppSettings"));
-
-// Add Database Intializer
-builder.Services.AddScoped<IDatabaseInitializer, DatabaseInitializer>();
-
-// Add Business Service
-builder.Services.AddSingleton<ISubjectBusiness, SubjectBusiness>();
-builder.Services.AddSingleton<ITutorBusiness, TutorBusiness>();
-builder.Services.AddSingleton<IReservationBusiness, ReservationBusiness>();
-builder.Services.AddSingleton<ITeachingScheduleBusiness, TeachingScheduleBusiness>();
-builder.Services.AddSingleton<ICustomerBusiness, CustomerBusiness>();
-builder.Services.AddSingleton<IImageBusiness, ImageBusiness>();
-builder.Services.AddSingleton<ITeachingScheduleBusiness, TeachingScheduleBusiness>();
 
 // Auto Mapper
 var mapperConfig = new MapperConfiguration(mc => { mc.AddProfile<ProfilesMapper>(); });
@@ -49,7 +39,7 @@ app.Lifetime.ApplicationStarted.Register(async () =>
 });
 
 
-// Configure the HTTP request pipeline.
+// Configure the HTTP request pipeline. 
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Error");

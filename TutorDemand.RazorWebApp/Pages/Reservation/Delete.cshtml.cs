@@ -13,19 +13,10 @@ public class DeleteModel : PageModel
         _reservationBusiness = reservationBusiness;
 
     }
-
-    public async Task<IActionResult> OnGet(Guid id)
+    public async Task<IActionResult> OnPostAsync(Guid id)
     {
-        var reservationData = await _reservationBusiness.GetByIdAsync(id);
-        if (reservationData.Data != null)
-        {
-            await _reservationBusiness.DeleteAsync(id);
-            return RedirectToPage("/Reservation/Index");
-        }
-        return Page();
-    }
-    public void OnGet()
-    {
-        
+        await _reservationBusiness.DeleteAsync(id);
+        return RedirectToPage("/Reservation/Index");
     }
 }
+

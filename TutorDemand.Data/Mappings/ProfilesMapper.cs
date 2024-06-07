@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using TutorDemand.Data.Dtos.Reservation;
 using TutorDemand.Data.Dtos.Subject;
 using TutorDemand.Data.Dtos.TeachingSchedule;
 using TutorDemand.Data.Dtos.Tutor;
@@ -14,6 +15,8 @@ namespace TutorDemand.Data.Mappings
             CreateMap<SubjectDto, SubjectAddDto>().ReverseMap();
             CreateMap<Tutor, TutorDto>().ReverseMap();
             CreateMap<TeachingSchedule, TeachingScheduleDto>().ReverseMap();
+            CreateMap<Reservation, ReservationDetails>().ReverseMap();
+            CreateMap<Reservation, ReservationCreateDto>().ReverseMap();
         }
     }
 }

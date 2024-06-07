@@ -3,83 +3,105 @@
 @{
     ViewData["Title"] = "Danh sách giao dịch";
 }
+@inject Microsoft.AspNetCore.Antiforgery.IAntiforgery Xsrf
 
+@functions {
+
+    public string GetAntiXsrfRequestToken()
+    {
+        return Xsrf.GetAndStoreTokens(HttpContext).RequestToken;
+    }
+
+}
+
+<partial name="_DeletePopupConfirm"/>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewData["Title"]</title>
-    <link href="~/css/site.css" rel="stylesheet" />
+    <link href="~/css/site.css" rel="stylesheet"/>
 </head>
 <body class="bg-gray-100">
-    <div class="container mx-auto p-6">
-        <div class="bg-white p-8 rounded shadow-md">
-            <h1 class="text-2xl font-bold mb-6">Danh sách giao dịch</h1>
-            @if (Model.Reservations != null && Model.Reservations.Any())
-            {
-                <table class="min-w-full bg-white">
-                    <thead>
-                        <tr>
-                            <th class="py-2 px-4 border-b">Ngày tạo</th>
-                            <th class="py-2 px-4 border-b">Giá đã trả</th>
-                            <th class="py-2 px-4 border-b">Phương pháp thanh toán</th>
-                            <th class="py-2 px-4 border-b">Trạng thái thanh toán</th>
-                            <th class="py-2 px-4 border-b">Trạng thái đặt chỗ</th>
-                            <th class="py-2 px-4 border-b">Tên gia sư</th>
-                            <th class="py-2 px-4 border-b">Tên môn học</th>
-                            <th class="py-2 px-4 border-b">Hành động</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var reservation in Model.Reservations)
-                        {
-                            <tr>
-                                <td class="py-2 px-4 border-b">@reservation.CreatedAt</td>
-                                <td class="py-2 px-4 border-b">@reservation.PaidPrice</td>
-                                <td class="py-2 px-4 border-b">@reservation.PaymentMethod</td>
-                                <td class="py-2 px-4 border-b">@reservation.PaymentStatus</td>
-                                <td class="py-2 px-4 border-b">@reservation.ReservationStatus</td>
-                                <td class="py-2 px-4 border-b">@reservation.TutorName</td>
-                                <td class="py-2 px-4 border-b">@reservation.SubjectName</td>
-                                <td class="py-2 px-4 border-b">
-                                    <a href="/Reservations/Edit?id=@reservation.Id" class="text-blue-500 hover:underline">Update</a>
-                                    <a href="/Reservations/Delete?id=@reservation.Id"  onclick="return confirmDelete()" class="text-red-500 hover:underline ml-4">Delete</a>
-                                </td>
-                            </tr>
-                        }
-                    </tbody>
-                </table>
+<div class="container mx-auto p-6">
+    <div class="bg-white p-8 rounded shadow-md">
+        <h1 class="text-2xl font-bold mb-6">Danh sách giao dịch</h1>
+        @if (Model.Reservations != null && Model.Reservations.Any())
+        {
+            <table class="min-w-full bg-white">
+                <thead>
+                <tr>
+                    <th class="py-2 px-4 border-b">Ngày tạo</th>
+                    <th class="py-2 px-4 border-b">Giá đã trả</th>
+                    <th class="py-2 px-4 border-b">Phương pháp thanh toán</th>
+                    <th class="py-2 px-4 border-b">Trạng thái thanh toán</th>
+                    <th class="py-2 px-4 border-b">Trạng thái đặt chỗ</th>
+                    <th class="py-2 px-4 border-b">Tên gia sư</th>
+                    <th class="py-2 px-4 border-b">Tên môn học</th>
+                    <th class="py-2 px-4 border-b">Hành động</th>
+                </tr>
+                </thead>
+                <tbody>
+                @foreach (var reservation in Model.Reservations)
+                {
+                    <tr>
+                        <td class="py-2 px-4 border-b">@reservation.CreatedAt</td>
+                        <td class="py-2 px-4 border-b">@reservation.PaidPrice</td>
+                        <td class="py-2 px-4 border-b">@reservation.PaymentMethod</td>
+                        <td class="py-2 px-4 border-b">@reservation.PaymentStatus</td>
+                        <td class="py-2 px-4 border-b">@reservation.ReservationStatus</td>
+                        <td class="py-2 px-4 border-b">@reservation.TutorName</td>
+                        <td class="py-2 px-4 border-b">@reservation.SubjectName</td>
+                        <td class="py-2 px-4 border-b">
+                            <a href="/Reservations/Edit?id=@reservation.Id" class="text-blue-500 hover:underline">Update</a>
+                            <form method="post" asp-page="/Reservations/Delete" asp-route-id="@reservation.Id" onsubmit="return confirm('Are you sure you want to delete this item?');">
+                                <button type="submit" class="text-red-500 hover:underline ml-4">Delete</button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+                </tbody>
+            </table>
 
-                <div class="mt-4">
-                    <nav class="flex justify-between">
-                        <a class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" href="?currentPage=@(Model.CurrentPage - 1)" @(Model.CurrentPage == 1 ? "disabled" : "")>
-                            Previous
-                        </a>
-                        <a class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" href="?currentPage=@(Model.CurrentPage + 1)" @(Model.CurrentPage == Model.TotalPages ? "disabled" : "")>
-                            Next
-                        </a>
-                    </nav>
-                </div>
-            }
-            else
-            {
-                <p>Không có giao dịch nào.</p>
-            }
-        </div>
-    </div>
-    <script src="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.js"></script>
-</body>
-</html>
-
-@section Scripts {
-    <script>
-        function confirmDelete() {
-            if (confirm("Are you sure you want to delete this tutor?")) {
-                return true;
-            }
-            return false;
+            <div class="mt-4">
+                <nav class="flex justify-between">
+                    <a class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded @(Model.HasPreviousPage ? "" : "opacity-50 cursor-not-allowed")" href="?currentPage=@(Model.CurrentPage - 1)" @(Model.HasPreviousPage ? "" : "disabled")>
+                        Previous
+                    </a>
+                    <a class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded @(Model.HasNextPage ? "" : "opacity-50 cursor-not-allowed")" href="?currentPage=@(Model.CurrentPage + 1)" @(Model.HasNextPage ? "" : "disabled")>
+                        Next
+                    </a>
+                </nav>
+            </div>
         }
+        else
+        {
+            <p>Không có giao dịch nào.</p>
+        }
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.js"></script>
+</body>
+
+
+@section Scripts
+{
+    <script>
+        let deletedId;
+    
+        function handleClickDelete(id){
+            deletedId=id;
+        }
+        
+         function deleteTeachingSchedule(){
+            const form = document.createElement("form");
+            form.method = "POST";
+            form.action = "/Reservation?type=delete&id=" + deletedId;
+             
+            document.body.appendChild(form);
+            form.submit();
+         }
+            
     </script>
 }
-

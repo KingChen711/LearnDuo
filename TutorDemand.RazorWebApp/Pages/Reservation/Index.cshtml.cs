@@ -4,8 +4,8 @@ using TutorDemand.Business.Abstractions;
 using TutorDemand.Data.Entities;
 using TutorDemand.Data.Dtos.Reservation;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace TutorDemand.Pages.Reservations
 {
@@ -26,49 +26,35 @@ namespace TutorDemand.Pages.Reservations
         }
 
         public List<ReservationDetailDTO> Reservations { get; set; } = new List<ReservationDetailDTO>();
-
         public int CurrentPage { get; set; } = 1;
         public int TotalPages { get; set; }
+        public bool HasPreviousPage => CurrentPage > 1;
+        public bool HasNextPage => CurrentPage < TotalPages;
 
-        public async Task<IActionResult> OnGet(int currentPage = 1)
+        public async Task<IActionResult> OnGet(int? currentPage = 1)
         {
-            CurrentPage = currentPage;
-            const int pageSize = 5;
+            const int PageSize = 5;
+            CurrentPage = currentPage is not null ? currentPage.Value : 1;
 
             var result = _reservationService.GetAll();
             if (result.Status == 1)
             {
-                var reservations = (List<Reservation>)result.Data;
-                TotalPages = (int)Math.Ceiling(reservations.Count / (double)pageSize);
-                
-                var paginatedReservations = reservations
-                    .Skip((CurrentPage - 1) * pageSize)
-                    .Take(pageSize)
+                var allReservations = (List<Reservation>)result.Data;
+                TotalPages = (int)Math.Ceiling(allReservations.Count / (double)PageSize);
+
+                var paginatedReservations = allReservations
+                    .Skip((CurrentPage - 1) * PageSize)
+                    .Take(PageSize)
                     .ToList();
 
                 foreach (var reservation in paginatedReservations)
                 {
-                    var teachingScheduleData = await _teachingScheduleBusiness.FindOne(ts
-                        => ts.TeachingScheduleId.Equals(reservation.TeachingScheduleId));
-                    var teachingSchedule = (TeachingSchedule)teachingScheduleData;
-                    if (teachingSchedule is null)
-                    {
-                        return RedirectToPage("/Error");
-                    }
+                    var teachingSchedule = await _teachingScheduleBusiness.FindOne(ts => ts.TeachingScheduleId.Equals(reservation.TeachingScheduleId));
+                    var teachingScheduleData = (TeachingSchedule)teachingSchedule.Data!;
+                    var tutor = await _tutorBusiness.FindOneAsync(x => x.TutorId.Equals(teachingScheduleData.TutorId));
+                    var subject = await _subjectBusiness.GetByIdAsync(((TeachingSchedule)teachingSchedule.Data!).SubjectId);
 
-                    var listTutor = await _tutorBusiness.FindOneAsync(x =>
-                        x.TutorId.Equals(teachingSchedule.TutorId));
-                    
-                    var tutorData = (Tutor)listTutor.Data!;
-                    if (tutorData is null)
-                    {
-                        return RedirectToPage("/Error");
-                    }
-;
-                    var subject = await _subjectBusiness.GetByIdAsync(teachingSchedule.SubjectId);
-                    var subjectData = (Subject)subject.Data;
-
-                    var responseReservation = new ReservationDetailDTO()
+                    var reservationDetail = new ReservationDetailDTO()
                     {
                         Id = reservation.ReservationId,
                         CreatedAt = reservation.CreatedAt,
@@ -76,11 +62,11 @@ namespace TutorDemand.Pages.Reservations
                         PaymentMethod = reservation.PaymentMethod,
                         PaymentStatus = reservation.PaymentStatus,
                         ReservationStatus = reservation.ReservationStatus,
-                        TutorName = tutorData.Fullname,
-                        SubjectName = subjectData.Name
+                        TutorName = ((Tutor)tutor.Data!).Fullname,
+                        SubjectName = ((Subject)subject.Data!).Name
                     };
 
-                    Reservations.Add(responseReservation);
+                    Reservations.Add(reservationDetail);
                 }
             }
             else
@@ -90,5 +76,6 @@ namespace TutorDemand.Pages.Reservations
 
             return Page();
         }
+        
     }
 }
