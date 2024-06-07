@@ -2,21 +2,50 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using TutorDemand.Business.Abstractions;
 
-namespace TutorDemand.RazorWebApp.Pages.Reservation;
 
-public class DeleteModel : PageModel
+namespace TutorDemand.RazorWebApp.Pages.Reservation
 {
-    private readonly IReservationBusiness _reservationBusiness;
-
-    public DeleteModel(IReservationBusiness reservationBusiness)
+    public class DeleteModel : PageModel
     {
-        _reservationBusiness = reservationBusiness;
+        private readonly IReservationBusiness _reservationService;
 
-    }
-    public async Task<IActionResult> OnPostAsync(Guid id)
-    {
-        await _reservationBusiness.DeleteAsync(id);
-        return RedirectToPage("/Reservation/Index");
+        public DeleteModel(IReservationBusiness reservationService)
+        {
+            _reservationService = reservationService;
+        }
+
+
+        public async Task<IActionResult> OnGet(Guid id)
+        {
+            if (!ModelState.IsValid)
+            {
+                return Page();
+            }
+            
+            var reservationResult = await _reservationService.GetAllAsync();
+
+            if (reservationResult.Status == 1 && reservationResult.Data != null)
+            {
+                
+                var reservationList = (List<Data.Entities.Reservation>)reservationResult.Data;
+                var reservation = reservationList.First(r => r.ReservationId.Equals(id));
+                var deleteResult = await _reservationService.DeleteAsync(reservation.ReservationId);
+
+                if (deleteResult.Status == 1)
+                {
+                    return RedirectToPage("./Index");
+                }
+                else
+                {
+                    ModelState.AddModelError(string.Empty, "Error deleting reservation.");
+                    return Page();
+                }
+            }
+            else
+            {
+                ModelState.AddModelError(string.Empty, "Reservation not found.");
+                return Page();
+            }
+        }
     }
 }
-

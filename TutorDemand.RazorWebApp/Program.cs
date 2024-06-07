@@ -19,10 +19,7 @@ builder.Services.AddSingleton(mapperConfig.CreateMapper());
 
 // Add services to the container.
 builder.Services.AddRazorPages()
-        .AddRazorPagesOptions(options =>
-        {
-            options.Conventions.AddPageRoute("/Index", "");
-        });
+    .AddRazorPagesOptions(options => { options.Conventions.AddPageRoute("/Index", ""); });
 
 builder.Services.AddControllers();
 builder.Services.ConfigureSqlContext(builder.Configuration);

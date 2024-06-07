@@ -340,7 +340,7 @@ public class ReservationBusiness : IReservationBusiness
     {
         try
         {
-            var reservationEntity = _unitOfWork.ReservationRepository.GetById(reservationId);
+            var reservationEntity = _unitOfWork.ReservationRepository.GetOneWithCondition(r => r.ReservationId.Equals(reservationId));
             if (reservationEntity is null)
             {
                 return new BusinessResult(Const.WARNING_NO_DATA_CODE, Const.WARNING_NO_DATA_MSG);
@@ -384,7 +384,7 @@ public class ReservationBusiness : IReservationBusiness
 
     public async Task<IBusinessResult> DeleteAsync(Guid reservationId)
     {
-        var reservationEntity = await _unitOfWork.ReservationRepository.GetByIdAsync(reservationId);
+        var reservationEntity =  _unitOfWork.ReservationRepository.GetOneWithCondition(r => r.ReservationId.Equals(reservationId));
         if (reservationEntity is null)
         {
             return new BusinessResult(Const.WARNING_NO_DATA_CODE, Const.WARNING_NO_DATA_MSG);
