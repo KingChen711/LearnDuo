@@ -72,7 +72,7 @@ namespace TutorDemand.RazorWebApp.Pages.TeachingSchedules
             }
 
             TeachingSchedule.LearnDays = learnDays;
-            await _teachingScheduleBusiness.Create(TeachingSchedule);
+            await _teachingScheduleBusiness.CreateAsync(TeachingSchedule);
 
             return RedirectToPage("/TeachingSchedules/Index");
         }

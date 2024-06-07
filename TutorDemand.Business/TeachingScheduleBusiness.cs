@@ -21,14 +21,18 @@ namespace TutorDemand.Business
             _unitOfWork ??= new UnitOfWork();
         }
 
-        public async Task<IBusinessResult> GetAll()
+        public async Task<IBusinessResult> GetAllAsync()
         {
-            var teachingSchedules = await _unitOfWork.TeachingScheduleRepository.GetAllAsync();
+            var teachingSchedules = await _unitOfWork.TeachingScheduleRepository.GetQueryable(false)
+                .Include(tc => tc.Subject)
+                .Include(tc => tc.Tutor)
+                .Include(tc => tc.Slot)
+                .ToListAsync();
 
             return new BusinessResult(Const.SUCCESS_READ_CODE, Const.SUCCESS_READ_MSG, teachingSchedules);
         }
 
-        public async Task<IBusinessResult> GetTeachingSchedules(QueryTeachingScheduleDto dto)
+        public async Task<IBusinessResult> GetTeachingSchedulesAsync(QueryTeachingScheduleDto dto)
         {
             var pageSize = dto.PageSize;
             var pageNumber = dto.PageNumber;
@@ -45,7 +49,7 @@ namespace TutorDemand.Business
             return new BusinessResult(Const.SUCCESS_READ_CODE, Const.SUCCESS_READ_MSG, teachingSchedulesWithMetaData);
         }
 
-        public async Task<IBusinessResult> Find(
+        public async Task<IBusinessResult> FindAsync(
             Expression<Func<TeachingSchedule, bool>> expression
         )
         {
@@ -54,7 +58,7 @@ namespace TutorDemand.Business
             return new BusinessResult(Const.SUCCESS_READ_CODE, Const.SUCCESS_READ_MSG, teachingSchedules);
         }
 
-        public async Task<IBusinessResult> FindOne(
+        public async Task<IBusinessResult> FindOneAsync(
             Expression<Func<TeachingSchedule, bool>> expression
         )
         {
@@ -69,7 +73,7 @@ namespace TutorDemand.Business
         }
 
 
-        public async Task<IBusinessResult> Create(TeachingScheduleMutationDto dto)
+        public async Task<IBusinessResult> CreateAsync(TeachingScheduleMutationDto dto)
         {
             var entity = dto.Adapt<TeachingSchedule>();
 
@@ -78,7 +82,7 @@ namespace TutorDemand.Business
             return new BusinessResult(Const.SUCCESS_CREATE_CODE, Const.SUCCESS_CREATE_MSG);
         }
 
-        public async Task<IBusinessResult> Update(Guid id, TeachingScheduleMutationDto dto)
+        public async Task<IBusinessResult> UpdateAsync(Guid id, TeachingScheduleMutationDto dto)
         {
             var entity =
                 await _unitOfWork.TeachingScheduleRepository.GetOneWithConditionAsync(t =>
@@ -96,7 +100,7 @@ namespace TutorDemand.Business
             return new BusinessResult(Const.SUCCESS_UPDATE_CODE, Const.SUCCESS_UPDATE_MSG);
         }
 
-        public async Task<IBusinessResult> Delete(Guid teachingScheduleId)
+        public async Task<IBusinessResult> DeleteAsync(Guid teachingScheduleId)
         {
             try
             {
@@ -128,14 +132,16 @@ namespace TutorDemand.Business
             }
         }
 
-        public async Task<IBusinessResult> GetWithConditionAysnc(
-        Expression<Func<TeachingSchedule, bool>> filter = null!,
-        Func<IQueryable<TeachingSchedule>, IOrderedQueryable<TeachingSchedule>> orderBy = null!,
-        string includeProperties = "")
+        public async Task<IBusinessResult> GetWithConditionAsync(
+            Expression<Func<TeachingSchedule, bool>> filter = null!,
+            Func<IQueryable<TeachingSchedule>, IOrderedQueryable<TeachingSchedule>> orderBy = null!,
+            string includeProperties = "")
         {
             try
             {
-                var teachingSchedules = await _unitOfWork.TeachingScheduleRepository.GetWithConditionAsync(filter, orderBy, includeProperties);
+                var teachingSchedules =
+                    await _unitOfWork.TeachingScheduleRepository.GetWithConditionAsync(filter, orderBy,
+                        includeProperties);
 
                 if (teachingSchedules.Any())
                 {
@@ -145,7 +151,6 @@ namespace TutorDemand.Business
                 {
                     return new BusinessResult(Const.FAIL_READ_CODE, Const.FAIL_READ_MSG);
                 }
-
             }
             catch (Exception ex)
             {

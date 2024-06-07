@@ -60,7 +60,7 @@ namespace TutorDemand.RazorWebApp.Pages.Subject
                 // Get all tutor 
                 var teachingSchedule = Subject.TeachingSchedules.ToList();
                 var teachingScheduleIds = teachingSchedule.Select(x => x.Id).ToList();
-                businessResult = await _teachingScheduleBusiness.GetWithConditionAysnc(x =>
+                businessResult = await _teachingScheduleBusiness.GetWithConditionAsync(x =>
                     // Get all teaching schedule 
                     teachingScheduleIds.Contains(x.Id), 
                     null!, // Without filter
