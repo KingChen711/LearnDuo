@@ -23,7 +23,11 @@ namespace TutorDemand.Business
 
         public async Task<IBusinessResult> GetAll()
         {
-            var teachingSchedules = await _unitOfWork.TeachingScheduleRepository.GetAllAsync();
+            var teachingSchedules = await _unitOfWork.TeachingScheduleRepository.GetQueryable(false)
+                .Include(tc => tc.Subject)
+                .Include(tc => tc.Tutor)
+                .Include(tc => tc.Slot)
+                .ToListAsync();
 
             return new BusinessResult(Const.SUCCESS_READ_CODE, Const.SUCCESS_READ_MSG, teachingSchedules);
         }
@@ -129,13 +133,15 @@ namespace TutorDemand.Business
         }
 
         public async Task<IBusinessResult> GetWithConditionAysnc(
-        Expression<Func<TeachingSchedule, bool>> filter = null!,
-        Func<IQueryable<TeachingSchedule>, IOrderedQueryable<TeachingSchedule>> orderBy = null!,
-        string includeProperties = "")
+            Expression<Func<TeachingSchedule, bool>> filter = null!,
+            Func<IQueryable<TeachingSchedule>, IOrderedQueryable<TeachingSchedule>> orderBy = null!,
+            string includeProperties = "")
         {
             try
             {
-                var teachingSchedules = await _unitOfWork.TeachingScheduleRepository.GetWithConditionAsync(filter, orderBy, includeProperties);
+                var teachingSchedules =
+                    await _unitOfWork.TeachingScheduleRepository.GetWithConditionAsync(filter, orderBy,
+                        includeProperties);
 
                 if (teachingSchedules.Any())
                 {
@@ -145,7 +151,6 @@ namespace TutorDemand.Business
                 {
                     return new BusinessResult(Const.FAIL_READ_CODE, Const.FAIL_READ_MSG);
                 }
-
             }
             catch (Exception ex)
             {
