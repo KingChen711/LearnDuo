@@ -7,12 +7,17 @@
         mc:Ignorable="d"
         Title="TutorDemand" Height="450" Width="1000">
     <Grid>
-        <Menu Height="30" Name="menu1" Margin="0,0,0,0" VerticalAlignment="Top" BorderThickness="2" FontSize="16" FontWeight="Bold">
+        <Menu Height="30" Name="menu1" Margin="0,0,0,0" VerticalAlignment="Top" BorderThickness="2" FontSize="16"
+              FontWeight="Bold">
             <MenuItem Header="View" IsCheckable="False" FontSize="16">
                 <MenuItem Header="Subject" IsCheckable="False" FontSize="12" Click="Open_wSubject_Click">
-                    
+
                 </MenuItem>
                 <MenuItem Header="Tutor" IsCheckable="False" FontSize="12" Click="Open_wTutor_Click">
+
+                </MenuItem>
+
+                <MenuItem Header="Teaching Schedules" IsCheckable="False" FontSize="12" Click="Open_wTeachingSchedule_Click">
 
                 </MenuItem>
             </MenuItem>

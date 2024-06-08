@@ -24,14 +24,14 @@ public class Delete : PageModel
             return RedirectToPage("/Error");
         }
 
-        var teachingScheduleResult = await _teachingScheduleBusiness.FindOne(ts => ts.TeachingScheduleId == id);
+        var teachingScheduleResult = await _teachingScheduleBusiness.FindOneAsync(ts => ts.TeachingScheduleId == id);
 
         if (teachingScheduleResult.Status != Const.SUCCESS_READ_CODE)
         {
             return NotFound();
         }
 
-        var deleteTeachingScheduleResult = await _teachingScheduleBusiness.Delete((Guid)id);
+        var deleteTeachingScheduleResult = await _teachingScheduleBusiness.DeleteAsync((Guid)id);
 
         if (deleteTeachingScheduleResult.Status != Const.SUCCESS_DELETE_CODE)
         {

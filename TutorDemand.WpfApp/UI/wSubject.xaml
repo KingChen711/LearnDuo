@@ -52,7 +52,7 @@
                         <DataGridTemplateColumn Width="50">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
-                                    <Button Content="Delete" x:Name="ButtonDelete" CommandParameter="{Binding Path=SubjectCode}" Click="GrdSubject_ButtonDelete_ClicK"/>
+                                    <Button Content="DeleteAsync" x:Name="ButtonDelete" CommandParameter="{Binding Path=SubjectCode}" Click="GrdSubject_ButtonDelete_ClicK"/>
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
