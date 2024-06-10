@@ -1,10 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
 using TutorDemand.Data.Base;
 using TutorDemand.Data.Entities;
 
@@ -12,8 +7,6 @@ namespace TutorDemand.Data.Repositories
 {
     public class SubjectRepository : GenericRepository<Subject>
     {
-        private readonly NET1704_221_5_TutorDemandContext _context;
-
         public SubjectRepository() { }
 
         public SubjectRepository(NET1704_221_5_TutorDemandContext context) => _context = context;
@@ -23,7 +16,7 @@ namespace TutorDemand.Data.Repositories
             Func<IQueryable<Subject>, IOrderedQueryable<Subject>> orderBy = null!,
             string includeProperties = "")
         {
-            IQueryable<Subject> query = _dbSet;
+            IQueryable<Subject> query = GetQueryable();
 
             if (filter != null)
                 query = query.Where(filter);
@@ -49,12 +42,12 @@ namespace TutorDemand.Data.Repositories
             Func<IQueryable<Subject>, IOrderedQueryable<Subject>> orderBy = null!,
             string includeProperties = "")
         {
-            IQueryable<Subject> query = _dbSet;
+            IQueryable<Subject> query = GetQueryable();
 
             if (filter != null)
                 query = query.Where(filter);
 
-            if(includeProperties != null)
+            if (includeProperties != null)
             {
                 foreach (var includeProperty in includeProperties.Split(
                     new char[] { ',' },
