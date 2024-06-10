@@ -598,8 +598,8 @@ public class ReservationBusiness : IReservationBusiness
     {
         try
         {
-            _unitOfWork.ReservationRepository.PrepareUpdate(reservation);
-            var result = await _unitOfWork.ReservationRepository.SaveAsync() > 0;
+            
+            var result =await _unitOfWork.ReservationRepository.UpdateAsync(reservation)>0;
 
             if (result)
             {

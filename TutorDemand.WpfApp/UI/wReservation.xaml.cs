@@ -151,7 +151,7 @@ namespace TutorDemand.WpfApp.UI
                 result.TutorName = ((Tutor)tutor.Data!).Fullname;
                 result.SubjectName = ((Subject)subject.Data!).Name;
 
-                txtId.Text = reservation.Id.ToString();
+                txtId.Text = reservation.ReservationId.ToString();
                 txtPrice.Text = reservation.PaidPrice.ToString();
                 txtSubjectName.Text = result.SubjectName;
                 txtTutorName.Text = result.TutorName;
@@ -298,6 +298,14 @@ namespace TutorDemand.WpfApp.UI
             //txtEmail.Text = string.Empty;
             //txtPhone.Text = string.Empty;
             //cboGender.SelectedIndex = 0;
+
+            txtSubjectName.Text = string.Empty;
+            txtPrice.Text = string.Empty;
+            txtId.Text = string.Empty;
+            txtTutorName.Text = string.Empty;
+            cboPaymentMethod.SelectedItem = 0;
+            cboPaymentStatus.SelectedItem = 0;
+            cboReservationStatus.SelectedItem = 0;
         }
 
         private async void LoadReservation()
