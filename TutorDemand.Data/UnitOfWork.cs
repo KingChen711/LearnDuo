@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using TutorDemand.Data.Entities;
 using TutorDemand.Data.Repositories;
 
@@ -52,7 +53,17 @@ namespace TutorDemand.Data
 
         public async Task SaveChangesAsync()
         {
-            await _unitOfWorkContext.SaveChangesAsync();
+            try
+            {
+                Console.WriteLine("Start");
+                await _unitOfWorkContext.SaveChangesAsync();
+                Console.WriteLine("Success");
+            }
+            catch (DbUpdateException e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
         }
 
         ////TO-DO CODE HERE/////////////////
@@ -68,7 +79,7 @@ namespace TutorDemand.Data
 
         Serializable: The highest level of isolation, ensuring that transactions are completely isolated from one another. This can lead to increased lock contention, potentially hurting performance.
 
-        Snapshot: This isolation level uses row versioning to avoid locks, providing consistency without impeding concurrency. 
+        Snapshot: This isolation level uses row versioning to avoid locks, providing consistency without impeding concurrency.
          */
 
         public int SaveChangesWithTransaction()
@@ -118,6 +129,5 @@ namespace TutorDemand.Data
         }
 
         #endregion
-
     }
 }

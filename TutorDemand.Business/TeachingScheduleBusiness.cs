@@ -75,11 +75,23 @@ namespace TutorDemand.Business
 
         public async Task<IBusinessResult> CreateAsync(TeachingScheduleMutationDto dto)
         {
-            var entity = dto.Adapt<TeachingSchedule>();
-
-            await _unitOfWork.TeachingScheduleRepository.CreateAsync(entity);
-
-            return new BusinessResult(Const.SUCCESS_CREATE_CODE, Const.SUCCESS_CREATE_MSG);
+            try
+            {
+                var entity = dto.Adapt<TeachingSchedule>();
+                var result = await _unitOfWork.TeachingScheduleRepository.CreateAsync(entity) > 0;
+                if (result)
+                {
+                    return new BusinessResult(Const.SUCCESS_CREATE_CODE, Const.SUCCESS_CREATE_MSG);
+                }
+                else
+                {
+                    return new BusinessResult(Const.FAIL_CREATE_CODE, Const.FAIL_CREATE_MSG);
+                }
+            }
+            catch (Exception ex)
+            {
+                return new BusinessResult(Const.ERROR_EXCEPTION_CODE, ex.Message);
+            }
         }
 
         public async Task<IBusinessResult> UpdateAsync(Guid id, TeachingScheduleMutationDto dto)
@@ -95,7 +107,7 @@ namespace TutorDemand.Business
 
             dto.Adapt(entity);
 
-            await _unitOfWork.SaveChangesAsync();
+            await _unitOfWork.TeachingScheduleRepository.UpdateAsync(entity);
 
             return new BusinessResult(Const.SUCCESS_UPDATE_CODE, Const.SUCCESS_UPDATE_MSG);
         }

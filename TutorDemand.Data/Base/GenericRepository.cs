@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
@@ -62,9 +63,9 @@ namespace TutorDemand.Data.Base
             return _dbSet.ToList();
         }
 
-        public async Task<List<T>> GetAllAsync()
+        public async Task<List<T>> GetAllAsync(bool trackChanges = true)
         {
-            return await _dbSet.ToListAsync();
+            return trackChanges ? await _dbSet.ToListAsync() : await _dbSet.AsNoTracking().ToListAsync();
         }
 
         public void Create(T entity)
@@ -75,8 +76,18 @@ namespace TutorDemand.Data.Base
 
         public async Task<int> CreateAsync(T entity)
         {
-            _dbSet.Add(entity);
-            return await _context.SaveChangesAsync();
+            try
+            {
+                _dbSet.Add(entity);
+                var a= await _context.SaveChangesAsync();
+                Console.WriteLine(a);
+                return a;
+            }
+            catch (DbUpdateException e)
+            {
+                Console.WriteLine(e.Message);
+                return -1;
+            }
         }
 
         public void Update(T entity)
@@ -152,9 +163,11 @@ namespace TutorDemand.Data.Base
             return _dbSet.Where(condition).FirstOrDefault();
         }
 
-        public async Task<T?> GetOneWithConditionAsync(Expression<Func<T, bool>> condition)
+        public async Task<T?> GetOneWithConditionAsync(Expression<Func<T, bool>> condition, bool trackChanges = true)
         {
-            return await _dbSet.Where(condition).FirstOrDefaultAsync();
+            return trackChanges
+                ? await _dbSet.Where(condition).FirstOrDefaultAsync()
+                : await _dbSet.Where(condition).AsNoTracking().FirstOrDefaultAsync();
         }
 
         public bool Exist(Expression<Func<T, bool>> condition)
@@ -168,6 +181,6 @@ namespace TutorDemand.Data.Base
         }
 
         public IQueryable<T> GetQueryable(bool trackChanges)
-            => trackChanges ? _dbSet.AsQueryable() : _dbSet.AsTracking().AsQueryable();
+            => trackChanges ? _dbSet.AsQueryable() : _dbSet.AsNoTracking().AsQueryable();
     }
 }
