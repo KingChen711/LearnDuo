@@ -31,6 +31,11 @@ namespace TutorDemand.Business
             return new BusinessResult(Const.SUCCESS_READ_CODE, Const.SUCCESS_READ_MSG, teachingSchedules);
         }
 
+        public Task<IBusinessResult> GetDetail(Guid id)
+        {
+            throw new NotImplementedException();
+        }
+
         public async Task<IBusinessResult> GetTeachingSchedulesAsync(QueryTeachingScheduleDto dto)
         {
             var pageSize = dto.PageSize;
