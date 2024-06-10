@@ -1,11 +1,10 @@
-using System.Linq.Expressions;
 using Mapster;
 using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions;
 using TutorDemand.Business.Abstractions;
 using TutorDemand.Business.Base;
 using TutorDemand.Common;
 using TutorDemand.Data;
-using TutorDemand.Data.DAO;
 using TutorDemand.Data.Dtos;
 using TutorDemand.Data.Dtos.TeachingSchedule;
 using TutorDemand.Data.Entities;
@@ -120,7 +119,8 @@ namespace TutorDemand.Business
                     await _unitOfWork.TeachingScheduleRepository
                         .GetQueryable(true)
                         .Where(ts => ts.TeachingScheduleId == teachingScheduleId)
-                        .Include(ts => ts.Reservations).FirstOrDefaultAsync();
+                        .Include(ts => ts.Reservations)
+                        .FirstOrDefaultAsync();
 
                 if (entity is null)
                 {
@@ -134,7 +134,8 @@ namespace TutorDemand.Business
                         $"Không thể xóa một lịch học đã có khách hàng đặt chỗ");
                 }
 
-                await _unitOfWork.TeachingScheduleRepository.RemoveAsync(entity);
+                _unitOfWork.TeachingScheduleRepository.PrepareRemove(entity);
+                await _unitOfWork.TeachingScheduleRepository.SaveAsync();
 
                 return new BusinessResult(Const.SUCCESS_DELETE_CODE, Const.SUCCESS_DELETE_MSG);
             }
