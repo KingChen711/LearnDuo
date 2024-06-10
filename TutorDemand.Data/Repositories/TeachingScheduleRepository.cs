@@ -12,21 +12,15 @@ namespace TutorDemand.Data.Repositories
 {
     public class TeachingScheduleRepository : GenericRepository<TeachingSchedule>
     {
-        private readonly NET1704_221_5_TutorDemandContext _context;
-        public TeachingScheduleRepository()
-        {
-            
-        }
-
         public TeachingScheduleRepository(NET1704_221_5_TutorDemandContext context)
         {
             _context = context;
         }
 
         public async Task<IEnumerable<TeachingSchedule>> GetWithConditionAsync(
-           Expression<Func<TeachingSchedule, bool>> filter = null!,
-           Func<IQueryable<TeachingSchedule>, IOrderedQueryable<TeachingSchedule>> orderBy = null!,
-           string includeProperties = "")
+            Expression<Func<TeachingSchedule, bool>> filter = null!,
+            Func<IQueryable<TeachingSchedule>, IOrderedQueryable<TeachingSchedule>> orderBy = null!,
+            string includeProperties = "")
         {
             IQueryable<TeachingSchedule> query = _dbSet;
 
@@ -34,8 +28,8 @@ namespace TutorDemand.Data.Repositories
                 query = query.Where(filter);
 
             foreach (var includeProperty in includeProperties.Split(
-                    new char[] { ',' },
-                    StringSplitOptions.RemoveEmptyEntries))
+                         new char[] { ',' },
+                         StringSplitOptions.RemoveEmptyEntries))
             {
                 query = query.Include(includeProperty);
             }
