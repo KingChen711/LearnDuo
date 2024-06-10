@@ -13,13 +13,21 @@ var builder = WebApplication.CreateBuilder(args);
 // Config appsettings
 builder.Services.Configure<AppSettings>(builder.Configuration.GetSection("AppSettings"));
 
+// Add Database Intializer
+builder.Services.AddScoped<IDatabaseInitializer, DatabaseInitializer>();
+
+// Add Business Service
+
 // Auto Mapper
 var mapperConfig = new MapperConfiguration(mc => { mc.AddProfile<ProfilesMapper>(); });
 builder.Services.AddSingleton(mapperConfig.CreateMapper());
 
 // Add services to the container.
 builder.Services.AddRazorPages()
-    .AddRazorPagesOptions(options => { options.Conventions.AddPageRoute("/Index", ""); });
+        .AddRazorPagesOptions(options =>
+        {
+            options.Conventions.AddPageRoute("/Index", "");
+        });
 
 builder.Services.AddControllers();
 builder.Services.ConfigureSqlContext(builder.Configuration);
@@ -36,7 +44,7 @@ app.Lifetime.ApplicationStarted.Register(async () =>
 });
 
 
-// Configure the HTTP request pipeline. 
+// Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Error");

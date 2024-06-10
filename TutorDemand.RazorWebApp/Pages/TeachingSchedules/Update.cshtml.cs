@@ -42,7 +42,7 @@ public class Update : PageModel
             return NotFound();
         }
 
-        var result = await _teachingScheduleBusiness.FindOne(t => t.TeachingScheduleId == id);
+        var result = await _teachingScheduleBusiness.FindOneAsync(t => t.TeachingScheduleId == id);
 
         if (result.Status != Const.SUCCESS_READ_CODE)
         {
@@ -73,8 +73,13 @@ public class Update : PageModel
         return Page();
     }
 
-    public async Task<IActionResult> OnPostAsync()
+    public async Task<IActionResult> OnPostAsync(Guid? id)
     {
+        if (id is null)
+        {
+            return NotFound();
+        }
+
         if (!ModelState.IsValid) return Page();
 
         var learnDays = string.Join(",", SelectedDays);
@@ -86,7 +91,7 @@ public class Update : PageModel
         }
 
         TeachingSchedule.LearnDays = learnDays;
-        await _teachingScheduleBusiness.Create(TeachingSchedule);
+        await _teachingScheduleBusiness.UpdateAsync((Guid)id, TeachingSchedule);
 
         return RedirectToPage("/TeachingSchedules/Index");
     }

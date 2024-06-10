@@ -1,15 +1,9 @@
-using System.Linq;
-using System.Linq.Expressions;
-using System.Runtime.CompilerServices;
 using AutoMapper;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Diagnostics;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using System.Linq.Expressions;
 using TutorDemand.Business.Abstractions;
 using TutorDemand.Business.Base;
 using TutorDemand.Common;
 using TutorDemand.Data;
-using TutorDemand.Data.DAO;
 using TutorDemand.Data.Dtos.Subject;
 using TutorDemand.Data.Entities;
 

@@ -1,0 +1,89 @@
+﻿<Window x:Class="TutorDemand.WpfApp.UI.WTeachingSchedule"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:local="clr-namespace:TutorDemand.WpfApp.UI"
+        mc:Ignorable="d"
+        Title="Teaching Schedules" Width="636" Height="465">
+    <Grid>
+        <TextBox Name="TtxTeachingScheduleId" Width="157" Visibility="Hidden" />
+        <StackPanel Orientation="Vertical" VerticalAlignment="Top">
+            <StackPanel Orientation="Horizontal" Margin="0 8 0 0" HorizontalAlignment="Center" Width="615">
+                <StackPanel Orientation="Vertical">
+                    <StackPanel Orientation="Horizontal">
+                        <StackPanel Margin="0 0 8 0" Orientation="Horizontal" HorizontalAlignment="Center" Height="24">
+                            <Label Margin="0 0 4 0">Subject</Label>
+                            <ComboBox DisplayMemberPath="Name" SelectedValuePath="SubjectId" Name="CbSubject" Width="118" />
+                        </StackPanel>
+                        <StackPanel Margin="0 0 8 0" Orientation="Horizontal" HorizontalAlignment="Center" Height="24">
+                            <Label Margin=" 0 0 4 0">Tutor</Label>
+                            <ComboBox DisplayMemberPath="Fullname" SelectedValuePath="TutorId" Name="CbTutor"  Width="118" />
+                        </StackPanel>
+                        <StackPanel Margin="0 0 0 0" Orientation="Horizontal" HorizontalAlignment="Center" Height="24">
+                            <Label Margin=" 0 0 4 0">Slot</Label>
+                            <ComboBox DisplayMemberPath="SlotName" SelectedValuePath="SlotId" Name="CbSlot"  Width="118" />
+                        </StackPanel>
+                    </StackPanel>
+
+                    <StackPanel Margin="0 8 0 0" Orientation="Horizontal">
+                        <StackPanel Margin="0 0 8 0" Orientation="Horizontal" HorizontalAlignment="Center" Height="24">
+                            <Label Margin="0 0 4 0">Google Meet room</Label>
+                            <TextBox Name="TtxGoogleMeetRoom" Width="157" />
+                        </StackPanel>
+                        <StackPanel Margin="0 0 8 0" Orientation="Horizontal" HorizontalAlignment="Center" Height="24">
+                            <Label Margin="0 0 4 0">Password</Label>
+                            <TextBox Name="TxtPassword" Width="157" />
+                        </StackPanel>
+                    </StackPanel>
+
+                    <StackPanel Margin="0 8 0 0" Orientation="Horizontal">
+                        <StackPanel Margin="0 0 8 0" Orientation="Horizontal" HorizontalAlignment="Center" Height="26">
+                            <Label Margin="0 0 4 0">Start day</Label>
+                            <DatePicker Name="DpStartDate" Width="187.5" />
+                        </StackPanel>
+                        <StackPanel Margin="0 0 8 0" Orientation="Horizontal" HorizontalAlignment="Center" Height="26">
+                            <Label Margin="0 0 4 0">End day</Label>
+                            <DatePicker Name="DpEndDate" Width="187.5" />
+                        </StackPanel>
+                    </StackPanel>
+
+                    <StackPanel Margin="5,8,0,4">
+                        <TextBlock Text="Learn days:" Margin="0,8,0,4" />
+
+                        <StackPanel Orientation="Horizontal">
+                            <CheckBox Name="CxbMonday" Content="Monday" Margin="0,0,8,0" />
+                            <CheckBox Name="CxbTuesday" Content="Tuesday" Margin="0,0,8,0" />
+                            <CheckBox Name="CxbWednesday" Content="Wednesday" Margin="0,0,8,0" />
+                            <CheckBox Name="CxbThursday" Content="Thursday" Margin="0,0,8,0" />
+                            <CheckBox Name="CxbFriday" Content="Friday" Margin="0,0,8,0" />
+                            <CheckBox Name="CxbSaturday" Content="Saturday" Margin="0,0,8,0" />
+                            <CheckBox Name="CxbSunday" Content="Sunday" Margin="0,0,0,0" />
+                        </StackPanel>
+                    </StackPanel>
+                </StackPanel>
+
+                <StackPanel Orientation="Vertical" Margin="0 0 0 0">
+                    <Button Width="100" Height="24" Margin="0 0 0 8" Name="MutateButton" Click="MutateButton_Click">Create</Button>
+                    <Button Width="100" Height="24" Margin="0 0 0 8" Name="DeleteButton" Click="DeleteButton_Click">Delete</Button>
+                    <Button Width="100" Height="24" Margin="0 0 0 8" Name="ResetInputButton" Click="ResetInputButton_Click">Reset Inputs</Button>
+                </StackPanel>
+            </StackPanel>
+
+
+            <DataGrid x:Name="GrdTeachingSchedule" AutoGenerateColumns="False" Margin="10"
+                      Height="250" Width="599" MouseDoubleClick="GrdTeachingSchedule_MouseDoubleClick" IsReadOnly="True">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Subject" Binding="{Binding Subject.Name}" />
+                    <DataGridTextColumn Header="Tutor" Binding="{Binding Tutor.Fullname}" />
+                    <DataGridTextColumn Header="Slot" Binding="{Binding Slot.SlotName}" />
+                    <DataGridTextColumn Header="Google Meet room" Binding="{Binding MeetRoomCode}" />
+                    <DataGridTextColumn Header="Password" Binding="{Binding RoomPassword}" />
+                    <DataGridTextColumn Header="Start Date" Binding="{Binding StartDate}" />
+                    <DataGridTextColumn Header="End Date" Binding="{Binding EndDate}" />
+                    <DataGridTextColumn Header="Learn Days" Binding="{Binding LearnDays}" />
+                </DataGrid.Columns>
+            </DataGrid>
+        </StackPanel>
+    </Grid>
+</Window>

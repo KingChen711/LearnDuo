@@ -9,14 +9,15 @@ namespace TutorDemand.RazorWebApp.Extensions
     {
         public static void ConfigureBusinesses(this IServiceCollection services)
         {
-            // Add Business Service 
             services.AddScoped<ITutorBusiness, TutorBusiness>();
+            services.AddScoped<ISlotBusiness, SlotBusiness>();
             services.AddScoped<ITeachingScheduleBusiness, TeachingScheduleBusiness>();
             services.AddScoped<ICustomerBusiness, CustomerBusiness>();
             services.AddScoped<IImageBusiness, ImageBusiness>();
+            services.AddScoped<ISubjectBusiness, SubjectBusiness>();
+            services.AddScoped<IReservationBusiness, ReservationBusiness>();
             services.AddScoped<IReservationBusiness, ReservationBusiness>();
             services.AddScoped<ISubjectBusiness, SubjectBusiness>();
-            services.AddScoped<IDatabaseInitializer, DatabaseInitializer>();
         }
 
         public static void ConfigureSqlContext(this IServiceCollection services,

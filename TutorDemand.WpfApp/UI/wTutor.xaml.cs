@@ -1,17 +1,6 @@
 ﻿using AutoMapper;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 using TutorDemand.Business;
 using TutorDemand.Business.Abstractions;
 using TutorDemand.Business.Base;
@@ -81,11 +70,19 @@ namespace TutorDemand.WpfApp.UI
                     TutorId = Guid.NewGuid() // Generating a new GUID for the TutorId
                 };
 
+                var isExits = await tutorBusiness.FindOneAsync(x => x.Email == txtEmail.Text);
+                if (isExits != null)
+                {
+                    MessageBox.Show("Tutor is exits!");
+                    return;
+                }
+
                 // Call the create method
-                await tutorBusiness.CreateAsync(tutor);
+                var tutorCreated = await tutorBusiness.CreateAsync(tutor);
 
                 // Notify the user about the successful creation
                 MessageBox.Show("Tutor created successfully.");
+                LoadTutors();
             }
             catch (Exception ex)
             {
@@ -93,7 +90,7 @@ namespace TutorDemand.WpfApp.UI
             }
             finally
             {
-                LoadTutors();
+
             }
         }
 
@@ -131,7 +128,7 @@ namespace TutorDemand.WpfApp.UI
             }
             catch (Exception ex)
             {
-               /* MessageBox.Show(ex.Message);*/
+                /* MessageBox.Show(ex.Message);*/
             }
         }
 
@@ -144,6 +141,26 @@ namespace TutorDemand.WpfApp.UI
         {
             try
             {
+                if ((cboGender.SelectedItem as ComboBoxItem)?.Tag.ToString() == "default")
+                {
+                    MessageBox.Show("Please select a gender.");
+                    return;
+                }
+
+                // Validate email format
+                if (!IsValidEmail(txtEmail.Text))
+                {
+                    MessageBox.Show("Invalid email format.");
+                    return;
+                }
+
+                // Validate phone number format and length
+                if (!IsValidPhoneNumber(txtPhone.Text))
+                {
+                    MessageBox.Show("Invalid phone number format. Phone number must contain exactly 10 digits.");
+                    return;
+                }
+
                 if (txtId.Text.Length > 0)
                 {
                     // Creating a new TutorDto object and populating it with values from the form
@@ -162,6 +179,7 @@ namespace TutorDemand.WpfApp.UI
 
                     // Notify the user about the successful update
                     MessageBox.Show("Tutor updated successfully.");
+                    LoadTutors();
                 }
                 else
                 {
@@ -174,7 +192,7 @@ namespace TutorDemand.WpfApp.UI
             }
             finally
             {
-                LoadTutors();
+
             }
         }
 
@@ -186,13 +204,14 @@ namespace TutorDemand.WpfApp.UI
                 if (txtId.Text.Length > 0)
                 {
                     // Show confirmation dialog
-                    var result = MessageBox.Show("Are you sure you want to delete this tutor?", "Confirm Delete", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+                    var result = MessageBox.Show("Are you sure you want to delete this tutor?", "Confirm DeleteAsync", MessageBoxButton.YesNo, MessageBoxImage.Warning);
 
                     if (result == MessageBoxResult.Yes)
                     {
                         // Proceed with deletion if user confirms
                         await tutorBusiness.DeleteAsync(Guid.Parse(txtId.Text));
                         MessageBox.Show("Tutor deleted successfully.");
+                        LoadTutors();
                     }
                 }
                 else
@@ -206,7 +225,7 @@ namespace TutorDemand.WpfApp.UI
             }
             finally
             {
-                LoadTutors();
+
             }
         }
 
@@ -241,7 +260,7 @@ namespace TutorDemand.WpfApp.UI
                     this.dgData.ItemsSource = new List<Tutor>();
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 /*MessageBox.Show(ex.Message);*/
             }

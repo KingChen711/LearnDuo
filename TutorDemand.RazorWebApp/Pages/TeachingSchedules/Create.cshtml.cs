@@ -20,13 +20,15 @@ namespace TutorDemand.RazorWebApp.Pages.TeachingSchedules
         private readonly ITutorBusiness _tutorBusiness;
         private readonly ISlotBusiness _slotBusiness;
 
-        public Create(ILogger<Create> logger, IMapper mapper, NET1704_221_5_TutorDemandContext context)
+        public Create(ILogger<Create> logger, IMapper mapper, NET1704_221_5_TutorDemandContext context,
+            ITeachingScheduleBusiness teachingScheduleBusiness, ISubjectBusiness subjectBusiness,
+            ITutorBusiness tutorBusiness, ISlotBusiness slotBusiness)
         {
             _logger = logger;
-            _teachingScheduleBusiness ??= new TeachingScheduleBusiness();
-            _subjectBusiness ??= new SubjectBusiness(mapper, context);
-            _tutorBusiness ??= new TutorBusiness();
-            _slotBusiness ??= new SlotBusiness();
+            _teachingScheduleBusiness = teachingScheduleBusiness;
+            _subjectBusiness = subjectBusiness;
+            _tutorBusiness = tutorBusiness;
+            _slotBusiness = slotBusiness;
         }
 
         public IEnumerable<SelectListItem> SelectListSubject = [];
@@ -60,7 +62,7 @@ namespace TutorDemand.RazorWebApp.Pages.TeachingSchedules
         }
 
         public async Task<IActionResult> OnPostAsync()
-        { 
+        {
             if (!ModelState.IsValid) return Page();
 
             var learnDays = string.Join(",", SelectedDays);
@@ -72,7 +74,7 @@ namespace TutorDemand.RazorWebApp.Pages.TeachingSchedules
             }
 
             TeachingSchedule.LearnDays = learnDays;
-            await _teachingScheduleBusiness.Create(TeachingSchedule);
+            await _teachingScheduleBusiness.CreateAsync(TeachingSchedule);
 
             return RedirectToPage("/TeachingSchedules/Index");
         }

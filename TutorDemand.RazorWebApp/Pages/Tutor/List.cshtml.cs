@@ -26,7 +26,7 @@ namespace TutorDemand.RazorWebApp.Pages.Tutor
 
         [BindProperty] public PaginatedList<TutorDto> Tutors { get; set; }
 
-        public async Task OnGet(int? pageIndex = 1)
+        public async Task OnGet(int? pageIndex = 1, string? name = null)
         {
             IBusinessResult businessResult = await _tutorBusiness.GetAllAsync();
 
@@ -34,10 +34,20 @@ namespace TutorDemand.RazorWebApp.Pages.Tutor
             {
                 var tutorList = _mapper.Map<List<TutorDto>>(businessResult.Data);
 
+                // Filter the tutorList by name if the name parameter is provided
+                if (!string.IsNullOrEmpty(name))
+                {
+                    tutorList = tutorList.Where(t => 
+                        t.GetType().GetProperties()
+                            .Any(prop => prop.GetValue(t)?.ToString()?.Contains(name, StringComparison.OrdinalIgnoreCase) == true)
+                    ).ToList();
+                }
+
                 // Paging
                 pageIndex ??= 1;
-                Tutors = PaginatedList<TutorDto>.Paging(tutorList, pageIndex.Value, _appSettings.PageSize);
+                Tutors = PaginatedList<TutorDto>.Paging(tutorList, pageIndex.Value, 5);
             }
         }
+
     }
 }
