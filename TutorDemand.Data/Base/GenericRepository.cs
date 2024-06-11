@@ -1,24 +1,27 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
 using TutorDemand.Data.Entities;
 
 namespace TutorDemand.Data.Base
 {
-    public class GenericRepository<T> where T : class
+    public class GenericRepository<T>
+        where T : class
     {
         protected NET1704_221_5_TutorDemandContext _context;
-        protected readonly DbSet<T> _dbSet;
+
+        public async Task<T?> GetByIdAsync(Guid code)
+        {
+            return await _context.Set<T>().FindAsync(code);
+        }
+
+        public void PrepareCreate(T entity)
+        {
+            _context.Add(entity);
+        }
 
         public GenericRepository()
         {
             _context ??= new NET1704_221_5_TutorDemandContext();
-            _dbSet = _context.Set<T>();
         }
 
         #region Separating asign entity and save operators
@@ -26,12 +29,6 @@ namespace TutorDemand.Data.Base
         public GenericRepository(NET1704_221_5_TutorDemandContext context)
         {
             _context = context;
-            _dbSet = _context.Set<T>();
-        }
-
-        public void PrepareCreate(T entity)
-        {
-            _dbSet.Add(entity);
         }
 
         public void PrepareUpdate(T entity)
@@ -42,7 +39,7 @@ namespace TutorDemand.Data.Base
 
         public void PrepareRemove(T entity)
         {
-            _dbSet.Remove(entity);
+            _context.Remove(entity);
         }
 
         public int Save()
@@ -60,17 +57,19 @@ namespace TutorDemand.Data.Base
 
         public List<T> GetAll()
         {
-            return _dbSet.ToList();
+            return _context.Set<T>().ToList();
         }
 
         public async Task<List<T>> GetAllAsync(bool trackChanges = true)
         {
-            return trackChanges ? await _dbSet.ToListAsync() : await _dbSet.AsNoTracking().ToListAsync();
+            return trackChanges
+                ? await _context.Set<T>().ToListAsync()
+                : await _context.Set<T>().AsNoTracking().ToListAsync();
         }
 
         public void Create(T entity)
         {
-            _dbSet.Add(entity);
+            _context.Add(entity);
             _context.SaveChanges();
         }
 
@@ -78,8 +77,8 @@ namespace TutorDemand.Data.Base
         {
             try
             {
-                _dbSet.Add(entity);
-                var a= await _context.SaveChangesAsync();
+                _context.Add(entity);
+                var a = await _context.SaveChangesAsync();
                 Console.WriteLine(a);
                 return a;
             }
@@ -106,81 +105,81 @@ namespace TutorDemand.Data.Base
 
         public bool Remove(T entity)
         {
-            _dbSet.Remove(entity);
+            _context.Remove(entity);
             _context.SaveChanges();
             return true;
         }
 
         public async Task<bool> RemoveAsync(T entity)
         {
-            _dbSet.Remove(entity);
+            _context.Remove(entity);
             await _context.SaveChangesAsync();
             return true;
         }
 
         public T? GetById(int id)
         {
-            return _dbSet.Find(id);
+            return _context.Set<T>().Find(id);
         }
 
         public async Task<T?> GetByIdAsync(int id)
         {
-            return await _dbSet.FindAsync(id);
+            return await _context.Set<T>().FindAsync(id);
         }
 
         public T? GetById(string code)
         {
-            return _dbSet.Find(code);
+            return _context.Set<T>().Find(code);
         }
 
         public async Task<T?> GetByIdAsync(string code)
         {
-            return await _dbSet.FindAsync(code);
+            return await _context.Set<T>().FindAsync(code);
         }
 
         public T? GetById(Guid code)
         {
-            return _dbSet.Find(code);
-        }
-
-        public async Task<T?> GetByIdAsync(Guid code)
-        {
-            return await _dbSet.FindAsync(code);
+            return _context.Set<T>().Find(code);
         }
 
         public List<T> GetWithCondition(Expression<Func<T, bool>> condition)
         {
-            return _dbSet.Where(condition).ToList();
+            return _context.Set<T>().Where(condition).ToList();
         }
 
         public async Task<List<T>> GetWithConditionAsync(Expression<Func<T, bool>> condition)
         {
-            return await _dbSet.Where(condition).ToListAsync();
+            return await _context.Set<T>().Where(condition).ToListAsync();
         }
 
         public T? GetOneWithCondition(Expression<Func<T, bool>> condition)
         {
-            return _dbSet.Where(condition).FirstOrDefault();
+            return _context.Set<T>().Where(condition).FirstOrDefault();
         }
 
-        public async Task<T?> GetOneWithConditionAsync(Expression<Func<T, bool>> condition, bool trackChanges = true)
+        public async Task<T?> GetOneWithConditionAsync(
+            Expression<Func<T, bool>> condition,
+            bool trackChanges = true
+        )
         {
             return trackChanges
-                ? await _dbSet.Where(condition).FirstOrDefaultAsync()
-                : await _dbSet.Where(condition).AsNoTracking().FirstOrDefaultAsync();
+                ? await _context.Set<T>().Where(condition).FirstOrDefaultAsync()
+                : await _context.Set<T>().Where(condition).AsNoTracking().FirstOrDefaultAsync();
         }
 
         public bool Exist(Expression<Func<T, bool>> condition)
         {
-            return _dbSet.Any(condition);
+            return _context.Set<T>().Any(condition);
         }
 
         public async Task<bool> ExistAsync(Expression<Func<T, bool>> condition)
         {
-            return await _dbSet.AnyAsync(condition);
+            return await _context.Set<T>().AnyAsync(condition);
         }
 
-        public IQueryable<T> GetQueryable(bool trackChanges)
-            => trackChanges ? _dbSet.AsQueryable() : _dbSet.AsNoTracking().AsQueryable();
+        public IQueryable<T> GetQueryable(bool trackChanges = true) =>
+            trackChanges
+                ? _context.Set<T>().AsQueryable()
+                : _context.Set<T>().AsNoTracking().AsQueryable();
     }
 }

@@ -1,10 +1,5 @@
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
 using TutorDemand.Data.Base;
 using TutorDemand.Data.Entities;
 
@@ -22,7 +17,7 @@ namespace TutorDemand.Data.Repositories
             Func<IQueryable<TeachingSchedule>, IOrderedQueryable<TeachingSchedule>> orderBy = null!,
             string includeProperties = "")
         {
-            IQueryable<TeachingSchedule> query = _dbSet;
+            IQueryable<TeachingSchedule> query = GetQueryable();
 
             if (filter != null)
                 query = query.Where(filter);
