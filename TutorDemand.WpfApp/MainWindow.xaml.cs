@@ -23,8 +23,11 @@ namespace TutorDemand.WpfApp
     /// </summary>
     public partial class MainWindow : Window
     {
+        private readonly string _customerId;
+        private readonly CustomerBusiness _customerBusiness;
         public MainWindow()
         {
+            _customerBusiness = new CustomerBusiness();
             InitializeComponent();
         }
 
@@ -41,9 +44,12 @@ namespace TutorDemand.WpfApp
             p.Owner = this;
             p.Show();
         }
-        private void Open_wReservation_Click(object sender, RoutedEventArgs e) 
+        private async void Open_wReservation_Click(object sender, RoutedEventArgs e)
         {
-            var p = new wReservation();
+            var customerDatas = await _customerBusiness.GetAllAsync();
+            var listData = (List<Customer>)customerDatas.Data!;
+            var currentCustomer = listData.First();
+            var p = new wReservation(currentCustomer.CustomerId.ToString());
             p.Owner = this;
             p.Show();
         }

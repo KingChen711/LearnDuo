@@ -97,19 +97,19 @@
                       SelectionChanged="dgData_SelectionChanged" />
 
             <Button x:Name="btnCreate" Content="Create" HorizontalAlignment="Left" Margin="4,334,0,17" Grid.Row="8"
-                    Width="121" Background="#FF0099FF" BorderBrush="White" Foreground="White" Grid.ColumnSpan="2"
+                    Width="121" Height="30" Background="#FF0099FF" BorderBrush="White" Foreground="White" Grid.ColumnSpan="2"
                     Click="btnCreate_Click" Grid.Column="2" />
             <Button x:Name="btnUpdate" Content="Update" Grid.Column="3" HorizontalAlignment="Left" Margin="99,335,0,16"
-                    Grid.Row="8" Width="118" Background="#FF1B7140" Foreground="White" RenderTransformOrigin="0.37,0.2"
+                    Grid.Row="8" Width="121" Height="30" Background="#FF1B7140" Foreground="White" RenderTransformOrigin="0.37,0.2"
                     Click="btnUpdate_Click" />
             <Button x:Name="btnDelete" Content="Delete" Grid.Column="3" HorizontalAlignment="Left"
-                    Margin="245,335,0,16" Grid.Row="8" Width="118" Foreground="White" Background="#FFA2AA3D"
+                    Margin="245,335,0,16" Grid.Row="8" Width="121" Height="30" Foreground="White" Background="#FFA2AA3D"
                     Click="btnDelete_Click" />
 
 
             <Button x:Name="btnClose" Content="Close" Grid.Column="3" HorizontalAlignment="Left" Margin="383,335,0,18"
-                    Grid.Row="8" Width="120" Background="#FFEF8F18" Foreground="White" Click="btnClose_Click" />
-            <Button x:Name="btnReset" Content="Reset Input" HorizontalAlignment="Left" Margin="23,261,0,95" Width="96"
+                    Grid.Row="8" Width="121" Height="30" Background="#FFEF8F18" Foreground="White" Click="btnClose_Click" />
+            <Button x:Name="btnReset" Content="Reset Input" HorizontalAlignment="Left" Margin="23,261,0,95" Width="121" Height="30"
                     Background="#FF6E6E6E" Foreground="White" Click="btnReset_Click"
                     RenderTransformOrigin="0.182,0.495" Grid.Row="8" />
 

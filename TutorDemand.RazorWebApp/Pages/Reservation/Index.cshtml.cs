@@ -49,7 +49,7 @@ namespace TutorDemand.Pages.Reservations
 
                 foreach (var reservation in paginatedReservations)
                 {
-                    var teachingSchedule = await _teachingScheduleBusiness.FindOne(ts => ts.TeachingScheduleId.Equals(reservation.TeachingScheduleId));
+                    var teachingSchedule = await _teachingScheduleBusiness.FindOneAsync(ts => ts.TeachingScheduleId.Equals(reservation.TeachingScheduleId));
                     var teachingScheduleData = (TeachingSchedule)teachingSchedule.Data!;
                     var tutor = await _tutorBusiness.FindOneAsync(x => x.TutorId.Equals(teachingScheduleData.TutorId));
                     var subject = await _subjectBusiness.GetByIdAsync(((TeachingSchedule)teachingSchedule.Data!).SubjectId);
