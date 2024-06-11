@@ -1,0 +1,417 @@
+﻿@page
+@model TutorDemand.RazorWebApp.Pages.TeachingSchedules.Detail
+@{
+    var daysOfWeek = new List<string>
+    {
+        "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday",
+    };
+    var learnDays = @Model.TeachingSchedule.LearnDays.Split(",");
+}
+
+<h1 class="text-3xl font-bold mb-4 mt-8">Course Information</h1>
+
+<div class="grid grid-cols-12 gap-8">
+    <div class="col-span-12 md:col-span-6">
+        <div class="flex gap-x-4">
+            <img alt="subject" src="@Model.TeachingSchedule.Subject.Image" class="size-24 rounded-md object-cover"/>
+            <div class="flex flex-col gap-x-2">
+                <div class="flex items-center gap-x-2">
+                    <div class="font-bold">Subject:</div>
+                    <p>@Model.TeachingSchedule.Subject.Name</p>
+                </div>
+                <div class="flex items-center gap-x-2">
+                    <div class="font-bold">Start Date:</div>
+                    <p>@Model.TeachingSchedule.StartDate.ToString()!.Split(" ")[0]</p>
+                </div>
+                <div class="flex items-center gap-x-2">
+                    <div class="font-bold">End Date:</div>
+                    <p>@Model.TeachingSchedule.EndDate.ToString()!.Split(" ")[0]</p>
+                </div>
+                <div class="flex items-center gap-x-2">
+                    <div class="font-bold">Price:</div>
+                    <p>@(((int)Model.TeachingSchedule.Subject.CostPrice).ToString("#,0")) vnđ</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-span-12 md:col-span-6">
+        <div class="flex gap-x-4">
+            <img alt="subject" src="@Model.TeachingSchedule.Tutor.Avatar" class="size-24 rounded-md object-cover"/>
+            <div class="flex flex-col gap-x-2">
+                <div class="flex items-center gap-x-2">
+                    <div class="font-bold">Tutor:</div>
+                    <p>@Model.TeachingSchedule.Tutor.Fullname</p>
+                </div>
+                <div class="flex items-center gap-x-2">
+                    <div class="font-bold">Email:</div>
+                    <p>@Model.TeachingSchedule.Tutor.Email</p>
+                </div>
+                <div class="flex items-center gap-x-2">
+                    <div class="font-bold">Phone:</div>
+                    <p>@Model.TeachingSchedule.Tutor.Phone</p>
+                </div>
+                <div class="flex items-center gap-x-2">
+                    <div class="font-bold">Birthday:</div>
+                    <p>@Model.TeachingSchedule.Tutor.Dob</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="relative mt-8 overflow-x-auto shadow-md sm:rounded-lg">
+    <table class="w-full text-left text-sm text-gray-500 rtl:text-right">
+        <thead class="bg-primary text-xs uppercase text-white">
+        <tr>
+            <th scope="col" rowspan="2" class="">
+
+                <div class="flex items-center gap-x-2 p-2">
+                    <p>Year</p>
+                    <div id="year-select-container"></div>
+                </div>
+                <div class="flex items-center gap-x-2 p-2">
+                    <p>Week</p>
+                    <div id="week-select-container">
+                    </div>
+                </div>
+            </th>
+            <th scope="col" class="border border-gray-100">
+                <div class="flex items-center text-nowrap px-2">
+                    Monday
+                </div>
+            </th>
+            <th scope="col" class="border border-gray-100">
+                <div class="flex items-center text-nowrap px-2">
+                    Tuesday
+                </div>
+            </th>
+            <th scope="col" class="border border-gray-100">
+                <div class="flex items-center text-nowrap px-2">
+                    Wednesday
+                </div>
+            </th>
+            <th scope="col" class="border border-gray-100">
+                <div class="flex items-center text-nowrap px-2">
+                    Thursday
+                </div>
+            </th>
+            <th scope="col" class="border border-gray-100">
+                <div class="flex items-center text-nowrap px-2">
+                    Friday
+                </div>
+            </th>
+            <th scope="col" class="border border-gray-100">
+                <div class="flex items-center text-nowrap px-2">
+                    Saturday
+                </div>
+            </th>
+            <th scope="col" class="border border-gray-100">
+                <div class="flex items-center text-nowrap px-2">
+                    Sunday
+                </div>
+            </th>
+        </tr>
+        <tr id="day-header-container">
+        </tr>
+        </thead>
+        <tbody>
+        <tr class="schedule-slot border-b bg-white">
+            @* <th scope="row" class="whitespace-nowrap text-nowrap px-6 py-4 font-medium text-gray-900"> *@
+            @*     Slot 1 *@
+            @* </th> *@
+            @* @foreach (var day in daysOfWeek) *@
+            @* { *@
+            @*     if (learnDays.Contains(day) && Model.TeachingSchedule.Slot.SlotName == "Slot 1") *@
+            @*     { *@
+            @*         <th scope="row" class="whitespace-nowrap text-nowrap px-6 py-4 font-medium text-center text-white"> *@
+            @*             <div class="w-fit bg-primary rounded-md py-2 px-4">@Model.TeachingSchedule.Slot.SlotDesc</div> *@
+            @*         </th> *@
+            @*     } *@
+            @*     else *@
+            @*     { *@
+            @*         <th scope="row" class="whitespace-nowrap text-nowrap px-6 py-4 font-medium text-gray-900"> *@
+            @*             _ *@
+            @*         </th> *@
+            @*     } *@
+            @* } *@
+        </tr>
+        <tr class="schedule-slot border-b bg-white">
+            @* <th scope="row" class="whitespace-nowrap text-nowrap px-6 py-4 font-medium text-gray-900"> *@
+            @*     Slot 2 *@
+            @* </th> *@
+            @* @foreach (var day in daysOfWeek) *@
+            @* { *@
+            @*     if (learnDays.Contains(day) && Model.TeachingSchedule.Slot.SlotName == "Slot 2") *@
+            @*     { *@
+            @*         <th scope="row" class="whitespace-nowrap text-nowrap px-6 py-4 font-medium text-center text-white"> *@
+            @*             <div class="w-fit bg-primary rounded-md py-2 px-4">@Model.TeachingSchedule.Slot.SlotDesc</div> *@
+            @*         </th> *@
+            @*     } *@
+            @*     else *@
+            @*     { *@
+            @*         <th scope="row" class="whitespace-nowrap text-nowrap px-6 py-4 font-medium text-gray-900"> *@
+            @*             _ *@
+            @*         </th> *@
+            @*     } *@
+            @* } *@
+        </tr>
+        <tr class="schedule-slot border-b bg-white">
+            @* <th scope="row" class="whitespace-nowrap text-nowrap px-6 py-4 font-medium text-gray-900"> *@
+            @*     Slot 3 *@
+            @* </th> *@
+            @* @foreach (var day in daysOfWeek) *@
+            @* { *@
+            @*     if (learnDays.Contains(day) && Model.TeachingSchedule.Slot.SlotName == "Slot 3") *@
+            @*     { *@
+            @*         <th scope="row" class="whitespace-nowrap text-nowrap px-6 py-4 font-medium text-center text-white"> *@
+            @*             <div class="w-fit bg-primary rounded-md py-2 px-4">@Model.TeachingSchedule.Slot.SlotDesc</div> *@
+            @*         </th> *@
+            @*     } *@
+            @*     else *@
+            @*     { *@
+            @*         <th scope="row" class="whitespace-nowrap text-nowrap px-6 py-4 font-medium text-gray-900"> *@
+            @*             _ *@
+            @*         </th> *@
+            @*     } *@
+            @* } *@
+        </tr>
+        <tr class="schedule-slot border-b bg-white">
+            @* <th scope="row" class="whitespace-nowrap text-nowrap px-6 py-4 font-medium text-gray-900"> *@
+            @*     Slot 4 *@
+            @* </th> *@
+            @* @foreach (var day in daysOfWeek) *@
+            @* { *@
+            @*     if (learnDays.Contains(day) && Model.TeachingSchedule.Slot.SlotName == "Slot 4") *@
+            @*     { *@
+            @*         <th scope="row" class="whitespace-nowrap text-nowrap px-6 py-4 font-medium text-center text-white"> *@
+            @*             <div class="w-fit bg-primary rounded-md py-2 px-4">@Model.TeachingSchedule.Slot.SlotDesc</div> *@
+            @*         </th> *@
+            @*     } *@
+            @*     else *@
+            @*     { *@
+            @*         <th scope="row" class="whitespace-nowrap text-nowrap px-6 py-4 font-medium text-gray-900"> *@
+            @*             _ *@
+            @*         </th> *@
+            @*     } *@
+            @* } *@
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+@section Scripts
+{
+    <script>
+    const daysOfWeek = 
+        [
+            "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"
+        ]
+        const startDate = new Date("@Model.TeachingSchedule.StartDate")
+        const endDate = new Date("@Model.TeachingSchedule.EndDate")
+        const slotName = "@Model.TeachingSchedule.Slot.SlotName"
+        const slotDesc = "@Model.TeachingSchedule.Slot.SlotDesc"
+        const learnDays = "@Model.TeachingSchedule.LearnDays".split(",")
+       
+        const currentYear = new Date().getFullYear()
+        const yearSelectContainer = document.getElementById("year-select-container")
+                yearSelectContainer.innerHTML = `
+                  <select id="year-select" class="border border-primary text-black px-2 text-sm rounded block w-fit">
+                    <option value="${currentYear - 3}">${currentYear - 3}</option>
+                    <option value="${currentYear - 2}">${currentYear - 2}</option>
+                    <option value="${currentYear - 1}">${currentYear - 1}</option>
+                    <option value="${currentYear}">${currentYear}</option>
+                    <option value="${currentYear + 1}">${currentYear + 1}</option>
+                  </select>  
+                `
+                document.getElementById('year-select').value=`${currentYear}`
+                document.getElementById('year-select').addEventListener("change", handleYearChange)
+                
+        let selectedYear = currentYear
+        let selectedWeek
+        updateOptionWeeks()
+        selectedWeek = getCurrentWeek()
+        document.getElementById('week-select').value=`${selectedWeek}`
+        updateDaysHeader();
+        updateSchedule()
+       
+        console.log({startDate, endDate, learnDays,selectedYear,selectedWeek})
+        
+        function updateSchedule()
+        {
+            const slots = document.querySelectorAll(".schedule-slot");
+                    const daysInWeek = getDatesForWeek(selectedWeek)
+                    slots.forEach((slot,index)=>{
+                        const slotValue = index+1 
+                        slot.innerHTML=`
+                            <th scope="row" class="whitespace-nowrap text-nowrap px-6 py-4 font-medium text-gray-900">
+                                Slot ${slotValue}
+                            </th>`
+                        
+                        daysOfWeek.forEach((dayOfWeek,index)=>{
+                            const [day,month] = daysInWeek[index].split("/");
+                            const date = new Date(selectedYear,month-1,day)
+                            const th = document.createElement("th");
+                            th.setAttribute("scope", "row");
+                            th.className = "whitespace-nowrap text-nowrap px-6 py-4 font-medium text-gray-900";
+                            
+                            const isAValidSlot = learnDays.includes(dayOfWeek) && slotName === `Slot ${slotValue}` && date>=startDate && date <=endDate
+                            if (isAValidSlot)
+                                {
+                                    const div = document.createElement("div");
+                                            div.className = "w-fit bg-primary rounded-md py-2 px-4 text-white";
+                                            div.textContent = slotDesc;
+                                    th.appendChild(div)
+                                }else{
+                                 th.textContent = "_";
+                                }
+                                    // Add the created <th> element to the table row
+                            slot.appendChild(th);
+                        })
+                    })
+        }
+        
+        
+        
+        function handleYearChange(e)
+        {
+            selectedYear = Number(e.target.value);
+            updateOptionWeeks()
+            updateDaysHeader();
+            updateSchedule()
+        }
+        
+        function handleWeekChange(e){
+            selectedWeek=e.target.value
+                    updateDaysHeader();
+                    updateSchedule()
+        }
+        
+        function updateOptionWeeks()
+        {
+            const weeks = getWeeksInYear(selectedYear)
+            const weekSelectContainer = document.getElementById("week-select-container")
+            weekSelectContainer.innerHTML = `
+                <select id="week-select" class="border border-primary text-black px-2 text-sm rounded block w-fit">
+                </select>  
+                `
+                
+            document.getElementById('week-select').addEventListener("change", handleWeekChange)
+            
+            weeks.forEach(w=>{
+                const optionElement = document.createElement('option');
+                optionElement.value = w;
+                const div = document.createElement('div');
+                div.textContent = w;
+                optionElement.appendChild(div);
+                document.getElementById('week-select').appendChild(optionElement);
+            })
+            
+            document.getElementById('week-select').value=weeks[0]
+            selectedWeek=weeks[0];
+        }
+        
+        function updateDaysHeader(){
+            const daysInWeek = getDatesForWeek(selectedWeek)
+            const daysHeaderContainer = document.getElementById("day-header-container")
+            daysHeaderContainer.innerHTML="";
+            daysInWeek.forEach(d=>{
+                const th = document.createElement("th");
+                 th.setAttribute("scope", "col");
+              th.className = "border border-gray-100";          
+            const div = document.createElement("div");
+            div.className = "flex items-center text-nowrap px-2";
+            div.textContent = d;
+                        
+            th.appendChild(div);
+            daysHeaderContainer.appendChild(th);
+            })
+        }
+        
+        function getWeeksInYear(year) {
+          // Helper function to format date as dd/mm
+          function formatDate(date) {
+            const day = String(date.getDate()).padStart(2, "0");
+            const month = String(date.getMonth() + 1).padStart(2, "0"); // Months are 0-based
+            return `${day}/${month}`;
+          }
+        
+          // Find the first Monday of the year
+          let firstDate = new Date(year, 0, 1);
+          while (firstDate.getDay() !== 1) {
+            firstDate.setDate(firstDate.getDate() + 1);
+          }
+        
+          let weeks = [];
+          let currentDate = new Date(firstDate);
+        
+          // Iterate until we reach the first Monday of the next year
+          while (
+            currentDate.getFullYear() <= year ||
+            (currentDate.getFullYear() === year + 1 && currentDate.getDay() !== 1)
+          ) {
+            let weekStart = new Date(currentDate);
+            let weekEnd = new Date(currentDate);
+            weekEnd.setDate(weekEnd.getDate() + 6); // Set to Sunday of the same week
+        
+            weeks.push(`${formatDate(weekStart)} - ${formatDate(weekEnd)}`);
+        
+            // Move to the next Monday
+            currentDate.setDate(currentDate.getDate() + 7);
+          }
+        
+          return weeks;
+        }
+        
+        function getCurrentWeek() {
+          // Helper function to format date as dd/mm
+          function formatDate(date) {
+            const day = String(date.getDate()).padStart(2, "0");
+            const month = String(date.getMonth() + 1).padStart(2, "0"); // Months are 0-based
+            return `${day}/${month}`;
+          }
+        
+          // Get the current date
+          const currentDate = new Date();
+        
+          // Calculate the current week's Monday
+          const currentDay = currentDate.getDay();
+          const mondayOffset = (currentDay === 0 ? -6 : 1) - currentDay;
+          const weekStart = new Date(currentDate);
+          weekStart.setDate(currentDate.getDate() + mondayOffset);
+        
+          // Calculate the current week's Sunday
+          const weekEnd = new Date(weekStart);
+          weekEnd.setDate(weekStart.getDate() + 6);
+        
+          return `${formatDate(weekStart)} - ${formatDate(weekEnd)}`;
+        }
+        
+        function getDatesForWeek(selectedWeek) {
+            // Helper function to format date as dd/mm
+            function formatDate(date) {
+                const day = String(date.getDate()).padStart(2, '0');
+                const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are 0-based
+                return `${day}/${month}`;
+            }
+        
+            // Parse start and end dates from selectedWeek string
+            const [startStr, endStr] = selectedWeek.split(' - ');
+            const [startDay, startMonth] = startStr.split('/').map(Number);
+            const [endDay, endMonth] = endStr.split('/').map(Number);
+        
+            // Create date objects for start and end dates
+            const startDate = new Date(new Date().getFullYear(), startMonth - 1, startDay);
+            const endDate = new Date(new Date().getFullYear(), endMonth - 1, endDay);
+        
+            // Generate list of dates for the week
+            const dates = [];
+            let currentDate = new Date(startDate);
+            while (currentDate <= endDate) {
+                dates.push(formatDate(currentDate));
+                currentDate.setDate(currentDate.getDate() + 1);
+            }
+        
+            return dates;
+        }
+    </script>
+}

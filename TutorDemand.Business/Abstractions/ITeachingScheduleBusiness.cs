@@ -8,6 +8,7 @@ namespace TutorDemand.Business.Abstractions;
 public interface ITeachingScheduleBusiness
 {
     Task<IBusinessResult> GetAllAsync();
+    Task<IBusinessResult> GetDetail(Guid id);
     Task<IBusinessResult> GetTeachingSchedulesAsync(QueryTeachingScheduleDto dto);
     Task<IBusinessResult> FindAsync(Expression<Func<TeachingSchedule, bool>> expression);
     Task<IBusinessResult> FindOneAsync(Expression<Func<TeachingSchedule, bool>> expression);

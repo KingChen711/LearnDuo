@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using TutorDemand.Business;
 using TutorDemand.Business.Abstractions;
 using TutorDemand.Common;
 
@@ -11,10 +10,10 @@ public class Delete : PageModel
     private readonly ILogger<Create> _logger;
     private readonly ITeachingScheduleBusiness _teachingScheduleBusiness;
 
-    public Delete(ILogger<Create> logger)
+    public Delete(ILogger<Create> logger, ITeachingScheduleBusiness teachingScheduleBusiness)
     {
         _logger = logger;
-        _teachingScheduleBusiness ??= new TeachingScheduleBusiness();
+        _teachingScheduleBusiness = teachingScheduleBusiness;
     }
 
     public async Task<IActionResult> OnPostAsync(Guid? id)

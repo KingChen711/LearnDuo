@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace TutorDemand.Data.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialDatabase : Migration
+    public partial class Init : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -125,7 +125,6 @@ namespace TutorDemand.Data.Migrations
                     MeetRoomCode = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     RoomPassword = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     LearnDays = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    PaidPrice = table.Column<int>(type: "int", nullable: false),
                     StartDate = table.Column<DateOnly>(type: "date", nullable: false),
                     EndDate = table.Column<DateOnly>(type: "date", nullable: false)
                 },
