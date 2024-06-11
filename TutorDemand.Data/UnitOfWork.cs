@@ -16,12 +16,14 @@ namespace TutorDemand.Data
         private TeachingScheduleRepository _teachingScheduleRepo;
         private TutorRepository _tutorRepository;
         private CustomerRepository _customerRepository;
+        private ReservationRepository _reservationRepository;
         private SlotRepository _slotRepository;
 
         public UnitOfWork()
         {
             _unitOfWorkContext ??= new NET1704_221_5_TutorDemandContext();
         }
+        
 
         public UnitOfWork(NET1704_221_5_TutorDemandContext context) => _unitOfWorkContext = context;
 
@@ -41,6 +43,13 @@ namespace TutorDemand.Data
             get { return _tutorRepository ??= new TutorRepository(_unitOfWorkContext); }
         }
 
+        public ReservationRepository ReservationRepository
+        {
+            get
+            {
+                return _reservationRepository ??= new ReservationRepository();
+            }
+        }
         public CustomerRepository CustomerRepository
         {
             get { return _customerRepository ??= new CustomerRepository(_unitOfWorkContext); }

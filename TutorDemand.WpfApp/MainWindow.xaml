@@ -20,6 +20,9 @@
                 <MenuItem Header="Teaching Schedules" IsCheckable="False" FontSize="12" Click="Open_wTeachingSchedule_Click">
 
                 </MenuItem>
+                <MenuItem Header="Reservation" IsCheckable="False" FontSize="12" Click="Open_wReservation_Click">
+
+                </MenuItem>
             </MenuItem>
         </Menu>
     </Grid>

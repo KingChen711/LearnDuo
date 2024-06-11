@@ -94,6 +94,7 @@ namespace TutorDemand.Data
                 // Customer (Only 1)
                 if (!_context.Customers.Any()) await SeedCustomerAsync();
                 // Reservation (UI Only)
+                if (!_context.Reservations.Any()) await SeedReservationAsync();
                 // Company
 
                 Console.WriteLine("--> Seeding Data Successfully");
@@ -200,6 +201,53 @@ namespace TutorDemand.Data
             if (!result) Console.WriteLine("Something went wrong when seeding tutor data");
         }
 
+        private async Task SeedReservationAsync()
+        {
+            var customer = await _context.Customers.FirstOrDefaultAsync();
+            var tutor = await _context.Tutors.ToListAsync();
+            var teachingSchedule = await _context.TeachingSchedules.ToListAsync();
+
+            List<Reservation> reservations = new List<Reservation>()
+            {
+                new()
+                {
+                    ReservationId = Guid.NewGuid(),
+                    CustomerId = customer.CustomerId,
+                    TeachingScheduleId = teachingSchedule[0].TeachingScheduleId,
+                    PaidPrice = 100,
+                    CreatedAt = DateTime.Parse("10-10-2022"),
+                    ReservationStatus = nameof(ReservationStatus.Completed),
+                    PaymentMethod = nameof(PaymentMethod.Cash),
+                    PaymentStatus = nameof(PaymentStatus.Paid)
+                },
+                new()
+                {
+                    ReservationId = Guid.NewGuid(),
+                    CustomerId = customer.CustomerId,
+                    TeachingScheduleId = teachingSchedule[1].TeachingScheduleId,
+                    PaidPrice = 300,
+                    CreatedAt = DateTime.Parse("05-20-2024"),
+                    ReservationStatus = nameof(ReservationStatus.Processing),
+                    PaymentMethod = nameof(PaymentMethod.DebitCard),
+                    PaymentStatus = nameof(PaymentStatus.Paid)
+                },
+                new()
+                {
+                    ReservationId = Guid.NewGuid(),
+                    CustomerId = customer.CustomerId,
+                    TeachingScheduleId = teachingSchedule[2].TeachingScheduleId,
+                    PaidPrice = 500,
+                    CreatedAt = DateTime.Now,
+                    ReservationStatus = nameof(ReservationStatus.Processing),
+                    PaymentMethod = nameof(PaymentMethod.CreditCard),
+                    PaymentStatus = nameof(PaymentStatus.Unpaid)
+                }
+            };
+            await _context.Reservations.AddRangeAsync(reservations);
+            var result = await _context.SaveChangesAsync() > 0;
+            if(!result) Console.WriteLine("Something went wrong when seeding Reservation");
+        }
+
         //  Summary:
         //      Seed slots data
         private async Task SeedSlotsAsync()
@@ -286,7 +334,7 @@ namespace TutorDemand.Data
                 // Assign weekdays
                 schedules[i].LearnDays = TeachingScheduleHelper.GenerateRandomWeekdays();
                 // Assign price
-                //schedules[i].PaidPrice = random.Next(500000, 5000000); // Price from [500.000 - 5.000.000] VND
+                // schedules[i].PaidPrice = random.Next(500000, 5000000); // Price from [500.000 - 5.000.000] VND
             }
 
             // Add more tutor for python subject
@@ -310,7 +358,7 @@ namespace TutorDemand.Data
                     // Assign weekdays
                     LearnDays = TeachingScheduleHelper.GenerateRandomWeekdays(),
                     // Assign price
-                    //PaidPrice = random.Next(500000, 5000000) // Price from [500.000 - 5.000.000] VND
+                    // PaidPrice = random.Next(500000, 5000000) // Price from [500.000 - 5.000.000] VND
                 });
             }
 
@@ -343,7 +391,7 @@ namespace TutorDemand.Data
                         // Assign weekdays
                         LearnDays = TeachingScheduleHelper.GenerateRandomWeekdays(),
                         // Assign price
-                        //PaidPrice = random.Next(500000, 5000000) // Price from [500.000 - 5.000.000] VND
+                        // PaidPrice = random.Next(500000, 5000000) // Price from [500.000 - 5.000.000] VND
                     });
                 }
             }

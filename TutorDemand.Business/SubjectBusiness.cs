@@ -24,7 +24,7 @@ public class SubjectBusiness : ISubjectBusiness
 
     public SubjectBusiness(IMapper mapper) => _unitOfWork ??= new UnitOfWork();
 
-    public SubjectBusiness() { }
+    public SubjectBusiness() => _unitOfWork ??= new UnitOfWork();
 
 
     public IBusinessResult Delete(Guid subjectId)

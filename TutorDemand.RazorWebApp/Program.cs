@@ -1,7 +1,9 @@
 using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using TutorDemand.Business;
 using TutorDemand.Business.Abstractions;
 using TutorDemand.Data;
+using TutorDemand.Data.Entities;
 using TutorDemand.Data.Mappings;
 using TutorDemand.RazorWebApp.Extensions;
 using TutorDemand.RazorWebApp.Models;

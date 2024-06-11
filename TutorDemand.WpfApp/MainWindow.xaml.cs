@@ -1,4 +1,19 @@
-﻿using System.Windows;
+﻿using AutoMapper;
+using System.CodeDom;
+using System.Text;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Documents;
+using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
+using System.Windows.Shapes;
+using TutorDemand.Business;
+using TutorDemand.Business.Abstractions;
+using TutorDemand.Data.Entities;
+using TutorDemand.Data.Mappings;
 using TutorDemand.WpfApp.UI;
 
 namespace TutorDemand.WpfApp
@@ -8,8 +23,11 @@ namespace TutorDemand.WpfApp
     /// </summary>
     public partial class MainWindow : Window
     {
+        private readonly string _customerId;
+        private readonly CustomerBusiness _customerBusiness;
         public MainWindow()
         {
+            _customerBusiness = new CustomerBusiness();
             InitializeComponent();
         }
 
@@ -23,6 +41,15 @@ namespace TutorDemand.WpfApp
         private void Open_wTutor_Click(object sender, RoutedEventArgs e)
         {
             var p = new wTutor();
+            p.Owner = this;
+            p.Show();
+        }
+        private async void Open_wReservation_Click(object sender, RoutedEventArgs e)
+        {
+            var customerDatas = await _customerBusiness.GetAllAsync();
+            var listData = (List<Customer>)customerDatas.Data!;
+            var currentCustomer = listData.First();
+            var p = new wReservation(currentCustomer.CustomerId.ToString());
             p.Owner = this;
             p.Show();
         }
