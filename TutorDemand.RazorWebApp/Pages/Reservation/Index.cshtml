@@ -57,14 +57,14 @@
                         <td class="py-2 px-6 border-b text-center">@reservation.TutorName</td>
                         <td class="py-2 px-6 border-b text-center">@reservation.SubjectName</td>
                         <td class="py-2 px-6 border-b text-center flex items-center justify-center gap-2">
-                            <a href="/Reservation/Delete/@reservation.Id" onclick="return confirmDelete()" class="block rounded-lg bg-gradient-to-r from-teal-400 via-teal-500 to-teal-600 p-2 text-center font-medium text-white hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-teal-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" type="button">
-                                Delete
+                            <a href="/Reservation/View/@reservation.Id" class="block rounded-lg bg-gradient-to-r from-blue-400 via-blue-500 to-blue-600 p-2 text-center font-medium text-white hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" type="button">
+                                View
                             </a>
                             <a href="javascript:void(0)" onclick="openUpdateModal('@reservation.Id', '@reservation.PaymentMethod', '@reservation.PaymentStatus', '@reservation.ReservationStatus')" class="block rounded-lg bg-gradient-to-r from-teal-400 via-teal-500 to-teal-600 p-2 text-center font-medium text-white hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-teal-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" type="button">
                                 Update
                             </a>
-                            <a href="/Reservation/View/@reservation.Id" class="block rounded-lg bg-gradient-to-r from-blue-400 via-blue-500 to-blue-600 p-2 text-center font-medium text-white hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" type="button">
-                                View
+                            <a href="/Reservation/Delete/@reservation.Id" onclick="return confirmDelete()" class="block rounded-lg bg-gradient-to-r from-teal-400 via-teal-500 to-teal-600 p-2 text-center font-medium text-white hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-teal-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" type="button">
+                                Delete
                             </a>
                         </td>
                     </tr>
