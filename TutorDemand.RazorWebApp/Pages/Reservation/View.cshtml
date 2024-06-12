@@ -1,0 +1,45 @@
+@page "{reservationId:Guid}"
+@model TutorDemand.RazorWebApp.Pages.Reservation.ViewModel
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chi tiết giao dịch</title>
+    <link href="~/css/site.css" rel="stylesheet"/>
+</head>
+<body class="bg-gray-100">
+    <div class="container mx-auto p-6">
+        <div class="bg-white p-8 rounded shadow-md">
+            <h1 class="text-2xl font-bold mb-6">Chi tiết giao dịch</h1>
+            
+            <h2 class="text-xl font-semibold mb-4">Reservation Details</h2>
+            <p><strong>Tutor Name:</strong> @Model.ReservationDetail.TutorName</p>
+            <p><strong>Subject Name:</strong> @Model.ReservationDetail.SubjectName</p>
+            <p><strong>Paid Price:</strong> @Model.ReservationDetail.PaidPrice</p>
+            <p><strong>Reservation Status:</strong> @Model.ReservationDetail.ReservationStatus</p>
+            <p><strong>Payment Status:</strong> @Model.ReservationDetail.PaymentStatus</p>
+            <p><strong>Payment Method:</strong> @Model.ReservationDetail.PaymentMethod</p>
+            
+            <h2 class="text-xl font-semibold mb-4 mt-8">Tutor Detail</h2>
+            <p><strong>Tên giảng viên:</strong> @Model.TutorDetail.Fullname</p>
+            <p><strong>Email:</strong> @Model.TutorDetail.Email</p>
+            <p><strong>Số điện thoại:</strong> @Model.TutorDetail.Phone</p>
+            <p><strong>Địa chỉ:</strong> @Model.TutorDetail.Address</p>
+            <p><strong>Giới tính:</strong> @Model.TutorDetail.Gender</p>
+            <p><strong>Ngày sinh:</strong> @Model.TutorDetail.Dob</p>
+            
+            <h2 class="text-xl font-semibold mb-4 mt-8">Teaching Schedule</h2>
+            <p><strong>Meet Room:</strong> @Model.ScheduleDto.MeetRoomCode</p>
+            <p><strong>Learning Date:</strong> @Model.ScheduleDto.LearnDays</p>
+            <p><strong>Start Date:</strong> @Model.ScheduleDto.StartDate</p>
+            <p><strong>End Date:</strong> @Model.ScheduleDto.EndDate</p>
+        </div>
+    </div>
+</body>
+</html>
