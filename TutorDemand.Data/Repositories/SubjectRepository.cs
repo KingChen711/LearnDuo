@@ -12,7 +12,7 @@ namespace TutorDemand.Data.Repositories
 {
     public class SubjectRepository : GenericRepository<Subject>
     {
-        private readonly NET1704_221_5_TutorDemandContext _context;
+        //private readonly NET1704_221_5_TutorDemandContext _context;
 
         public SubjectRepository() { }
 

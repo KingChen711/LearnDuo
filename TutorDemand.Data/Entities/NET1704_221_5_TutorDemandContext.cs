@@ -23,21 +23,18 @@ public class NET1704_221_5_TutorDemandContext : DbContext
     public DbSet<TeachingSchedule> TeachingSchedules { get; set; }
     public DbSet<Tutor> Tutors { get; set; }
 
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    public static string GetConnectionString(string connectionStringName)
     {
-        //optionsBuilder.UseSqlServer(GetConnectionString());
-        optionsBuilder.UseSqlServer("Server=localhost;Initial Catalog=Net1704_221_5_TutorDemand;User ID=sa;Password=12345;Trusted_Connection=True;MultipleActiveResultSets=True;TrustServerCertificate=true;");
-    }
-
-    private string GetConnectionString()
-    {
-        IConfiguration config = new ConfigurationBuilder()
-            .SetBasePath(Directory.GetCurrentDirectory())
+        var config = new ConfigurationBuilder()
+            .SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
             .AddJsonFile("appsettings.json")
             .Build();
 
-        return config.GetConnectionString("TutorDemandContextConnection")!;
+        string connectionString = config.GetConnectionString(connectionStringName);
+        return connectionString;
     }
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        => optionsBuilder.UseSqlServer(GetConnectionString("DefaultConnection"));
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
