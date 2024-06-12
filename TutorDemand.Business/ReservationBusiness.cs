@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using TutorDemand.Business.Abstractions;
 using TutorDemand.Business.Base;
 using TutorDemand.Common;
+using TutorDemand.Data;
 using TutorDemand.Data.DAO;
 using TutorDemand.Data.Dtos.Reservation;
 using TutorDemand.Data.Entities;
@@ -12,26 +13,342 @@ namespace TutorDemand.Business;
 
 public class ReservationBusiness : IReservationBusiness
 {
-    private readonly ReservationDAO _reservationDAO;
+    // private readonly ReservationDAO _reservationDAO;
+    private readonly UnitOfWork _unitOfWork;
 
-    public ReservationBusiness()
+    public ReservationBusiness(NET1704_221_5_TutorDemandContext context)
     {
-        _reservationDAO = new ReservationDAO();
+        // _reservationDAO = new ReservationDAO();
+        _unitOfWork ??= new UnitOfWork(context);
     }
+
+    public ReservationBusiness() => _unitOfWork = new UnitOfWork();
+
+    #region Business logic using DAO
+
+    // public IBusinessResult Delete(Guid reservationId)
+    // {
+    //     try
+    //     {
+    //         var reservationEntity = _reservationDAO.GetById(reservationId);
+    //         if (reservationEntity is null)
+    //         {
+    //             return new BusinessResult(Const.WARNING_NO_DATA_CODE, Const.WARNING_NO_DATA_MSG);
+    //         }
+    //         else
+    //         {
+    //             _reservationDAO.Remove(reservationEntity);
+    //             _reservationDAO.SaveChanges();
+    //
+    //             return new BusinessResult(Const.SUCCESS_DELETE_CODE, Const.SUCCESS_DELETE_MSG);
+    //         }
+    //     }
+    //     catch (Exception ex)
+    //     {
+    //         return new BusinessResult(Const.ERROR_EXCEPTION_CODE, ex.Message);
+    //     }
+    // }
+    //
+    // public IBusinessResult Delete(int id)
+    // {
+    //     try
+    //     {
+    //         var reservationEntity = _reservationDAO.GetById(id);
+    //         if (reservationEntity is null)
+    //         {
+    //             return new BusinessResult(Const.WARNING_NO_DATA_CODE, Const.WARNING_NO_DATA_MSG);
+    //         }
+    //         else
+    //         {
+    //             _reservationDAO.Remove(reservationEntity);
+    //             _reservationDAO.SaveChanges();
+    //
+    //             return new BusinessResult(Const.SUCCESS_DELETE_CODE, Const.SUCCESS_DELETE_MSG);
+    //         }
+    //     }
+    //     catch (Exception ex)
+    //     {
+    //         return new BusinessResult(Const.ERROR_EXCEPTION_CODE, ex.Message);
+    //     }
+    // }
+    //
+    // public async Task<IBusinessResult> DeleteAsync(Guid reservationId)
+    // {
+    //     var reservationEntity = await _reservationDAO.GetByIdAsync(reservationId);
+    //     if (reservationEntity is null)
+    //     {
+    //         return new BusinessResult(Const.WARNING_NO_DATA_CODE, Const.WARNING_NO_DATA_MSG);
+    //     }
+    //     else
+    //     {
+    //         _reservationDAO.Remove(reservationEntity);
+    //         await _reservationDAO.SaveChangesAsync();
+    //
+    //         return new BusinessResult(Const.SUCCESS_DELETE_CODE, Const.SUCCESS_DELETE_MSG);
+    //     }
+    // }
+    //
+    // public IBusinessResult GetById(Guid reservationId)
+    // {
+    //     try
+    //     {
+    //         var reservationEntity = _reservationDAO.GetById(reservationId);
+    //
+    //         if (reservationEntity is null)
+    //         {
+    //             return new BusinessResult(Const.SUCCESS_READ_CODE, Const.SUCCESS_READ_MSG, reservationEntity!);
+    //         }
+    //         else
+    //         {
+    //             return new BusinessResult(Const.FAIL_READ_CODE, Const.FAIL_READ_MSG);
+    //         }
+    //     }
+    //     catch (Exception ex)
+    //     {
+    //         return new BusinessResult(Const.ERROR_EXCEPTION_CODE, ex.Message);
+    //     }
+    // }
+    //
+    // public async Task<IBusinessResult> GetByIdAsync(Guid reservationId)
+    // {
+    //     try
+    //     {
+    //         var reservationEntity = await _reservationDAO.GetByIdAsync(reservationId);
+    //
+    //         if (reservationEntity is null)
+    //         {
+    //             return new BusinessResult(Const.SUCCESS_READ_CODE, Const.SUCCESS_READ_MSG, reservationEntity!);
+    //         }
+    //         else
+    //         {
+    //             return new BusinessResult(Const.FAIL_READ_CODE, Const.FAIL_READ_MSG);
+    //         }
+    //     }
+    //     catch (Exception ex)
+    //     {
+    //         return new BusinessResult(Const.ERROR_EXCEPTION_CODE, ex.Message);
+    //     }
+    // }
+    //
+    // public IBusinessResult GetAll()
+    // {
+    //     try
+    //     {
+    //         var reservationEntities = _reservationDAO.GetAll();
+    //
+    //         if (reservationEntities.Any())
+    //         {
+    //             return new BusinessResult(Const.SUCCESS_READ_CODE, Const.SUCCESS_READ_MSG, reservationEntities!);
+    //         }
+    //         else
+    //         {
+    //             return new BusinessResult(Const.FAIL_READ_CODE, Const.FAIL_READ_MSG);
+    //         }
+    //     }
+    //     catch (Exception ex)
+    //     {
+    //         return new BusinessResult(Const.ERROR_EXCEPTION_CODE, ex.Message);
+    //     }
+    // }
+    //
+    // public async Task<IBusinessResult> GetAllAsync()
+    // {
+    //     try
+    //     {
+    //         var reservationEntities = await _reservationDAO.GetAllAsync();
+    //
+    //         if (reservationEntities.Any())
+    //         {
+    //             return new BusinessResult(Const.SUCCESS_READ_CODE, Const.SUCCESS_READ_MSG, reservationEntities!);
+    //         }
+    //         else
+    //         {
+    //             return new BusinessResult(Const.FAIL_READ_CODE, Const.FAIL_READ_MSG);
+    //         }
+    //     }
+    //     catch (Exception ex)
+    //     {
+    //         return new BusinessResult(Const.ERROR_EXCEPTION_CODE, ex.Message);
+    //     }
+    // }
+    //
+    //
+    // public IBusinessResult GetWithCondition(
+    //         Expression<Func<Reservation, bool>> filter = null!,
+    //         Func<IQueryable<Reservation>, IOrderedQueryable<Reservation>> orderBy = null!,
+    //         string includeProperties = "")
+    // {
+    //     try
+    //     {
+    //         var reservations = _reservationDAO.GetWithCondition(filter, orderBy, includeProperties);
+    //         var result = _reservationDAO.SaveChanges() > 0;
+    //
+    //         if (result)
+    //         {
+    //             return new BusinessResult(Const.SUCCESS_UPDATE_CODE, Const.SUCCESS_UPDATE_MSG);
+    //         }
+    //         else
+    //         {
+    //             return new BusinessResult(Const.FAIL_UPDATE_CODE, Const.FAIL_UPDATE_MSG);
+    //         }
+    //
+    //     }
+    //     catch (Exception ex)
+    //     {
+    //         return new BusinessResult(Const.ERROR_EXCEPTION_CODE, ex.Message);
+    //     }
+    // }
+    //
+    // public async Task<IBusinessResult> GetWithConditionAysnc(
+    //     Expression<Func<Reservation, bool>> filter = null!,
+    //     Func<IQueryable<Reservation>, IOrderedQueryable<Reservation>> orderBy = null!,
+    //     string includeProperties = "")
+    // {
+    //     try
+    //     {
+    //         var reservations = await _reservationDAO.GetWithConditionAsync(filter, orderBy, includeProperties);
+    //         var result = await _reservationDAO.SaveChangesAsync() > 0;
+    //
+    //         if (result)
+    //         {
+    //             return new BusinessResult(Const.SUCCESS_UPDATE_CODE, Const.SUCCESS_UPDATE_MSG);
+    //         }
+    //         else
+    //         {
+    //             return new BusinessResult(Const.FAIL_UPDATE_CODE, Const.FAIL_UPDATE_MSG);
+    //         }
+    //
+    //     }
+    //     catch (Exception ex)
+    //     {
+    //         return new BusinessResult(Const.ERROR_EXCEPTION_CODE, ex.Message);
+    //     }
+    // }
+    //
+    // public IBusinessResult Insert(Reservation reservation)
+    // {
+    //     try
+    //     {
+    //         _reservationDAO.Create(reservation);
+    //         var result = _reservationDAO.SaveChanges() > 0;
+    //         if (result)
+    //         {
+    //             return new BusinessResult(Const.SUCCESS_CREATE_CODE, Const.SUCCESS_CREATE_MSG);
+    //         }
+    //         else
+    //         {
+    //             return new BusinessResult(Const.FAIL_CREATE_CODE, Const.FAIL_CREATE_MSG);
+    //         }
+    //     }
+    //     catch (Exception ex)
+    //     {
+    //         return new BusinessResult(Const.ERROR_EXCEPTION_CODE, ex.Message);
+    //     }
+    // }
+    //
+    // public async Task<IBusinessResult> InsertAsync(Reservation reservation)
+    // {
+    //     try
+    //     {
+    //         await _reservationDAO.CreateAsync(reservation);
+    //         var result = await _reservationDAO.SaveChangesAsync() > 0;
+    //         if (result)
+    //         {
+    //             return new BusinessResult(Const.SUCCESS_CREATE_CODE, Const.SUCCESS_CREATE_MSG);
+    //         }
+    //         else
+    //         {
+    //             return new BusinessResult(Const.FAIL_CREATE_CODE, Const.FAIL_CREATE_MSG);
+    //         }
+    //     }
+    //     catch (Exception ex)
+    //     {
+    //         return new BusinessResult(Const.ERROR_EXCEPTION_CODE, ex.Message);
+    //     }
+    // }
+    //
+    // public IBusinessResult Update(Reservation reservation)
+    // {
+    //     try
+    //     {
+    //         _reservationDAO.Update(reservation);
+    //         var result = _reservationDAO.SaveChanges() > 0;
+    //
+    //         if (result)
+    //         {
+    //             return new BusinessResult(Const.SUCCESS_UPDATE_CODE, Const.SUCCESS_UPDATE_MSG);
+    //         }
+    //         else
+    //         {
+    //             return new BusinessResult(Const.FAIL_UPDATE_CODE, Const.FAIL_UPDATE_MSG);
+    //         }
+    //
+    //     }
+    //     catch (Exception ex)
+    //     {
+    //         return new BusinessResult(Const.ERROR_EXCEPTION_CODE, ex.Message);
+    //     }
+    // }
+    //
+    // public async Task<IBusinessResult> UpdateAsync(Reservation reservation)
+    // {
+    //     try
+    //     {
+    //         await _reservationDAO.UpdateAsync(reservation);
+    //         var result = await _reservationDAO.SaveChangesAsync() > 0;
+    //
+    //         if (result)
+    //         {
+    //             return new BusinessResult(Const.SUCCESS_UPDATE_CODE, Const.SUCCESS_UPDATE_MSG);
+    //         }
+    //         else
+    //         {
+    //             return new BusinessResult(Const.FAIL_UPDATE_CODE, Const.FAIL_UPDATE_MSG);
+    //         }
+    //
+    //     }
+    //     catch (Exception ex)
+    //     {
+    //         return new BusinessResult(Const.ERROR_EXCEPTION_CODE, ex.Message);
+    //     }
+    // }
+    //
+    // public IBusinessResult GetById(int id)
+    // {
+    //     try
+    //     {
+    //         var reservationEntity = _reservationDAO.GetById(id);
+    //
+    //         if (reservationEntity is not null)
+    //         {
+    //             return new BusinessResult(Const.SUCCESS_READ_CODE, Const.SUCCESS_READ_MSG, reservationEntity!);
+    //         }
+    //         else
+    //         {
+    //             return new BusinessResult(Const.FAIL_READ_CODE, Const.FAIL_READ_MSG);
+    //         }
+    //     }
+    //     catch (Exception ex)
+    //     {
+    //         return new BusinessResult(Const.ERROR_EXCEPTION_CODE, ex.Message);
+    //     }
+    // }
+
+    #endregion
 
     public IBusinessResult Delete(Guid reservationId)
     {
         try
         {
-            var subjectEntity = _reservationDAO.GetById(reservationId);
-            if (subjectEntity is null)
+            var reservationEntity = _unitOfWork.ReservationRepository.GetOneWithCondition(r => r.ReservationId.Equals(reservationId));
+            if (reservationEntity is null)
             {
                 return new BusinessResult(Const.WARNING_NO_DATA_CODE, Const.WARNING_NO_DATA_MSG);
             }
             else
             {
-                _reservationDAO.Remove(subjectEntity);
-                _reservationDAO.SaveChanges();
+                _unitOfWork.ReservationRepository.PrepareRemove(reservationEntity);
+                _unitOfWork.ReservationRepository.Save();
 
                 return new BusinessResult(Const.SUCCESS_DELETE_CODE, Const.SUCCESS_DELETE_MSG);
             }
@@ -46,15 +363,15 @@ public class ReservationBusiness : IReservationBusiness
     {
         try
         {
-            var subjectEntity = _reservationDAO.GetById(id);
-            if (subjectEntity is null)
+            var reservationEntity = _unitOfWork.ReservationRepository.GetById(id);
+            if (reservationEntity is null)
             {
                 return new BusinessResult(Const.WARNING_NO_DATA_CODE, Const.WARNING_NO_DATA_MSG);
             }
             else
             {
-                _reservationDAO.Remove(subjectEntity);
-                _reservationDAO.SaveChanges();
+                _unitOfWork.ReservationRepository.PrepareRemove(reservationEntity);
+                _unitOfWork.ReservationRepository.Save();
 
                 return new BusinessResult(Const.SUCCESS_DELETE_CODE, Const.SUCCESS_DELETE_MSG);
             }
@@ -67,15 +384,15 @@ public class ReservationBusiness : IReservationBusiness
 
     public async Task<IBusinessResult> DeleteAsync(Guid reservationId)
     {
-        var subjectEntity = await _reservationDAO.GetByIdAsync(reservationId);
-        if (subjectEntity is null)
+        var reservationEntity =  _unitOfWork.ReservationRepository.GetOneWithCondition(r => r.ReservationId.Equals(reservationId));
+        if (reservationEntity is null)
         {
             return new BusinessResult(Const.WARNING_NO_DATA_CODE, Const.WARNING_NO_DATA_MSG);
         }
         else
         {
-            _reservationDAO.Remove(subjectEntity);
-            await _reservationDAO.SaveChangesAsync();
+            _unitOfWork.ReservationRepository.PrepareRemove(reservationEntity);
+            await _unitOfWork.ReservationRepository.SaveAsync();
 
             return new BusinessResult(Const.SUCCESS_DELETE_CODE, Const.SUCCESS_DELETE_MSG);
         }
@@ -85,11 +402,11 @@ public class ReservationBusiness : IReservationBusiness
     {
         try
         {
-            var subjectEntity = _reservationDAO.GetById(reservationId);
+            var reservationEntity = _unitOfWork.ReservationRepository.GetById(reservationId);
 
-            if (subjectEntity is null)
+            if (reservationEntity is null)
             {
-                return new BusinessResult(Const.SUCCESS_READ_CODE, Const.SUCCESS_READ_MSG, subjectEntity!);
+                return new BusinessResult(Const.SUCCESS_READ_CODE, Const.SUCCESS_READ_MSG, reservationEntity!);
             }
             else
             {
@@ -106,11 +423,11 @@ public class ReservationBusiness : IReservationBusiness
     {
         try
         {
-            var subjectEntity = await _reservationDAO.GetByIdAsync(reservationId);
+            var reservationEntity = await _unitOfWork.ReservationRepository.GetByIdAsync(reservationId);
 
-            if (subjectEntity is null)
+            if (reservationEntity is null)
             {
-                return new BusinessResult(Const.SUCCESS_READ_CODE, Const.SUCCESS_READ_MSG, subjectEntity!);
+                return new BusinessResult(Const.SUCCESS_READ_CODE, Const.SUCCESS_READ_MSG, reservationEntity!);
             }
             else
             {
@@ -127,11 +444,11 @@ public class ReservationBusiness : IReservationBusiness
     {
         try
         {
-            var subjectEntities = _reservationDAO.GetAll();
+            var reservationEntities = _unitOfWork.ReservationRepository.GetAll();
 
-            if (subjectEntities.Any())
+            if (reservationEntities.Any())
             {
-                return new BusinessResult(Const.SUCCESS_READ_CODE, Const.SUCCESS_READ_MSG, subjectEntities!);
+                return new BusinessResult(Const.SUCCESS_READ_CODE, Const.SUCCESS_READ_MSG, reservationEntities!);
             }
             else
             {
@@ -148,11 +465,11 @@ public class ReservationBusiness : IReservationBusiness
     {
         try
         {
-            var subjectEntities = await _reservationDAO.GetAllAsync();
+            var reservationEntities = await _unitOfWork.ReservationRepository.GetAllAsync();
 
-            if (subjectEntities.Any())
+            if (reservationEntities.Any())
             {
-                return new BusinessResult(Const.SUCCESS_READ_CODE, Const.SUCCESS_READ_MSG, subjectEntities!);
+                return new BusinessResult(Const.SUCCESS_READ_CODE, Const.SUCCESS_READ_MSG, reservationEntities!);
             }
             else
             {
@@ -166,19 +483,15 @@ public class ReservationBusiness : IReservationBusiness
     }
 
 
-    public IBusinessResult GetWithCondition(
-        Expression<Func<Reservation, bool>> filter = null!,
-        Func<IQueryable<Reservation>, IOrderedQueryable<Reservation>> orderBy = null!,
-        string includeProperties = "")
+    public async Task<IBusinessResult> FindOneAsync(Expression<Func<Reservation, bool>> condition)
     {
         try
         {
-            var subjects = _reservationDAO.GetWithCondition(filter, orderBy, includeProperties);
-            var result = _reservationDAO.SaveChanges() > 0;
+            var tutors = await _unitOfWork.ReservationRepository.GetOneWithConditionAsync(condition);
 
-            if (result)
+            if (tutors != null)
             {
-                return new BusinessResult(Const.SUCCESS_UPDATE_CODE, Const.SUCCESS_UPDATE_MSG);
+                return new BusinessResult(Const.SUCCESS_UPDATE_CODE, Const.SUCCESS_UPDATE_MSG, tutors);
             }
             else
             {
@@ -191,37 +504,38 @@ public class ReservationBusiness : IReservationBusiness
         }
     }
 
-    public async Task<IBusinessResult> GetWithConditionAysnc(
-        Expression<Func<Reservation, bool>> filter = null!,
-        Func<IQueryable<Reservation>, IOrderedQueryable<Reservation>> orderBy = null!,
-        string includeProperties = "")
+    //public async Task<IBusinessResult> GetWithConditionAysnc(
+    //    Expression<Func<reservation, bool>> filter = null!, 
+    //    Func<IQueryable<reservation>, IOrderedQueryable<reservation>> orderBy = null!, 
+    //    string includeProperties = "")
+    //{
+    //    try
+    //    {
+    //        var reservations = await _unitOfWork.ReservationRepository.GetWithConditionAsync(filter, orderBy, includeProperties);
+    //        var result = await _unitOfWork.ReservationRepository.SaveAsync() > 0;
+
+    //        if (result)
+    //        {
+    //            return new BusinessResult(Const.SUCCESS_UPDATE_CODE, Const.SUCCESS_UPDATE_MSG);
+    //        }
+    //        else
+    //        {
+    //            return new BusinessResult(Const.FAIL_UPDATE_CODE, Const.FAIL_UPDATE_MSG);
+    //        }
+
+    //    }
+    //    catch (Exception ex)
+    //    {
+    //        return new BusinessResult(Const.ERROR_EXCEPTION_CODE, ex.Message);
+    //    }
+    //}
+
+    public IBusinessResult Create(Reservation reservation)
     {
         try
         {
-            var subjects = await _reservationDAO.GetWithConditionAsync(filter, orderBy, includeProperties);
-            var result = await _reservationDAO.SaveChangesAsync() > 0;
-
-            if (result)
-            {
-                return new BusinessResult(Const.SUCCESS_UPDATE_CODE, Const.SUCCESS_UPDATE_MSG);
-            }
-            else
-            {
-                return new BusinessResult(Const.FAIL_UPDATE_CODE, Const.FAIL_UPDATE_MSG);
-            }
-        }
-        catch (Exception ex)
-        {
-            return new BusinessResult(Const.ERROR_EXCEPTION_CODE, ex.Message);
-        }
-    }
-
-    public IBusinessResult Insert(Reservation reservation)
-    {
-        try
-        {
-            _reservationDAO.Create(reservation);
-            var result = _reservationDAO.SaveChanges() > 0;
+            _unitOfWork.ReservationRepository.PrepareCreate(reservation);
+            var result = _unitOfWork.ReservationRepository.Save() > 0;
             if (result)
             {
                 return new BusinessResult(Const.SUCCESS_CREATE_CODE, Const.SUCCESS_CREATE_MSG);
@@ -237,12 +551,12 @@ public class ReservationBusiness : IReservationBusiness
         }
     }
 
-    public async Task<IBusinessResult> InsertAsync(Reservation reservation)
+    public async Task<IBusinessResult> CreateAsync(Reservation reservation)
     {
         try
         {
-            await _reservationDAO.CreateAsync(reservation);
-            var result = await _reservationDAO.SaveChangesAsync() > 0;
+            await _unitOfWork.ReservationRepository.CreateAsync(reservation);
+            var result = await _unitOfWork.ReservationRepository.SaveAsync() > 0;
             if (result)
             {
                 return new BusinessResult(Const.SUCCESS_CREATE_CODE, Const.SUCCESS_CREATE_MSG);
@@ -262,8 +576,8 @@ public class ReservationBusiness : IReservationBusiness
     {
         try
         {
-            _reservationDAO.Update(reservation);
-            var result = _reservationDAO.SaveChanges() > 0;
+            _unitOfWork.ReservationRepository.PrepareUpdate(reservation);
+            var result = _unitOfWork.ReservationRepository.Save() > 0;
 
             if (result)
             {
@@ -284,8 +598,8 @@ public class ReservationBusiness : IReservationBusiness
     {
         try
         {
-            await _reservationDAO.UpdateAsync(reservation);
-            var result = await _reservationDAO.SaveChangesAsync() > 0;
+            
+            var result =await _unitOfWork.ReservationRepository.UpdateAsync(reservation)>0;
 
             if (result)
             {
@@ -306,11 +620,11 @@ public class ReservationBusiness : IReservationBusiness
     {
         try
         {
-            var subjectEntity = _reservationDAO.GetById(id);
+            var reservationEntity = _unitOfWork.ReservationRepository.GetById(id);
 
-            if (subjectEntity is not null)
+            if (reservationEntity is not null)
             {
-                return new BusinessResult(Const.SUCCESS_READ_CODE, Const.SUCCESS_READ_MSG, subjectEntity!);
+                return new BusinessResult(Const.SUCCESS_READ_CODE, Const.SUCCESS_READ_MSG, reservationEntity!);
             }
             else
             {
@@ -321,5 +635,15 @@ public class ReservationBusiness : IReservationBusiness
         {
             return new BusinessResult(Const.ERROR_EXCEPTION_CODE, ex.Message);
         }
+    }
+
+    public int SaveChanges()
+    {
+        return _unitOfWork.ReservationRepository.Save();
+    }
+
+    public async Task<int> SaveChangeAsync()
+    {
+        return await _unitOfWork.ReservationRepository.SaveAsync();
     }
 }

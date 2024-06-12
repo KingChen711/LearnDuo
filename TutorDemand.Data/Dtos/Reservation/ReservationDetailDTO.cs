@@ -4,9 +4,16 @@ using TutorDemand.Data.Enums;
 
 namespace TutorDemand.Data.Dtos.Reservation;
 
-public class ReservationUpdateDto
+public class ReservationDetailDTO
 {
-   
+    
+    public Guid Id { get; set; }
+    public string TutorName { get; set; }
+    public string SubjectName { get; set; }
+    public int PaidPrice { get; set; }
+
+    public DateTime CreatedAt { get; set; } = DateTime.Now;
+
     [DisplayName("Trạng thái đặt chỗ")]
     [MaxLength(15)]
     [EnumDataType(typeof(ReservationStatus))]

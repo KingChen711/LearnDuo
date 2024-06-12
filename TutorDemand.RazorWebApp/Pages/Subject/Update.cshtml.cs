@@ -51,7 +51,7 @@ namespace TutorDemand.RazorWebApp.Pages.Subject
                 {
                     ViewData["Notification"] = new Notification
                     {
-                        Message = "Update subject successfully",
+                        Message = "UpdateAsync subject successfully",
                         Type = Data.Enums.NotificationType.Sucess
                     };
                 }

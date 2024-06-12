@@ -1,7 +1,5 @@
-﻿using Mapster;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using TutorDemand.Business;
 using TutorDemand.Business.Abstractions;
 using TutorDemand.Common;
 using TutorDemand.Data.Dtos;
@@ -15,10 +13,10 @@ public class Index : PageModel
     private readonly ILogger<Create> _logger;
     private readonly ITeachingScheduleBusiness _teachingScheduleBusiness;
 
-    public Index(ILogger<Create> logger)
+    public Index(ILogger<Create> logger, ITeachingScheduleBusiness teachingScheduleBusiness)
     {
         _logger = logger;
-        _teachingScheduleBusiness ??= new TeachingScheduleBusiness();
+        _teachingScheduleBusiness = teachingScheduleBusiness;
     }
 
     public PagingMetadata Metadata { get; set; } = null!;
@@ -28,7 +26,7 @@ public class Index : PageModel
     {
         var queryParams = new QueryTeachingScheduleDto { PageNumber = pageNumber, PageSize = pageSize };
 
-        var teachingSchedulesResult = await _teachingScheduleBusiness.GetTeachingSchedules(queryParams);
+        var teachingSchedulesResult = await _teachingScheduleBusiness.GetTeachingSchedulesAsync(queryParams);
 
         if (teachingSchedulesResult.Status != Const.SUCCESS_READ_CODE)
         {
@@ -41,7 +39,7 @@ public class Index : PageModel
         return Page();
     }
 
-    //Delete teaching schedules
+    //DeleteAsync teaching schedules
     public async Task<IActionResult> OnPostAsync(string? type, Guid? id)
     {
         if (id is null || type is null || type != "delete")
@@ -49,14 +47,14 @@ public class Index : PageModel
             return RedirectToPage("/Error");
         }
 
-        var teachingScheduleResult = await _teachingScheduleBusiness.FindOne(ts => ts.TeachingScheduleId == id);
+        var teachingScheduleResult = await _teachingScheduleBusiness.FindOneAsync(ts => ts.TeachingScheduleId == id);
 
         if (teachingScheduleResult.Status != Const.FAIL_READ_CODE)
         {
             return NotFound();
         }
 
-        var deleteTeachingScheduleResult = await _teachingScheduleBusiness.Delete((Guid)id);
+        var deleteTeachingScheduleResult = await _teachingScheduleBusiness.DeleteAsync((Guid)id);
 
         if (deleteTeachingScheduleResult.Status != Const.FAIL_CREATE_CODE)
         {

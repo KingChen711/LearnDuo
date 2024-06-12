@@ -1,12 +1,10 @@
 ﻿using AutoMapper;
 using Mapster;
-using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 using TutorDemand.Business.Abstractions;
 using TutorDemand.Business.Base;
 using TutorDemand.Common;
 using TutorDemand.Data;
-using TutorDemand.Data.DAO;
 using TutorDemand.Data.Dtos.Tutor;
 using TutorDemand.Data.Entities;
 
@@ -20,6 +18,8 @@ namespace TutorDemand.Business
         {
             _unitOfWork ??= new UnitOfWork();
         }
+
+        public TutorBusiness(IMapper mapper) => _unitOfWork ??= new UnitOfWork();
 
         public async Task<IBusinessResult> FindOneAsync(Expression<Func<Tutor, bool>> condition)
         {
@@ -47,8 +47,7 @@ namespace TutorDemand.Business
             try
             {
                 var entity = dto.Adapt<Tutor>();
-                _unitOfWork.TutorRepository.Create(entity);
-                var result = await _unitOfWork.TutorRepository.SaveAsync() > 0;
+                var result =  await _unitOfWork.TutorRepository.CreateAsync(entity) > 0;
                 if (result)
                 {
                     return new BusinessResult(Const.SUCCESS_CREATE_CODE, Const.SUCCESS_CREATE_MSG);
@@ -74,7 +73,6 @@ namespace TutorDemand.Business
             else
             {
                 await _unitOfWork.TutorRepository.RemoveAsync(tutorEntity);
-                await _unitOfWork.TutorRepository.SaveAsync();
 
                 return new BusinessResult(Const.SUCCESS_DELETE_CODE, Const.SUCCESS_DELETE_MSG);
             }
@@ -121,12 +119,10 @@ namespace TutorDemand.Business
                 entity.IdentityCard = dto.IdentityCard;
                 entity.Avatar = dto.Avatar;
 
-                await _unitOfWork.TutorRepository.UpdateAsync(entity);
-        
-                var result = await _unitOfWork.TutorRepository.SaveAsync();
+               var result = await _unitOfWork.TutorRepository.UpdateAsync(entity);
 
-                return result > 0 
-                    ? new BusinessResult(Const.SUCCESS_UPDATE_CODE, Const.SUCCESS_UPDATE_MSG) 
+                return result > 0
+                    ? new BusinessResult(Const.SUCCESS_UPDATE_CODE, Const.SUCCESS_UPDATE_MSG)
                     : new BusinessResult(Const.FAIL_UPDATE_CODE, Const.FAIL_UPDATE_MSG);
             }
             catch (Exception ex)

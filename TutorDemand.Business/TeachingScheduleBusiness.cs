@@ -5,7 +5,6 @@ using TutorDemand.Business.Abstractions;
 using TutorDemand.Business.Base;
 using TutorDemand.Common;
 using TutorDemand.Data;
-using TutorDemand.Data.DAO;
 using TutorDemand.Data.Dtos;
 using TutorDemand.Data.Dtos.TeachingSchedule;
 using TutorDemand.Data.Entities;
@@ -21,68 +20,125 @@ namespace TutorDemand.Business
             _unitOfWork ??= new UnitOfWork();
         }
 
-        public async Task<IBusinessResult> GetAll()
+        public async Task<IBusinessResult> GetAllAsync()
         {
-            var teachingSchedules = await _unitOfWork.TeachingScheduleRepository.GetAllAsync();
+            var teachingSchedules = await _unitOfWork
+                .TeachingScheduleRepository.GetQueryable(false)
+                .Include(tc => tc.Subject)
+                .Include(tc => tc.Tutor)
+                .Include(tc => tc.Slot)
+                .ToListAsync();
 
-            return new BusinessResult(Const.SUCCESS_READ_CODE, Const.SUCCESS_READ_MSG, teachingSchedules);
+            return new BusinessResult(
+                Const.SUCCESS_READ_CODE,
+                Const.SUCCESS_READ_MSG,
+                teachingSchedules
+            );
         }
 
-        public async Task<IBusinessResult> GetTeachingSchedules(QueryTeachingScheduleDto dto)
+        public async Task<IBusinessResult> GetDetail(Guid id)
+        {
+            var teachingSchedules = await _unitOfWork
+                .TeachingScheduleRepository.GetQueryable(false)
+                .Include(tc => tc.Subject)
+                .Include(tc => tc.Tutor)
+                .Include(tc => tc.Slot)
+                .FirstOrDefaultAsync(tc => tc.TeachingScheduleId == id);
+
+            return new BusinessResult(
+                Const.SUCCESS_READ_CODE,
+                Const.SUCCESS_READ_MSG,
+                teachingSchedules
+            );
+        }
+
+        public async Task<IBusinessResult> GetTeachingSchedulesAsync(QueryTeachingScheduleDto dto)
         {
             var pageSize = dto.PageSize;
             var pageNumber = dto.PageNumber;
 
-            var query = _unitOfWork.TeachingScheduleRepository
-                .GetQueryable(false)
+            var query = _unitOfWork
+                .TeachingScheduleRepository.GetQueryable(false)
                 .Include(ts => ts.Subject)
                 .Include(ts => ts.Tutor)
                 .Include(ts => ts.Slot);
 
-            var teachingSchedulesWithMetaData =
-                await PagedList<TeachingSchedule>.ToPagedList(query, pageNumber, pageSize);
+            var teachingSchedulesWithMetaData = await PagedList<TeachingSchedule>.ToPagedList(
+                query,
+                pageNumber,
+                pageSize
+            );
 
-            return new BusinessResult(Const.SUCCESS_READ_CODE, Const.SUCCESS_READ_MSG, teachingSchedulesWithMetaData);
+            return new BusinessResult(
+                Const.SUCCESS_READ_CODE,
+                Const.SUCCESS_READ_MSG,
+                teachingSchedulesWithMetaData
+            );
         }
 
-        public async Task<IBusinessResult> Find(
+        public async Task<IBusinessResult> FindAsync(
             Expression<Func<TeachingSchedule, bool>> expression
         )
         {
-            var teachingSchedules = await _unitOfWork.TeachingScheduleRepository.GetWithConditionAsync(expression);
+            var teachingSchedules =
+                await _unitOfWork.TeachingScheduleRepository.GetWithConditionAsync(expression);
 
-            return new BusinessResult(Const.SUCCESS_READ_CODE, Const.SUCCESS_READ_MSG, teachingSchedules);
+            return new BusinessResult(
+                Const.SUCCESS_READ_CODE,
+                Const.SUCCESS_READ_MSG,
+                teachingSchedules
+            );
         }
 
-        public async Task<IBusinessResult> FindOne(
+        public async Task<IBusinessResult> FindOneAsync(
             Expression<Func<TeachingSchedule, bool>> expression
         )
         {
-            var teachingSchedule = await _unitOfWork.TeachingScheduleRepository.GetOneWithConditionAsync(expression);
+            var teachingSchedule =
+                await _unitOfWork.TeachingScheduleRepository.GetOneWithConditionAsync(expression);
 
             if (teachingSchedule is null)
             {
-                return new BusinessResult(Const.FAIL_READ_CODE, Const.FAIL_READ_MSG, teachingSchedule);
+                return new BusinessResult(
+                    Const.FAIL_READ_CODE,
+                    Const.FAIL_READ_MSG,
+                    teachingSchedule
+                );
             }
 
-            return new BusinessResult(Const.SUCCESS_READ_CODE, Const.SUCCESS_READ_MSG, teachingSchedule);
+            return new BusinessResult(
+                Const.SUCCESS_READ_CODE,
+                Const.SUCCESS_READ_MSG,
+                teachingSchedule
+            );
         }
 
-
-        public async Task<IBusinessResult> Create(TeachingScheduleMutationDto dto)
+        public async Task<IBusinessResult> CreateAsync(TeachingScheduleMutationDto dto)
         {
-            var entity = dto.Adapt<TeachingSchedule>();
-
-            await _unitOfWork.TeachingScheduleRepository.CreateAsync(entity);
-
-            return new BusinessResult(Const.SUCCESS_CREATE_CODE, Const.SUCCESS_CREATE_MSG);
+            try
+            {
+                var entity = dto.Adapt<TeachingSchedule>();
+                var result = await _unitOfWork.TeachingScheduleRepository.CreateAsync(entity) > 0;
+                if (result)
+                {
+                    return new BusinessResult(Const.SUCCESS_CREATE_CODE, Const.SUCCESS_CREATE_MSG);
+                }
+                else
+                {
+                    return new BusinessResult(Const.FAIL_CREATE_CODE, Const.FAIL_CREATE_MSG);
+                }
+            }
+            catch (Exception ex)
+            {
+                return new BusinessResult(Const.ERROR_EXCEPTION_CODE, ex.Message);
+            }
         }
 
-        public async Task<IBusinessResult> Update(Guid id, TeachingScheduleMutationDto dto)
+        public async Task<IBusinessResult> UpdateAsync(Guid id, TeachingScheduleMutationDto dto)
         {
-            var entity =
-                await _unitOfWork.TeachingScheduleRepository.GetOneWithConditionAsync(t =>
-                    t.TeachingScheduleId == id);
+            var entity = await _unitOfWork.TeachingScheduleRepository.GetOneWithConditionAsync(t =>
+                t.TeachingScheduleId == id
+            );
 
             if (entity is null)
             {
@@ -91,34 +147,39 @@ namespace TutorDemand.Business
 
             dto.Adapt(entity);
 
-            await _unitOfWork.SaveChangesAsync();
+            await _unitOfWork.TeachingScheduleRepository.UpdateAsync(entity);
 
             return new BusinessResult(Const.SUCCESS_UPDATE_CODE, Const.SUCCESS_UPDATE_MSG);
         }
 
-        public async Task<IBusinessResult> Delete(Guid teachingScheduleId)
+        public async Task<IBusinessResult> DeleteAsync(Guid teachingScheduleId)
         {
             try
             {
-                var entity =
-                    await _unitOfWork.TeachingScheduleRepository
-                        .GetQueryable(true)
-                        .Where(ts => ts.TeachingScheduleId == teachingScheduleId)
-                        .Include(ts => ts.Reservations).FirstOrDefaultAsync();
+                var entity = await _unitOfWork
+                    .TeachingScheduleRepository.GetQueryable(true)
+                    .Where(ts => ts.TeachingScheduleId == teachingScheduleId)
+                    .Include(ts => ts.Reservations)
+                    .FirstOrDefaultAsync();
 
                 if (entity is null)
                 {
-                    return new BusinessResult(Const.FAIL_DELETE_CODE,
-                        $"Không tìm thấy lịch học với id: ${teachingScheduleId}");
+                    return new BusinessResult(
+                        Const.FAIL_DELETE_CODE,
+                        $"Không tìm thấy lịch học với id: ${teachingScheduleId}"
+                    );
                 }
 
                 if (entity.Reservations.Count > 0)
                 {
-                    return new BusinessResult(Const.FAIL_DELETE_CODE,
-                        $"Không thể xóa một lịch học đã có khách hàng đặt chỗ");
+                    return new BusinessResult(
+                        Const.FAIL_DELETE_CODE,
+                        $"Không thể xóa một lịch học đã có khách hàng đặt chỗ"
+                    );
                 }
 
-                await _unitOfWork.TeachingScheduleRepository.RemoveAsync(entity);
+                _unitOfWork.TeachingScheduleRepository.PrepareRemove(entity);
+                await _unitOfWork.TeachingScheduleRepository.SaveAsync();
 
                 return new BusinessResult(Const.SUCCESS_DELETE_CODE, Const.SUCCESS_DELETE_MSG);
             }
@@ -128,24 +189,33 @@ namespace TutorDemand.Business
             }
         }
 
-        public async Task<IBusinessResult> GetWithConditionAysnc(
-        Expression<Func<TeachingSchedule, bool>> filter = null!,
-        Func<IQueryable<TeachingSchedule>, IOrderedQueryable<TeachingSchedule>> orderBy = null!,
-        string includeProperties = "")
+        public async Task<IBusinessResult> GetWithConditionAsync(
+            Expression<Func<TeachingSchedule, bool>> filter = null!,
+            Func<IQueryable<TeachingSchedule>, IOrderedQueryable<TeachingSchedule>> orderBy = null!,
+            string includeProperties = ""
+        )
         {
             try
             {
-                var teachingSchedules = await _unitOfWork.TeachingScheduleRepository.GetWithConditionAsync(filter, orderBy, includeProperties);
+                var teachingSchedules =
+                    await _unitOfWork.TeachingScheduleRepository.GetWithConditionAsync(
+                        filter,
+                        orderBy,
+                        includeProperties
+                    );
 
                 if (teachingSchedules.Any())
                 {
-                    return new BusinessResult(Const.SUCCESS_READ_CODE, Const.SUCCESS_READ_MSG, teachingSchedules);
+                    return new BusinessResult(
+                        Const.SUCCESS_READ_CODE,
+                        Const.SUCCESS_READ_MSG,
+                        teachingSchedules
+                    );
                 }
                 else
                 {
                     return new BusinessResult(Const.FAIL_READ_CODE, Const.FAIL_READ_MSG);
                 }
-
             }
             catch (Exception ex)
             {

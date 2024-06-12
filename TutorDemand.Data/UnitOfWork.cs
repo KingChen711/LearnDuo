@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using TutorDemand.Data.Entities;
 using TutorDemand.Data.Repositories;
 
@@ -15,12 +16,14 @@ namespace TutorDemand.Data
         private TeachingScheduleRepository _teachingScheduleRepo;
         private TutorRepository _tutorRepository;
         private CustomerRepository _customerRepository;
+        private ReservationRepository _reservationRepository;
         private SlotRepository _slotRepository;
 
         public UnitOfWork()
         {
             _unitOfWorkContext ??= new NET1704_221_5_TutorDemandContext();
         }
+        
 
         public UnitOfWork(NET1704_221_5_TutorDemandContext context) => _unitOfWorkContext = context;
 
@@ -40,6 +43,13 @@ namespace TutorDemand.Data
             get { return _tutorRepository ??= new TutorRepository(_unitOfWorkContext); }
         }
 
+        public ReservationRepository ReservationRepository
+        {
+            get
+            {
+                return _reservationRepository ??= new ReservationRepository();
+            }
+        }
         public CustomerRepository CustomerRepository
         {
             get { return _customerRepository ??= new CustomerRepository(_unitOfWorkContext); }
@@ -52,7 +62,17 @@ namespace TutorDemand.Data
 
         public async Task SaveChangesAsync()
         {
-            await _unitOfWorkContext.SaveChangesAsync();
+            try
+            {
+                Console.WriteLine("Start");
+                await _unitOfWorkContext.SaveChangesAsync();
+                Console.WriteLine("Success");
+            }
+            catch (DbUpdateException e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
         }
 
         ////TO-DO CODE HERE/////////////////
@@ -68,7 +88,7 @@ namespace TutorDemand.Data
 
         Serializable: The highest level of isolation, ensuring that transactions are completely isolated from one another. This can lead to increased lock contention, potentially hurting performance.
 
-        Snapshot: This isolation level uses row versioning to avoid locks, providing consistency without impeding concurrency. 
+        Snapshot: This isolation level uses row versioning to avoid locks, providing consistency without impeding concurrency.
          */
 
         public int SaveChangesWithTransaction()
@@ -118,6 +138,5 @@ namespace TutorDemand.Data
         }
 
         #endregion
-
     }
 }

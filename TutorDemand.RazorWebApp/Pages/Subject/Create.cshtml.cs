@@ -53,7 +53,7 @@ namespace TutorDemand.RazorWebApp.Pages.Subject
             {
                 var notification = new Notification()
                 {
-                    Message = "Create subject successfully",
+                    Message = "CreateAsync subject successfully",
                     Type = Data.Enums.NotificationType.Sucess
                 };
 

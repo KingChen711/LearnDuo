@@ -2,70 +2,70 @@
 @model TutorDemand.RazorWebApp.Pages.TeachingSchedules.Update
 
 @{
-    var daysOfWeek = new List<(string Label, string Value)>
+    var daysOfWeek = new List<string>
     {
-        ("Thứ 2", "Monday"), ("Thứ 3", "Tuesday"), ("Thứ 4", "Wednesday"), ("Thứ 5", "Thursday"), ("Thứ 6", "Friday"), ("Thứ 7", "Saturday"), ("Chủ Nhật", "Sunday"),
+         "Monday",  "Tuesday",  "Wednesday",  "Thursday",  "Friday",  "Saturday",  "Sunday",
     };
 }
 
 <form method="post" enctype="multipart/form-data" class="pt-6">
-    <h2 class="font-bold text-3xl">Chỉnh sửa lịch học</h2>
-    <hr/>
+    <h2 class="text-3xl font-bold">Edit teaching schedule</h2>
+    <hr />
 
-    <div class="flex items-center gap-x-6 mt-4">
+    <div class="mt-4 flex items-center gap-x-6">
         <div class="flex flex-col gap-y-2">
             <div class="flex items-center gap-x-2">
-                <label asp-for="TeachingSchedule.SubjectId" class="text-lg font-medium">Môn học</label>
-                <select asp-for="TeachingSchedule.SubjectId" asp-items="Model.SelectListSubject" class="border rounded-md py-2 px-3">
-                    <option selected disabled>Chọn môn học</option>
+                <label asp-for="TeachingSchedule.SubjectId" class="text-lg font-medium">Subject</label>
+                <select asp-for="TeachingSchedule.SubjectId" asp-items="Model.SelectListSubject" class="rounded-md border px-3 py-2">
+                    <option selected disabled>Select subject</option>
                 </select>
             </div>
-            <span asp-validation-for="TeachingSchedule.SubjectId" class="text-danger d-block"></span>
+            <span asp-validation-for="TeachingSchedule.SubjectId" class="d-block text-danger"></span>
         </div>
 
         <div class="flex flex-col gap-y-2">
             <div class="flex items-center gap-x-2">
-                <label asp-for="TeachingSchedule.TutorId" class="text-lg font-medium">Giảng viên</label>
-                <select asp-for="TeachingSchedule.TutorId" asp-items="Model.SelectListTutor" class="border rounded-md py-2 px-3">
-                    <option selected disabled>Chọn giảng viên</option>
+                <label asp-for="TeachingSchedule.TutorId" class="text-lg font-medium">Tutor</label>
+                <select asp-for="TeachingSchedule.TutorId" asp-items="Model.SelectListTutor" class="rounded-md border px-3 py-2">
+                    <option selected disabled>Select tutor</option>
                 </select>
             </div>
-            <span asp-validation-for="TeachingSchedule.TutorId" class="text-danger d-block"></span>
+            <span asp-validation-for="TeachingSchedule.TutorId" class="d-block text-danger"></span>
         </div>
 
         <div class="flex flex-col gap-y-2">
             <div class="flex items-center gap-x-2">
                 <label asp-for="TeachingSchedule.SlotId" class="text-lg font-medium">Slot</label>
-                <select asp-for="TeachingSchedule.SlotId" asp-items="Model.SelectListSlot" class="border rounded-md py-2 px-3">
-                    <option selected disabled>Chọn slot</option>
+                <select asp-for="TeachingSchedule.SlotId" asp-items="Model.SelectListSlot" class="rounded-md border px-3 py-2">
+                    <option selected disabled>Select slot</option>
                 </select>
             </div>
-            <span asp-validation-for="TeachingSchedule.SlotId" class="text-danger d-block"></span>
+            <span asp-validation-for="TeachingSchedule.SlotId" class="d-block text-danger"></span>
         </div>
     </div>
 
 
-    <div class="flex flex-col gap-y-3 mt-4">
+    <div class="mt-4 flex flex-col gap-y-3">
         <div class="flex flex-col gap-y-2">
             <label asp-for="TeachingSchedule.MeetRoomCode" class="text-lg font-medium"></label>
-            <input asp-for="TeachingSchedule.MeetRoomCode" class="bg-transparent py-2 px-4 rounded-lg border border-slate-300 outline-none focus:border-primary focus:border-2 focus:invalid:border-danger"/>
+            <input asp-for="TeachingSchedule.MeetRoomCode" class="rounded-lg border border-slate-300 bg-transparent px-4 py-2 outline-none focus:border-primary focus:border-2 focus:invalid:border-danger" />
             <span asp-validation-for="TeachingSchedule.MeetRoomCode" class="text-danger"></span>
         </div>
         <div class="flex flex-col gap-y-2">
             <label asp-for="TeachingSchedule.RoomPassword" class="text-lg font-medium"></label>
-            <input asp-for="TeachingSchedule.RoomPassword" class="bg-transparent py-2 px-4 rounded-lg border border-slate-300 outline-none focus:border-primary focus:border-2"/>
+            <input asp-for="TeachingSchedule.RoomPassword" class="rounded-lg border border-slate-300 bg-transparent px-4 py-2 outline-none focus:border-primary focus:border-2" />
             <span asp-validation-for="TeachingSchedule.RoomPassword" class="text-danger"></span>
         </div>
 
         <div class="flex gap-x-4">
             <div class="flex flex-col gap-y-2">
                 <label asp-for="TeachingSchedule.StartDate" class="text-lg font-medium"></label>
-                <input asp-for="TeachingSchedule.StartDate" type="date" class="bg-transparent py-2 px-4 rounded-lg border border-slate-300 outline-none focus:border-primary focus:border-2"/>
+                <input asp-for="TeachingSchedule.StartDate" type="date" class="rounded-lg border border-slate-300 bg-transparent px-4 py-2 outline-none focus:border-primary focus:border-2" />
                 <span asp-validation-for="TeachingSchedule.StartDate" class="text-danger"></span>
             </div>
-            <div class="flex flex-col gap-y-2 items-stretch">
+            <div class="flex flex-col items-stretch gap-y-2">
                 <label asp-for="TeachingSchedule.EndDate" class="text-lg font-medium"></label>
-                <input asp-for="TeachingSchedule.EndDate" type="date" class="bg-transparent py-2 px-4 rounded-lg border border-slate-300 outline-none focus:border-primary focus:border-2"/>
+                <input asp-for="TeachingSchedule.EndDate" type="date" class="rounded-lg border border-slate-300 bg-transparent px-4 py-2 outline-none focus:border-primary focus:border-2" />
                 <span asp-validation-for="TeachingSchedule.EndDate" class="text-danger"></span>
             </div>
         </div>
@@ -73,14 +73,14 @@
 
         <div class="flex flex-col gap-y-3">
             <label asp-for="TeachingSchedule.LearnDays" class="text-lg font-medium"></label>
-            <div class="flex flex-wrap gap-6 flex-row">
+            <div class="flex flex-row flex-wrap gap-6">
                 @foreach (var day in daysOfWeek)
                 {
                     <div class="flex items-center gap-x-2">
-                        <input type="checkbox" id="@day" name="SelectedDays" value="@day.Value"
-                               @(Model.SelectedDays.Contains(day.Value) ? "checked" : "") class="size-6 accent-primary"/>
+                        <input type="checkbox" id="@day" name="SelectedDays" value="@day"
+                        @(Model.SelectedDays.Contains(day) ? "checked" : "") class="size-6 accent-primary" />
                         <label for="@day" class="flex items-center gap-x-2 text-lg">
-                            @day.Label
+                            @day
                         </label>
                     </div>
                 }
@@ -90,16 +90,16 @@
     </div>
 
     <div class="flex justify-end gap-x-4">
-        <a asp-page="/teachingschedules/index" class="py-2 px-4 rounded-lg border border-primary text-primary bg-gray-100 w-32 cursor-pointer hover:opacity-85 text-center">
-            Trở về danh sách
+        <a asp-page="/teachingschedules/index" class="w-36 cursor-pointer rounded-lg border border-primary bg-gray-100 px-4 py-2 text-center text-primary hover:opacity-85">
+            Back to list
         </a>
-        <button type="submit" class="py-2 px-4 rounded-lg bg-primary w-32 text-white cursor-pointer hover:opacity-85">Lưu</button>
+        <button type="submit" class="w-36 cursor-pointer rounded-lg bg-primary px-4 py-2 text-white hover:opacity-85">Save</button>
     </div>
 </form>
 
 @section Scripts
 {
     @{
-        <partial name="_ValidationScriptsPartial"/>
+        <partial name="_ValidationScriptsPartial" />
     }
 }
