@@ -29,11 +29,15 @@ public class TeachingSchedule
     [MaxLength(100, ErrorMessage = "Các thứ học trong tuần tối đa 100 kí tự")]
     public string LearnDays { get; set; } = null!; //Example: "Monday,Wednesday,Friday"
 
-    [Required]
-    public DateOnly StartDate { get; set; }
+    [Required] [DisplayName("Ngày tạo")] public DateTime CreationDate { get; set; }
 
     [Required]
-    public DateOnly EndDate { get; set; }
+    [DisplayName("Ngày cập nhật cuối")]
+    public DateTime LastUpdated { get; set; }
+
+    [Required] public DateOnly StartDate { get; set; }
+
+    [Required] public DateOnly EndDate { get; set; }
 
     //navigator
     public Subject Subject { get; set; } = null!;
