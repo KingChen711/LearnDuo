@@ -14,6 +14,16 @@ public class TeachingScheduleConfiguration : IEntityTypeConfiguration<TeachingSc
             .ValueGeneratedOnAdd();
 
         builder
+            .Property(e => e.CreationDate)
+            .HasDefaultValueSql("GETDATE()")
+            .ValueGeneratedOnAdd();
+
+        builder
+            .Property(e => e.LastUpdated)
+            .HasDefaultValueSql("GETDATE()")
+            .ValueGeneratedOnAddOrUpdate();
+
+        builder
             .HasIndex(e => e.TeachingScheduleId)
             .IsUnique();
 

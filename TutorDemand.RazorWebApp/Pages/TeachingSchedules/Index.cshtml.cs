@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.IdentityModel.Tokens;
 using TutorDemand.Business.Abstractions;
 using TutorDemand.Common;
 using TutorDemand.Data.Dtos;
@@ -19,12 +20,18 @@ public class Index : PageModel
         _teachingScheduleBusiness = teachingScheduleBusiness;
     }
 
+    public string Query { get; set; } = "";
+
+
     public PagingMetadata Metadata { get; set; } = null!;
     public PagedList<TeachingSchedule> TeachingSchedules { get; set; } = null!;
 
-    public async Task<IActionResult> OnGetAsync(int pageSize = 5, int pageNumber = 1)
+    public async Task<IActionResult> OnGetAsync(int pageSize = 5, int pageNumber = 1, string query = "")
     {
-        var queryParams = new QueryTeachingScheduleDto { PageNumber = pageNumber, PageSize = pageSize };
+        Query = query;
+
+        var queryParams = new QueryTeachingScheduleDto
+            { PageNumber = pageNumber, PageSize = pageSize, SearchTerm = query };
 
         var teachingSchedulesResult = await _teachingScheduleBusiness.GetTeachingSchedulesAsync(queryParams);
 

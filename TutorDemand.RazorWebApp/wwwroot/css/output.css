@@ -1,5 +1,5 @@
 /*
-! tailwindcss v3.4.3 | MIT License | https://tailwindcss.com
+! tailwindcss v3.4.4 | MIT License | https://tailwindcss.com
 */
 
 /*
@@ -962,6 +962,8 @@ video {
 
 .w-\[100px\] {
   width: 100px;
+}
+
 .w-fit {
   width: -moz-fit-content;
   width: fit-content;
@@ -981,6 +983,10 @@ video {
 
 .max-w-3xl {
   max-width: 48rem;
+}
+
+.max-w-96 {
+  max-width: 24rem;
 }
 
 .max-w-\[32px\] {
@@ -1477,6 +1483,9 @@ video {
   padding-bottom: 1.25rem;
 }
 
+.pb-12 {
+  padding-bottom: 3rem;
+}
 
 .pb-20 {
   padding-bottom: 5rem;
@@ -1484,10 +1493,6 @@ video {
 
 .pb-4 {
   padding-bottom: 1rem;
-
-.pb-12 {
-  padding-bottom: 3rem;
-
 }
 
 .pl-10 {
@@ -1504,6 +1509,10 @@ video {
 
 .pr-4 {
   padding-right: 1rem;
+}
+
+.ps-10 {
+  padding-inline-start: 2.5rem;
 }
 
 .ps-3 {
@@ -1877,11 +1886,6 @@ video {
 .hover\:bg-yellow-700:hover {
   --tw-bg-opacity: 1;
   background-color: rgb(161 98 7 / var(--tw-bg-opacity));
-}
-
-.hover\:bg-primary:hover {
-  --tw-bg-opacity: 1;
-  background-color: rgb(102 165 147 / var(--tw-bg-opacity));
 }
 
 .hover\:bg-gradient-to-br:hover {
