@@ -26,7 +26,7 @@ public class NET1704_221_5_TutorDemandContext : DbContext
     public static string GetConnectionString(string connectionStringName)
     {
         var config = new ConfigurationBuilder()
-            .SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
+            .SetBasePath(Directory.GetCurrentDirectory())
             .AddJsonFile("appsettings.json")
             .Build();
 

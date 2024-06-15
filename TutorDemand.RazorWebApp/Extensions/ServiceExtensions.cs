@@ -16,12 +16,13 @@ namespace TutorDemand.RazorWebApp.Extensions
             services.AddScoped<IImageBusiness, ImageBusiness>();
             services.AddScoped<ISubjectBusiness, SubjectBusiness>();
             services.AddScoped<IReservationBusiness, ReservationBusiness>();
+            services.AddScoped<IDatabaseInitializer, DatabaseInitializer>();
         }
 
         public static void ConfigureSqlContext(this IServiceCollection services,
             IConfiguration configuration) =>
             services.AddSqlServer<NET1704_221_5_TutorDemandContext>(
-                configuration.GetConnectionString("TutorDemandContextConnection"));
+                configuration.GetConnectionString("DefaultConnection"));
 
         public static void RegisterMapsterConfiguration(this IServiceCollection _)
         {

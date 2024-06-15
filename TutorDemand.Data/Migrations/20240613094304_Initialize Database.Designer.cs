@@ -12,8 +12,8 @@ using TutorDemand.Data.Entities;
 namespace TutorDemand.Data.Migrations
 {
     [DbContext(typeof(NET1704_221_5_TutorDemandContext))]
-    [Migration("20240610100154_Init")]
-    partial class Init
+    [Migration("20240613094304_Initialize Database")]
+    partial class InitializeDatabase
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -214,7 +214,6 @@ namespace TutorDemand.Data.Migrations
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("Description")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal?>("Duration")
@@ -222,6 +221,12 @@ namespace TutorDemand.Data.Migrations
 
                     b.Property<DateTime?>("EndDate")
                         .HasColumnType("datetime2");
+
+                    b.Property<int?>("EnrolledCapacity")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("EnrolledStudents")
+                        .HasColumnType("int");
 
                     b.Property<string>("Image")
                         .HasMaxLength(500)
