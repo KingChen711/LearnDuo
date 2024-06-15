@@ -1,66 +1,163 @@
-@page
-@model TutorDemand.Pages.Reservations.CreateReservationModel
+@page "{subjectId:Guid}"
+@model TutorDemand.RazorWebApp.Pages.Reservation.CreateReservationModel
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@using TutorDemand.Data.Enums
+
+@{
+    Layout = null;
+}
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Đăng ký Gia sư</title>
-    <link href="~/css/site.css" rel="stylesheet" />
+    <title>Create Reservation</title>
+    <link href="~/css/site.css" rel="stylesheet"/>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet"/>
 </head>
 <body class="bg-gray-100">
-    <div class="container mx-auto p-6">
-        <div class="bg-white p-8 rounded shadow-md">
-            <h1 class="text-2xl font-bold mb-6">Đăng ký Gia sư</h1>
-            <form method="post">
-                
-                <div class="mb-4">
-                    <label class="block text-gray-700">Customer ID</label>
-                    <input type="text" asp-for="Reservation.CustomerId" class="mt-1 block w-full rounded border-gray-300 shadow-sm" />
-                    <span asp-validation-for="Reservation.CustomerId" class="text-red-600"></span>
-                </div>
-                <div class="mb-4">
-                    <label class="block text-gray-700">Teaching Schedule ID</label>
-                    <input type="text" asp-for="Reservation.TeachingScheduleId" class="mt-1 block w-full rounded border-gray-300 shadow-sm" />
-                    <span asp-validation-for="Reservation.TeachingScheduleId" class="text-red-600"></span>
-                </div>
-                <div class="mb-4">
-                    <label class="block text-gray-700">Giá khóa học</label>
-                    <input type="number" asp-for="Reservation.PaidPrice" class="mt-1 block w-full rounded border-gray-300 shadow-sm" />
-                    <span asp-validation-for="Reservation.PaidPrice" class="text-red-600"></span>
-                </div>
-                <div class="mb-4">
-                    <label class="block text-gray-700">Trạng thái đặt chỗ</label>
-                    <select asp-for="Reservation.ReservationStatus" class="mt-1 block w-full rounded border-gray-300 shadow-sm">
-                        <option value="Pending">Pending</option>
-                        <option value="Confirmed">Confirmed</option>
-                        <option value="Cancelled">Cancelled</option>
-                    </select>
-                    <span asp-validation-for="Reservation.ReservationStatus" class="text-red-600"></span>
-                </div>
-                <div class="mb-4">
-                    <label class="block text-gray-700">Trạng thái thanh toán</label>
-                    <select asp-for="Reservation.PaymentStatus" class="mt-1 block w-full rounded border-gray-300 shadow-sm">
-                        <option value="Pending">Pending</option>
-                        <option value="Paid">Paid</option>
-                        <option value="Failed">Failed</option>
-                    </select>
-                    <span asp-validation-for="Reservation.PaymentStatus" class="text-red-600"></span>
-                </div>
-                <div class="mb-4">
-                    <label class="block text-gray-700">Phương pháp thanh toán</label>
-                    <select asp-for="Reservation.PaymentMethod" class="mt-1 block w-full rounded border-gray-300 shadow-sm">
-                        <option value="Cash">Cash</option>
-                        <option value="CreditCard">Credit Card</option>
-                        <option value="DebitCard">Debit Card</option>
-                    </select>
-                    <span asp-validation-for="Reservation.PaymentMethod" class="text-red-600"></span>
-                </div>
-                <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">Đăng ký</button>
-            </form>
+<div class="container mx-auto p-6">
+    <div class="bg-white p-8 rounded shadow-md">
+        <h1 class="text-3xl font-bold mb-6 text-gray-800">Create Reservation</h1>
+
+        <div class="mb-8">
+            <h2 class="text-2xl font-semibold mb-4 text-blue-600">Subject Details</h2>
+            <p class="mb-2">
+                <span class="font-bold text-green-600">Subject Name:</span> <span class="text-gray-700">@Model.Subject.Name</span>
+            </p>
+            <p class="mb-2">
+                <span class="font-bold text-green-600">Description:</span> <span class="text-gray-700">@Model.Subject.Description</span>
+            </p>
+            <p class="mb-2">
+                <span class="font-bold text-green-600">Cost Price:</span> <span class="text-gray-700">@Model.Subject.CostPrice</span>
+            </p>
+            <p class="mb-2">
+                <span class="font-bold text-green-600">Duration:</span> <span class="text-gray-700">@Model.Subject.Duration</span>
+            </p>
         </div>
+
+        <form method="post">
+            <div class="mb-8">
+                <h2 class="text-2xl font-semibold mb-4 text-blue-600">Select Tutor and Schedule</h2>
+                <div class="mb-4">
+                    <label for="tutorSelect" class="block text-sm font-medium text-gray-700">Select Tutor</label>
+                    <select id="tutorSelect" name="Reservation.TutorId" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md">
+                        <option value="">Select Tutor</option>
+                        @foreach (var tutor in Model.Tutors)
+                        {
+                            <option value="@tutor.TutorId">@tutor.Fullname</option>
+                        }
+                    </select>
+                </div>
+
+                <div id="scheduleDetails" class="mb-4 hidden">
+                    <h3 class="text-lg font-semibold text-gray-800">Teaching Schedule Details</h3>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label for="startDate" class="block text-sm font-medium text-gray-700">Start Date</label>
+                            <input type="text" id="startDate" name="Reservation.StartDate" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md">
+                        </div>
+                        <div>
+                            <label for="endDate" class="block text-sm font-medium text-gray-700">End Date</label>
+                            <input type="text" id="endDate" name="Reservation.EndDate" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md">
+                        </div>
+                        <div>
+                            <label for="meetRoomCode" class="block text-sm font-medium text-gray-700">Meet Room Code</label>
+                            <input type="text" id="meetRoomCode" name="Reservation.MeetRoomCode" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md">
+                        </div>
+                        <div>
+                            <label for="learnDate" class="block text-sm font-medium text-gray-700">Learn Date</label>
+                            <input type="text" id="learnDate" name="Reservation.LearnDate" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mb-8">
+                    <label for="paymentMethod" class="block text-sm font-medium text-gray-700">Payment Method</label>
+                    <select id="paymentMethod" name="Reservation.PaymentMethod" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md">
+                        <option value="" selected="">Select Payment Method</option>
+                        @foreach (var method in Enum.GetValues<PaymentMethod>())
+                        {
+                            <option value="@method">@method</option>
+                        }
+                    </select>
+                </div>
+            </div>
+            <input type="hidden" id="teachingScheduleId" name="Reservation.TeachingScheduleId"/>
+            <input type="hidden" id="costPrice" name="Reservation.CostPrice"/>
+            <button id="submitButton" type="submit" class="text-white bg-green-400 hover:bg-green-500 focus:ring-4 focus:outline-none focus:ring-green-300 dark:focus:ring-green-800 shadow-lg shadow-green-500/50 dark:shadow-lg dark:shadow-green-800/80 font-medium rounded-3xl text-md px-20 py-2.5 text-center me-2 mb-2 mt-5 tracking-widest cursor-pointer disabled:bg-gray-400 disabled:cursor-not-allowed">Submit</button>
+        </form>
     </div>
-    <script src="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.js"></script>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const paymentMethod = document.getElementById('paymentMethod');
+        const tutorSelect = document.getElementById('tutorSelect');
+        const submitButton = document.getElementById('submitButton');
+
+        function toggleSubmitButton() {
+            if (paymentMethod.value && tutorSelect.value) {
+                submitButton.removeAttribute('disabled');
+                submitButton.classList.remove('pointer-events-none', 'opacity-50', 'bg-gray-400');
+                submitButton.classList.add('bg-green-700', 'hover:bg-green-800');
+            } else {
+                submitButton.setAttribute('disabled', 'disabled');
+                submitButton.classList.add('pointer-events-none', 'opacity-50', 'bg-gray-400');
+                submitButton.classList.remove('bg-green-700', 'hover:bg-green-800');
+            }
+        }
+
+        paymentMethod.addEventListener('change', toggleSubmitButton);
+        tutorSelect.addEventListener('change', toggleSubmitButton);
+
+        document.getElementById("tutorSelect").addEventListener("change", function() {
+            const tutorId = this.value;
+            const scheduleDetails = document.getElementById("scheduleDetails");
+
+            if (tutorId) {
+                const subjectId = "@Model.Subject.SubjectId";
+                const fetchUrl = `/Reservation/Create/${subjectId}?handler=Schedules&tutorId=${tutorId}&subjectId=${subjectId}`;
+                console.log(`Fetching schedules from: ${fetchUrl}`);
+
+                fetch(fetchUrl)
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok');
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        console.log("Fetched schedules:", data);
+
+                        if (data.length > 0) {
+                            const schedule = data[0];
+                            
+                            document.getElementById("teachingScheduleId").value = schedule.teachingScheduleId;
+                            document.getElementById("costPrice").value = @Model.Subject.CostPrice;
+                            document.getElementById("startDate").value = schedule.startDate;
+                            document.getElementById("endDate").value = schedule.endDate;
+                            document.getElementById("meetRoomCode").value = schedule.meetRoomCode;
+                            document.getElementById("learnDate").value = schedule.learnDays;
+                            scheduleDetails.classList.remove("hidden");
+                        } else {
+                            scheduleDetails.classList.add("hidden");
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Fetch error:', error);
+                        scheduleDetails.classList.add("hidden");
+                    });
+            } else {
+                scheduleDetails.classList.add("hidden");
+            }
+        });
+
+        // Initial check to set the button's state correctly
+        toggleSubmitButton();
+    });
+</script>
+
 </body>
 </html>

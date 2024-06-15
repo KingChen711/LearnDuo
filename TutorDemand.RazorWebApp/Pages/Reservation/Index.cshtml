@@ -1,6 +1,7 @@
 @page "{currentPage:int?}"
 @using TutorDemand.Data.Entities
 @using TutorDemand.Data.Enums;
+@using Microsoft.AspNetCore.Mvc.TagHelpers
 @model TutorDemand.Pages.Reservations.IndexModel
 @{
     ViewData["Title"] = "Danh sách giao dịch";
@@ -56,12 +57,15 @@
                         <td class="py-2 px-6 border-b text-center">@reservation.ReservationStatus</td>
                         <td class="py-2 px-6 border-b text-center">@reservation.TutorName</td>
                         <td class="py-2 px-6 border-b text-center">@reservation.SubjectName</td>
-                        <td class="py-2 px-6 border-b text-center">
-                            <a href="/Reservation/Delete/@reservation.Id" onclick="return confirmDelete()" class="block rounded-lg bg-gradient-to-r from-teal-400 via-teal-500 to-teal-600 px-4 py-2 text-center font-medium text-white hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-teal-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" type="button">
-                                Delete
+                        <td class="py-2 px-6 border-b text-center flex items-center justify-center gap-2">
+                            <a href="/Reservation/View/@reservation.Id" class="block rounded-lg bg-gradient-to-r from-blue-400 via-blue-500 to-blue-600 p-2 text-center font-medium text-white hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" type="button">
+                                View
                             </a>
-                            <a href="javascript:void(0)" onclick="openUpdateModal('@reservation.Id', '@reservation.PaymentMethod', '@reservation.PaymentStatus', '@reservation.ReservationStatus')" class="block rounded-lg bg-gradient-to-r from-teal-400 via-teal-500 to-teal-600 px-4 py-2 text-center font-medium text-white hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-teal-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" type="button">
+                            <a href="javascript:void(0)" onclick="openUpdateModal('@reservation.Id', '@reservation.PaymentMethod', '@reservation.PaymentStatus', '@reservation.ReservationStatus')" class="block rounded-lg bg-gradient-to-r from-teal-400 via-teal-500 to-teal-600 p-2 text-center font-medium text-white hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-teal-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" type="button">
                                 Update
+                            </a>
+                            <a href="/Reservation/Delete/@reservation.Id" onclick="return confirmDelete()" class="block rounded-lg bg-gradient-to-r from-teal-400 via-teal-500 to-teal-600 p-2 text-center font-medium text-white hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-teal-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" type="button">
+                                Delete
                             </a>
                         </td>
                     </tr>
@@ -71,10 +75,10 @@
 
             <div class="mt-4">
                 <nav class="flex justify-center gap-x-4">
-                    <a class="w-[100px] text-center bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded @(Model.HasPreviousPage ? "" : "opacity-50 cursor-not-allowed")" href="?currentPage=@(Model.CurrentPage - 1)" @(Model.HasPreviousPage ? "" : "pointer-events-none")>
+                    <a class="w-[100px] text-center bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded @(Model.HasPreviousPage ? "" : "opacity-50 cursor-not-allowed pointer-events-none")" href="?currentPage=@(Model.CurrentPage - 1)" @(Model.HasPreviousPage ? "" : "pointer-events-none")>
                         Previous
                     </a>
-                    <a class="w-[100px] text-center bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded @(Model.HasNextPage ? "" : "opacity-50 cursor-not-allowed")" href="?currentPage=@(Model.CurrentPage + 1)" @(Model.HasNextPage ? "" : "pointer-events-none")>
+                    <a class="w-[100px] text-center bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded @(Model.HasNextPage ? "" : "opacity-50 cursor-not-allowed pointer-events-none")" href="?currentPage=@(Model.CurrentPage + 1)" @(Model.HasNextPage ? "" : "pointer-events-none")>
                         Next
                     </a>
                 </nav>
@@ -146,30 +150,39 @@
         function confirmDelete() {
             return confirm("Are you sure you want to delete this reservation?");
         }
-
+    
         function openUpdateModal(reservationId, currentPaymentMethod, currentPaymentStatus, currentReservationStatus) {
-            
+            // Set the dropdowns to the current values
             document.getElementById('paymentMethodDropdown').value = currentPaymentMethod;
             document.getElementById('paymentStatusDropdown').value = currentPaymentStatus;
             document.getElementById('reservationStatusDropdown').value = currentReservationStatus;
+    
+            // Store the current values as data attributes on the modal
+            document.getElementById('updateModal').dataset.paymentMethod = currentPaymentMethod;
+            document.getElementById('updateModal').dataset.paymentStatus = currentPaymentStatus;
+            document.getElementById('updateModal').dataset.reservationStatus = currentReservationStatus;
+    
+            // Store the reservationId as a data attribute on the modal
             document.getElementById('updateModal').dataset.reservationId = reservationId;
+    
+            // Show the modal
             document.getElementById("updateModal").classList.remove("hidden");
         }
-
+    
         function hideUpdateModal() {
             // Hide the modal
             document.getElementById("updateModal").classList.add("hidden");
         }
-
+    
         function confirmUpdate() {
             // Get the reservationId from the modal's data attribute
             const reservationId = document.getElementById('updateModal').dataset.reservationId;
-            
+    
             // Create a form dynamically
             const form = document.createElement('form');
             form.method = 'POST';
             form.action = `/Reservation/Update/${reservationId}`;
-
+    
             // Add CSRF token
             const token = '@GetAntiXsrfRequestToken()';
             const hiddenTokenInput = document.createElement('input');
@@ -177,30 +190,36 @@
             hiddenTokenInput.name = '__RequestVerificationToken';
             hiddenTokenInput.value = token;
             form.appendChild(hiddenTokenInput);
-
-            // Add selected values from the dropdowns to the form
-            const paymentMethod = document.getElementById('paymentMethodDropdown').value;
-            const paymentStatus = document.getElementById('paymentStatusDropdown').value;
-            const reservationStatus = document.getElementById('reservationStatusDropdown').value;
-            
+    
+            // Retrieve current values from data attributes
+            const currentPaymentMethod = document.getElementById('updateModal').dataset.paymentMethod;
+            const currentPaymentStatus = document.getElementById('updateModal').dataset.paymentStatus;
+            const currentReservationStatus = document.getElementById('updateModal').dataset.reservationStatus;
+    
+            // Get selected values from the dropdowns, fall back to current values if not changed
+            const paymentMethod = document.getElementById('paymentMethodDropdown').value || currentPaymentMethod;
+            const paymentStatus = document.getElementById('paymentStatusDropdown').value || currentPaymentStatus;
+            const reservationStatus = document.getElementById('reservationStatusDropdown').value || currentReservationStatus;
+    
+            // Add selected or current values to the form
             const paymentMethodInput = document.createElement('input');
             paymentMethodInput.type = 'hidden';
             paymentMethodInput.name = 'paymentMethod';
             paymentMethodInput.value = paymentMethod;
             form.appendChild(paymentMethodInput);
-
+    
             const paymentStatusInput = document.createElement('input');
             paymentStatusInput.type = 'hidden';
             paymentStatusInput.name = 'paymentStatus';
             paymentStatusInput.value = paymentStatus;
             form.appendChild(paymentStatusInput);
-
+    
             const reservationStatusInput = document.createElement('input');
             reservationStatusInput.type = 'hidden';
             reservationStatusInput.name = 'reservationStatus';
             reservationStatusInput.value = reservationStatus;
             form.appendChild(reservationStatusInput);
-
+    
             // Append the form to the body and submit it
             document.body.appendChild(form);
             form.submit();
