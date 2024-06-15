@@ -16,29 +16,43 @@
 <body class="bg-gray-100">
     <div class="container mx-auto p-6">
         <div class="bg-white p-8 rounded shadow-md">
-            <h1 class="text-2xl font-bold mb-6">Chi tiết giao dịch</h1>
+            <h1 class="text-3xl font-bold mb-6 text-gray-800">Chi tiết giao dịch</h1>
             
-            <h2 class="text-xl font-semibold mb-4">Reservation Details</h2>
-            <p><strong>Tutor Name:</strong> @Model.ReservationDetail.TutorName</p>
-            <p><strong>Subject Name:</strong> @Model.ReservationDetail.SubjectName</p>
-            <p><strong>Paid Price:</strong> @Model.ReservationDetail.PaidPrice</p>
-            <p><strong>Reservation Status:</strong> @Model.ReservationDetail.ReservationStatus</p>
-            <p><strong>Payment Status:</strong> @Model.ReservationDetail.PaymentStatus</p>
-            <p><strong>Payment Method:</strong> @Model.ReservationDetail.PaymentMethod</p>
+            <div class="mb-8">
+                <h2 class="text-2xl font-semibold mb-4 text-blue-600">Reservation Details</h2>
+                <p class="mb-2"><span class="font-bold text-green-600">Tutor Name:</span> <span class="text-gray-700">@Model.ReservationDetail.TutorName</span></p>
+                <p class="mb-2"><span class="font-bold text-green-600">Subject Name:</span> <span class="text-gray-700">@Model.ReservationDetail.SubjectName</span></p>
+                <p class="mb-2"><span class="font-bold text-green-600">Paid Price:</span> <span class="text-gray-700">@Model.ReservationDetail.PaidPrice</span></p>
+                <p class="mb-2"><span class="font-bold text-green-600">Reservation Status:</span> <span class="text-gray-700">@Model.ReservationDetail.ReservationStatus</span></p>
+                <p class="mb-2"><span class="font-bold text-green-600">Payment Status:</span> <span class="text-gray-700">@Model.ReservationDetail.PaymentStatus</span></p>
+                <p class="mb-2"><span class="font-bold text-green-600">Payment Method:</span> <span class="text-gray-700">@Model.ReservationDetail.PaymentMethod</span></p>
+            </div>
             
-            <h2 class="text-xl font-semibold mb-4 mt-8">Tutor Detail</h2>
-            <p><strong>Tên giảng viên:</strong> @Model.TutorDetail.Fullname</p>
-            <p><strong>Email:</strong> @Model.TutorDetail.Email</p>
-            <p><strong>Số điện thoại:</strong> @Model.TutorDetail.Phone</p>
-            <p><strong>Địa chỉ:</strong> @Model.TutorDetail.Address</p>
-            <p><strong>Giới tính:</strong> @Model.TutorDetail.Gender</p>
-            <p><strong>Ngày sinh:</strong> @Model.TutorDetail.Dob</p>
+            <div class="mb-8">
+                <h2 class="text-2xl font-semibold mb-4 text-blue-600">Tutor Detail</h2>
+                <div class="flex items-center mb-4">
+                    @if (!string.IsNullOrEmpty(Model.TutorDetail.Avatar))
+                    {
+                        <img src="@Model.TutorDetail.Avatar" alt="Tutor Avatar" class="w-32 h-32 rounded-full mr-4"/>
+                    }
+                    <div>
+                        <p class="mb-2"><span class="font-bold text-green-600">Tên giảng viên:</span> <span class="text-gray-700">@Model.TutorDetail.Fullname</span></p>
+                        <p class="mb-2"><span class="font-bold text-green-600">Email:</span> <span class="text-gray-700">@Model.TutorDetail.Email</span></p>
+                        <p class="mb-2"><span class="font-bold text-green-600">Số điện thoại:</span> <span class="text-gray-700">@Model.TutorDetail.Phone</span></p>
+                        <p class="mb-2"><span class="font-bold text-green-600">Địa chỉ:</span> <span class="text-gray-700">@Model.TutorDetail.Address</span></p>
+                        <p class="mb-2"><span class="font-bold text-green-600">Giới tính:</span> <span class="text-gray-700">@Model.TutorDetail.Gender</span></p>
+                        <p class="mb-2"><span class="font-bold text-green-600">Ngày sinh:</span> <span class="text-gray-700">@Model.TutorDetail.Dob</span></p>
+                    </div>
+                </div>
+            </div>
             
-            <h2 class="text-xl font-semibold mb-4 mt-8">Teaching Schedule</h2>
-            <p><strong>Meet Room:</strong> @Model.ScheduleDto.MeetRoomCode</p>
-            <p><strong>Learning Date:</strong> @Model.ScheduleDto.LearnDays</p>
-            <p><strong>Start Date:</strong> @Model.ScheduleDto.StartDate</p>
-            <p><strong>End Date:</strong> @Model.ScheduleDto.EndDate</p>
+            <div>
+                <h2 class="text-2xl font-semibold mb-4 text-blue-600">Teaching Schedule</h2>
+                <p class="mb-2"><span class="font-bold text-green-600">Meet Room:</span> <span class="text-gray-700">@Model.ScheduleDto.MeetRoomCode</span></p>
+                <p class="mb-2"><span class="font-bold text-green-600">Learning Date:</span> <span class="text-gray-700">@Model.ScheduleDto.LearnDays</span></p>
+                <p class="mb-2"><span class="font-bold text-green-600">Start Date:</span> <span class="text-gray-700">@Model.ScheduleDto.StartDate</span></p>
+                <p class="mb-2"><span class="font-bold text-green-600">End Date:</span> <span class="text-gray-700">@Model.ScheduleDto.EndDate</span></p>
+            </div>
         </div>
     </div>
 </body>
