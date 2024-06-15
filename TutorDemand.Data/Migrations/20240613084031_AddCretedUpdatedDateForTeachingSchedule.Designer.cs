@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TutorDemand.Data.Entities;
 
@@ -11,9 +12,11 @@ using TutorDemand.Data.Entities;
 namespace TutorDemand.Data.Migrations
 {
     [DbContext(typeof(NET1704_221_5_TutorDemandContext))]
-    partial class NET1704_221_5_TutorDemandContextModelSnapshot : ModelSnapshot
+    [Migration("20240613084031_AddCretedUpdatedDateForTeachingSchedule")]
+    partial class AddCretedUpdatedDateForTeachingSchedule
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -211,6 +214,7 @@ namespace TutorDemand.Data.Migrations
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("Description")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal?>("Duration")
@@ -218,12 +222,6 @@ namespace TutorDemand.Data.Migrations
 
                     b.Property<DateTime?>("EndDate")
                         .HasColumnType("datetime2");
-
-                    b.Property<int?>("EnrolledCapacity")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("EnrolledStudents")
-                        .HasColumnType("int");
 
                     b.Property<string>("Image")
                         .HasMaxLength(500)

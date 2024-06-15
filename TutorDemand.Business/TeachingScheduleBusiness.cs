@@ -1,6 +1,7 @@
 using System.Linq.Expressions;
 using Mapster;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using TutorDemand.Business.Abstractions;
 using TutorDemand.Business.Base;
 using TutorDemand.Common;
@@ -56,12 +57,20 @@ namespace TutorDemand.Business
         {
             var pageSize = dto.PageSize;
             var pageNumber = dto.PageNumber;
+            var searchTerm = dto.SearchTerm ?? "";
 
             var query = _unitOfWork
                 .TeachingScheduleRepository.GetQueryable(false)
                 .Include(ts => ts.Subject)
                 .Include(ts => ts.Tutor)
-                .Include(ts => ts.Slot);
+                .Include(ts => ts.Slot)
+                .Where(ts =>
+                    ts.Subject.Name.ToLower().Contains(searchTerm.ToLower()) ||
+                    ts.Tutor.Fullname.ToLower().Contains(searchTerm.ToLower()) ||
+                    ts.Slot.SlotName.ToLower().Contains(searchTerm.ToLower()) ||
+                    ts.MeetRoomCode.ToLower().Contains(searchTerm.ToLower()) ||
+                    ts.RoomPassword.ToLower().Contains(searchTerm.ToLower()) ||
+                    ts.LearnDays.ToLower().Contains(searchTerm.ToLower()));
 
             var teachingSchedulesWithMetaData = await PagedList<TeachingSchedule>.ToPagedList(
                 query,

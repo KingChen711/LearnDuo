@@ -1,5 +1,5 @@
 /*
-! tailwindcss v3.4.3 | MIT License | https://tailwindcss.com
+! tailwindcss v3.4.4 | MIT License | https://tailwindcss.com
 */
 
 /*
@@ -993,6 +993,10 @@ video {
   max-width: 48rem;
 }
 
+.max-w-96 {
+  max-width: 24rem;
+}
+
 .max-w-\[32px\] {
   max-width: 32px;
 }
@@ -1533,6 +1537,10 @@ video {
 
 .pr-4 {
   padding-right: 1rem;
+}
+
+.ps-10 {
+  padding-inline-start: 2.5rem;
 }
 
 .ps-3 {
