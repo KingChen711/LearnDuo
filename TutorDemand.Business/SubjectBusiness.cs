@@ -22,7 +22,7 @@ public class SubjectBusiness : ISubjectBusiness
         _mapper = mapper;
     }
 
-    public SubjectBusiness(IMapper mapper) => _unitOfWork ??= new UnitOfWork();
+    public SubjectBusiness(IMapper mapper) { _mapper = mapper;  _unitOfWork ??= new UnitOfWork(); }
 
     public SubjectBusiness() => _unitOfWork ??= new UnitOfWork();
 
@@ -327,6 +327,7 @@ public class SubjectBusiness : ISubjectBusiness
             subject.Name = subjectDto.Name;
             subject.Description = subjectDto.Description;
             subject.Image = subjectDto.Image;
+            subject.Duration = subjectDto.Duration;
 
             var result = await _unitOfWork.SubjectRepository.SaveAsync() > 0;
 

@@ -23,10 +23,10 @@ public class Subject
     [DisplayName(nameof(Image))]
     [MaxLength(500)]
     [AllowNull]
-    public string? Image { get; set; } = "/images/default-subject.jpg";
+    public string? Image { get; set; } = string.Empty;
 
     [DisplayName(nameof(Description))]
-    public string Description { get; set; } = string.Empty;
+    public string? Description { get; set; } = string.Empty;
 
     [Range(1, int.MaxValue, ErrorMessage = "Duration must greater than 0")]
     [DisplayName(nameof(Duration))]
@@ -42,6 +42,13 @@ public class Subject
     [DataType(DataType.DateTime)]
     public DateTime? EndDate { get; set; }
 
+    [Range(0, int.MaxValue, ErrorMessage = "Enrollment capacity must be a positive number")]
+    [DisplayName("Enrollment Capacity")]
+    public int? EnrolledCapacity { get; set; }
+
+    [Range(0, int.MaxValue, ErrorMessage = "Enrolled students must be a positive number")]
+    [DisplayName("Enrolled Students")]
+    public int? EnrolledStudents { get; set; } = 0;
 
     //navigator
     public ICollection<TeachingSchedule> TeachingSchedules { get; set; } = [];

@@ -5,6 +5,7 @@ using TutorDemand.Business.Abstractions;
 using TutorDemand.Data;
 using TutorDemand.Data.Entities;
 using TutorDemand.Data.Mappings;
+using TutorDemand.Data.Utils;
 using TutorDemand.RazorWebApp.Extensions;
 using TutorDemand.RazorWebApp.Models;
 
@@ -12,11 +13,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Config appsettings
 builder.Services.Configure<AppSettings>(builder.Configuration.GetSection("AppSettings"));
-
-// Add Database Intializer
-builder.Services.AddScoped<IDatabaseInitializer, DatabaseInitializer>();
-
-// Add Business Service
+builder.Services.Configure<DefaultData>(builder.Configuration.GetSection("DefaultData"));
 
 // Auto Mapper
 var mapperConfig = new MapperConfiguration(mc => { mc.AddProfile<ProfilesMapper>(); });

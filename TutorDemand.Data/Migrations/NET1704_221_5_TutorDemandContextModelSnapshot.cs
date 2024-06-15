@@ -211,7 +211,6 @@ namespace TutorDemand.Data.Migrations
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("Description")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal?>("Duration")
@@ -219,6 +218,12 @@ namespace TutorDemand.Data.Migrations
 
                     b.Property<DateTime?>("EndDate")
                         .HasColumnType("datetime2");
+
+                    b.Property<int?>("EnrolledCapacity")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("EnrolledStudents")
+                        .HasColumnType("int");
 
                     b.Property<string>("Image")
                         .HasMaxLength(500)

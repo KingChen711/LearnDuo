@@ -5,13 +5,14 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:TutorDemand.WpfApp.UI"
         mc:Ignorable="d"
-        Title="Subject" Height="450" Width="1000" >
+        Title="Subject" Height="450" Width="1200" WindowStartupLocation="CenterScreen" ResizeMode="NoResize">
     <Grid>
         <StackPanel Orientation="Vertical">
             <GroupBox Header="Subject Form" Margin="10">
-                <Grid Height="50">
+                <Grid Height="80">
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="1*"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="80"/>
@@ -24,20 +25,32 @@
                         <ColumnDefinition Width="200"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
+                    <TextBox Grid.Column="1" Grid.Row="0" x:Name="txtSubjectId" Height="25" Text=""  Margin="5"  Width="180" HorizontalAlignment="Left" Visibility="Hidden"/>
                     <Label Grid.Column="0" Grid.Row="0" Content="Code" HorizontalAlignment="Left" VerticalContentAlignment="Center" />
-                    <TextBox Grid.Column="1" Grid.Row="0" x:Name="SubjectCode" Height="25" Text="{Binding Path=Subject.SubjectCode, Mode=TwoWay}"  Margin="5"  Width="180" HorizontalAlignment="Left"/>
+                    <TextBox Grid.Column="1" Grid.Row="0" x:Name="txtSubjectCode" Height="25" Text="{Binding Path=Subject.SubjectCode, Mode=TwoWay}"  Margin="5"  Width="180" HorizontalAlignment="Left"/>
                     <Label Grid.Column="2" Grid.Row="0" Content="Name" HorizontalAlignment="Left" VerticalContentAlignment="Center" />
-                    <TextBox Grid.Row="0" Grid.Column="3" x:Name="Name" Height="25" Text="{Binding Path=Subject.Name, Mode=TwoWay}"  Margin="5"  Width="180" HorizontalAlignment="Left"/>
+                    <TextBox Grid.Row="0" Grid.Column="3" x:Name="txtName" Height="25" Text="{Binding Path=Subject.Name, Mode=TwoWay}"  Margin="5"  Width="180" HorizontalAlignment="Left"/>
                     <Label Grid.Column="4" Grid.Row="0" Content="Description" HorizontalAlignment="Left" VerticalContentAlignment="Center" />
-                    <TextBox Grid.Column="5" Grid.Row="0" x:Name="Description" Height="25" Text="{Binding Path=Subject.Description, Mode=TwoWay}"  Margin="5"  Width="180" HorizontalAlignment="Left"/>
+                    <TextBox Grid.Column="5" Grid.Row="0" x:Name="txtDescription" Height="25" Text="{Binding Path=Subject.Description, Mode=TwoWay}"  Margin="5"  Width="180" HorizontalAlignment="Left"/>
                     <Label Grid.Column="6" Grid.Row="0" Content="Duration" HorizontalAlignment="Left" VerticalContentAlignment="Center" />
-                    <TextBox Grid.Column="5" Grid.Row="0" x:Name="Duration" Height="25" Text="{Binding Path=Subject.Duration, Mode=TwoWay}"  Margin="5"  Width="180" HorizontalAlignment="Left"/>
+                    <TextBox Grid.Column="7" Grid.Row="0" x:Name="txtDuration" Height="25" Text="{Binding Path=Subject.Duration, Mode=TwoWay}"  Margin="5"  Width="180" HorizontalAlignment="Left"/>
+                    <Label Grid.Column="0" Grid.Row="1" Content="Price" HorizontalAlignment="Left" VerticalContentAlignment="Center" />
+                    <TextBox Grid.Column="1" Grid.Row="1" x:Name="txtCostPrice" Height="25" Text="{Binding Path=Subject.CostPrice, Mode=TwoWay}"  Margin="5"  Width="180" HorizontalAlignment="Left"/>
+                    <Label Grid.Column="2" Grid.Row="1" Content="StartDate" HorizontalAlignment="Left" VerticalContentAlignment="Center" />
+                    <DatePicker Grid.Column="3" Grid.Row="1" x:Name="dpStartDate" Height="25" Text="{Binding Path=Subject.StartDate, Mode=TwoWay}"  Margin="5"  Width="180" HorizontalAlignment="Left"/>
+                    <Label Grid.Column="4" Grid.Row="1" Content="EndDate" HorizontalAlignment="Left" VerticalContentAlignment="Center" />
+                    <DatePicker Grid.Column="5" Grid.Row="1" x:Name="dpEndDate" Height="25" Text="{Binding Path=Subject.EndDate, Mode=TwoWay}"  Margin="5"  Width="180" HorizontalAlignment="Left"/>
+                    
                     <!--<CheckBox Grid.Column="7" Grid.Row="0" x:Name="Duration" Height="25" IsChecked="{Binding ElementName=IsActive, Path=IsCheckBoxChecked}"  Margin="5"  Width="180" HorizontalAlignment="Left"/>-->
                 </Grid>
             </GroupBox>
             <StackPanel Height="40" Orientation="Horizontal" HorizontalAlignment="Right">
-                <Button x:Name="ButtonSave" Content="Save" Height="30" Width="80" Click="ButtonSave_Click"/>
-                <Button x:Name="ButtonCancel" Content="Cancel" Height="30" Width="80" Click="ButtonCancel_Click"/>
+                <Button x:Name="ButtonSave" Content="Save" Height="30" Width="80" Click="ButtonSave_Click" Margin="0,0,10,0"/>
+                <Button x:Name="ButtonCancel" Content="Cancel" Height="30" Width="80" Click="ButtonCancel_Click" Margin="0,0,10,0"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <TextBox x:Name="txtSearch" TextChanged="OnSearchValueChanged" Width="170" Height="22" HorizontalAlignment="Left" Margin="10,15,5,0"/>
+                <Button x:Name="btnSearch" Content="Search"  Width="60" Height="22" Margin="0,15,10,0" />
             </StackPanel>
             <StackPanel Height="210">
                 <DataGrid x:Name="grdSubject" AutoGenerateColumns="False" ItemsSource="{Binding Subjects}" CanUserAddRows="False" Height="200" Margin="10" MouseDoubleClick="GrdSubject_MouseDouble_Click" SelectionMode="Single" SelectionUnit="FullRow">
@@ -45,14 +58,17 @@
                         <!--<DataGridTextColumn Header="Code" Binding="{Binding Path=Id}" Visibility="Hidden"/>-->
                         <DataGridTextColumn Header="SubjectId" Binding="{Binding Path=SubjectId}" Visibility="Hidden"/>
                         <DataGridTextColumn Header="Code" Binding="{Binding Path=SubjectCode}" Visibility="Visible"/>
-                        <DataGridTextColumn Header="Name" Binding="{Binding Path=Name}" Width="100"  IsReadOnly="True"/>
-                        <DataGridTextColumn Header="Description" Binding="{Binding Path=Description}" Width="50"  IsReadOnly="True"/>
+                        <DataGridTextColumn Header="Name" Binding="{Binding Path=Name}" Width="100" IsReadOnly="True"/>
+                        <DataGridTextColumn Header="Description" Binding="{Binding Path=Description}" Width="50" IsReadOnly="True"/>
                         <DataGridTextColumn Header="Duration" Binding="{Binding Path=Duration}" Width="50"  IsReadOnly="True"/>
+                        <DataGridTextColumn Header="Price" Binding="{Binding Path=CostPrice}" Width="65"  IsReadOnly="True"/>
+                        <DataGridTextColumn Header="StartDate" Binding="{Binding Path=StartDate}" Width="60" IsReadOnly="True"/>
+                        <DataGridTextColumn Header="EndDate" Binding="{Binding Path=EndDate}" Width="60"  IsReadOnly="True" />
 
                         <DataGridTemplateColumn Width="50">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
-                                    <Button Content="DeleteAsync" x:Name="ButtonDelete" CommandParameter="{Binding Path=SubjectCode}" Click="GrdSubject_ButtonDelete_ClicK"/>
+                                    <Button Content="Delete" x:Name="ButtonDelete" CommandParameter="{Binding Path=SubjectId}" Click="GrdSubject_ButtonDelete_Click"/>
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
