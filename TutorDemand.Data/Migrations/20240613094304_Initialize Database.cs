@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace TutorDemand.Data.Migrations
 {
     /// <inheritdoc />
-    public partial class Init : Migration
+    public partial class InitializeDatabase : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -77,11 +77,13 @@ namespace TutorDemand.Data.Migrations
                     SubjectCode = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     Image = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Duration = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
                     CostPrice = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     StartDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    EndDate = table.Column<DateTime>(type: "datetime2", nullable: true)
+                    EndDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    EnrolledCapacity = table.Column<int>(type: "int", nullable: true),
+                    EnrolledStudents = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {

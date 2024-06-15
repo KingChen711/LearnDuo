@@ -12,8 +12,8 @@ using TutorDemand.Data.Entities;
 namespace TutorDemand.Data.Migrations
 {
     [DbContext(typeof(NET1704_221_5_TutorDemandContext))]
-    [Migration("20240610100154_Init")]
-    partial class Init
+    [Migration("20240613084031_AddCretedUpdatedDateForTeachingSchedule")]
+    partial class AddCretedUpdatedDateForTeachingSchedule
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -261,8 +261,18 @@ namespace TutorDemand.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<DateTime>("CreationDate")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GETDATE()");
+
                     b.Property<DateOnly>("EndDate")
                         .HasColumnType("date");
+
+                    b.Property<DateTime>("LastUpdated")
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GETDATE()");
 
                     b.Property<string>("LearnDays")
                         .IsRequired()

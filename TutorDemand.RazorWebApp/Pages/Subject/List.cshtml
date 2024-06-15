@@ -92,11 +92,11 @@
                             </button>
                             <button class="action-btn bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-1 px-2 rounded text-sm"
                                     data-action="update" data-id="@subject.SubjectId" data-name="@subject.Name">
-                                UpdateAsync
+                                Update
                             </button>
                             <button class="action-btn bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded text-sm"
                                     data-action="delete" data-id="@subject.SubjectId" data-name="@subject.Name">
-                                DeleteAsync
+                                Delete
                             </button>
                         </td>
                     </tr>
@@ -283,29 +283,29 @@ else
 
                 subjects.forEach(subject => {
                     tableBody.innerHTML += `
-                                                                <tr class="odd:bg-white even:bg-white border-b border-gray-700">
-                                                                    <th scope="row" class="px-6 py-4 font-medium text-black whitespace-nowrap">
-                                                                        ${subject.subjectCode}
-                                                                    </th>
-                                                                    <td class="px-6 py-4">
-                                                                        ${subject.name}
-                                                                    </td>
-                                                                    <td class="px-6 py-4">
-                                                                        <button class="action-btn bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded text-sm"
-                                                                            data-action="view" data-id="${subject.subjectId}" data-name="${subject.name}">
-                                                                            View
-                                                                        </button>
-                                                                        <button class="action-btn bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-1 px-2 rounded text-sm"
-                                                                            data-action="update" data-id="${subject.subjectId}" data-name="${subject.name}">
-                                                                            UpdateAsync
-                                                                        </button>
-                                                                        <button class="action-btn bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded text-sm"
-                                                                            data-action="delete" data-id="${subject.subjectId}" data-name="${subject.name}">
-                                                                            DeleteAsync
-                                                                        </button>
-                                                                    </td>
-                                                                </tr>
-                                                            `;
+                        <tr class="odd:bg-white even:bg-white border-b border-gray-700">
+                            <th scope="row" class="px-6 py-4 font-medium text-black whitespace-nowrap">
+                                ${subject.subjectCode}
+                            </th>
+                            <td class="px-6 py-4">
+                                ${subject.name}
+                            </td>
+                            <td class="px-6 py-4">
+                                <button class="action-btn bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded text-sm"
+                                    data-action="view" data-id="${subject.subjectId}" data-name="${subject.name}">
+                                    View
+                                </button>
+                                <button class="action-btn bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-1 px-2 rounded text-sm"
+                                    data-action="update" data-id="${subject.subjectId}" data-name="${subject.name}">
+                                    Update
+                                </button>
+                                <button class="action-btn bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded text-sm"
+                                    data-action="delete" data-id="${subject.subjectId}" data-name="${subject.name}">
+                                    Delete
+                                </button>
+                            </td>
+                        </tr>
+                    `;
                 });
 
                 // Add event listeners after updating data

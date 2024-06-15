@@ -27,7 +27,7 @@
                 <div class="flex text-gray-500">
                     <img src="https://img.icons8.com/?size=100&id=11168&format=png&color=000000"
                          class="size-[25px] object-cover fill-gray-50" />
-                    <span class="ml-3 mr-1 text-blue-500 font-bold">126</span> Learners
+                    <span class="ml-3 mr-1 text-blue-500 font-bold">@subject.EnrolledStudents</span> Learners
                 </div>
                 <div class="flex text-gray-500 mt-3">
                     <img src="https://img.icons8.com/?size=100&id=23171&format=png&color=000000"
@@ -53,7 +53,10 @@
                 </div>
                 <div class="flex flex-col items-center mt-5 mr-10">
                     @* <span class="text-2xl text-bold text-gray-700 startDate">@subject.StartDate</span> *@
-                    <a id="enrollButton" type="button" class="text-white bg-gradient-to-r from-green-400 via-green-500 to-green-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-green-300 dark:focus:ring-green-800 shadow-lg shadow-green-500/50 dark:shadow-lg dark:shadow-green-800/80 font-medium rounded-3xl text-md px-20 py-2.5 text-center me-2 mb-2 mt-5 tracking-widest cursor-pointer @(Model.Tutors.Any()? "": "pointer-events-none opacity-50")" >Enroll</a>
+                    @if (subject.EnrolledStudents < subject.EnrolledCapacity)
+                    {
+                        <a type="button" class="text-white bg-gradient-to-r from-green-400 via-green-500 to-green-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-green-300 dark:focus:ring-green-800 shadow-lg shadow-green-500/50 dark:shadow-lg dark:shadow-green-800/80 font-medium rounded-3xl text-md px-20 py-2.5 text-center me-2 mb-2 mt-5 tracking-widest cursor-pointer">Enroll</a>
+                    }
                 </div>
                 <script>
                         document.getElementById("enrollButton").addEventListener("click", function() {

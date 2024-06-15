@@ -31,6 +31,10 @@ namespace TutorDemand.Data.Dtos.Subject
         
         public DateTime? EndDate { get; set; }
 
+        public int? EnrolledCapacity { get; set; }
+
+        public int? EnrolledStudents { get; set; } = 0;
+
         public ICollection<TeachingScheduleDto> TeachingSchedules { get; set; } = [];
     }
 }

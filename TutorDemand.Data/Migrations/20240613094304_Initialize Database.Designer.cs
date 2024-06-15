@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TutorDemand.Data.Entities;
 
@@ -11,9 +12,11 @@ using TutorDemand.Data.Entities;
 namespace TutorDemand.Data.Migrations
 {
     [DbContext(typeof(NET1704_221_5_TutorDemandContext))]
-    partial class NET1704_221_5_TutorDemandContextModelSnapshot : ModelSnapshot
+    [Migration("20240613094304_Initialize Database")]
+    partial class InitializeDatabase
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -263,18 +266,8 @@ namespace TutorDemand.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTime>("CreationDate")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime2")
-                        .HasDefaultValueSql("GETDATE()");
-
                     b.Property<DateOnly>("EndDate")
                         .HasColumnType("date");
-
-                    b.Property<DateTime>("LastUpdated")
-                        .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("datetime2")
-                        .HasDefaultValueSql("GETDATE()");
 
                     b.Property<string>("LearnDays")
                         .IsRequired()
