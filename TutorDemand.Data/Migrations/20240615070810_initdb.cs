@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace TutorDemand.Data.Migrations
 {
     /// <inheritdoc />
-    public partial class InitializeDatabase : Migration
+    public partial class initdb : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -41,7 +41,10 @@ namespace TutorDemand.Data.Migrations
                     Phone = table.Column<string>(type: "nvarchar(12)", maxLength: 12, nullable: false),
                     Address = table.Column<string>(type: "nvarchar(300)", maxLength: 300, nullable: true),
                     Gender = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: true),
-                    Dob = table.Column<DateOnly>(type: "date", nullable: true)
+                    Dob = table.Column<DateOnly>(type: "date", nullable: true),
+                    Avatar = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -106,7 +109,9 @@ namespace TutorDemand.Data.Migrations
                     Dob = table.Column<DateOnly>(type: "date", nullable: true),
                     Avatar = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
                     CertificateImage = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
-                    IdentityCard = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true)
+                    IdentityCard = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -127,6 +132,8 @@ namespace TutorDemand.Data.Migrations
                     MeetRoomCode = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     RoomPassword = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     LearnDays = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    CreationDate = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "GETDATE()"),
+                    LastUpdated = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "GETDATE()"),
                     StartDate = table.Column<DateOnly>(type: "date", nullable: false),
                     EndDate = table.Column<DateOnly>(type: "date", nullable: false)
                 },
