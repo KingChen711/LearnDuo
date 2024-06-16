@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using TutorDemand.Data.Entities;
 using TutorDemand.Data.Dtos.Subject;
 using TutorDemand.Data.Dtos.Tutor;
+using TutorDemand.Data.Dtos.Slot;
 
 namespace TutorDemand.Data.Dtos.TeachingSchedule
 {
@@ -35,10 +36,12 @@ namespace TutorDemand.Data.Dtos.TeachingSchedule
 
         public DateOnly EndDate { get; set; }
 
+        public DateTime LastUpdated { get; set; }
+        public DateTime CreationDate { get; set; }
+
         public SubjectDto Subject { get; set; } = null!;
         public TutorDto Tutor { get; set; } = null!;
-
-        //public Slot Slot { get; set; } = null!;
+        public SlotDto Slot { get; set; } = null!;
         //public ICollection<Reservation> Reservations { get; set; } = [];
     }
 }

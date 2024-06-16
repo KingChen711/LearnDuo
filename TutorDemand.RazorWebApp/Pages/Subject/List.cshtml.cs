@@ -2,8 +2,11 @@ using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
+using System;
 using System.Buffers;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text.Json;
 using TutorDemand.Business.Abstractions;
 using TutorDemand.Business.Base;
@@ -19,7 +22,9 @@ namespace TutorDemand.RazorWebApp.Pages.Subject
         // Bind Properties
         [BindProperty]
         public List<SubjectDto> Subjects { get; set; } = null!;
-        
+
+        [BindProperty]
+        public SubjectPostRequest SubjectFilter { get; set; } = new SubjectPostRequest();
 
         //[BindProperty]
         //public int PageIndex { get; set; } = 1;
@@ -55,11 +60,59 @@ namespace TutorDemand.RazorWebApp.Pages.Subject
             TempData["TotalPage"] = pagination.TotalPage;
         }
 
+        public async Task<IActionResult> OnPostFormFilterAsync()
+        {
+            IBusinessResult businessResult = null!;
+
+            if (!ModelState.IsValid)
+            {
+                businessResult = await _subjectBusiness.GetAllAsync();
+                return Page();
+            }
+
+            // Check if request from filter form
+            if (!String.IsNullOrEmpty(SubjectFilter.SubjectName?.ToString())
+                || !String.IsNullOrEmpty(SubjectFilter.SubjectCode?.ToString())
+                || !String.IsNullOrEmpty(SubjectFilter.StartDate.ToString())
+                || !String.IsNullOrEmpty(SubjectFilter.EndDate.ToString())
+                || !String.IsNullOrEmpty(SubjectFilter.Price.ToString()))
+            {
+
+                DateTime.TryParse(SubjectFilter.StartDate.ToString(), out var validStartDate);
+                DateTime.TryParse(SubjectFilter.EndDate.ToString(), out var validEndDate);
+                Decimal.TryParse(SubjectFilter.Price.ToString()?.Replace('.', ' ').Replace(" ", string.Empty), out var validPrice);
+
+
+                businessResult = await _subjectBusiness.GetWithConditionAysnc(x =>
+                    (string.IsNullOrEmpty(SubjectFilter.SubjectCode) || x.SubjectCode.Contains(SubjectFilter.SubjectCode)) &&
+                    (string.IsNullOrEmpty(SubjectFilter.SubjectName) || x.Name.Contains(SubjectFilter.SubjectName)) &&
+                    (!SubjectFilter.StartDate.HasValue || (x.StartDate.HasValue && x.StartDate.Value.Date >= validStartDate.Date)) &&
+                    (!SubjectFilter.EndDate.HasValue || (x.EndDate.HasValue && x.EndDate.Value.Date <= validEndDate.Date)) &&
+                    (!SubjectFilter.Price.HasValue || x.CostPrice == validPrice));
+            }
+            else
+            {
+                businessResult = await _subjectBusiness.GetAllAsync();
+            }
+
+
+            Subjects = _mapper.Map<List<SubjectDto>>(businessResult.Data);
+
+            // Paging
+            var pagingList = PaginatedList<SubjectDto>.Paging(Subjects, 1,
+                    _appSettings.PageSize);
+            Subjects = pagingList;
+            TempData["PageIndex"] = Subjects.Any() ? 1 : 0;
+            TempData["TotalPage"] = pagingList.TotalPage;
+
+            return Page();
+        }
+
         public IActionResult OnPostFilter([FromBody] SubjectPostRequest reqObj)
         {
             IBusinessResult businessResult = null!;
 
-            // Process search subject...
+            // Process search term subject...
             var toLowerSearchTerm = reqObj.SearchValue.ToLower();
             businessResult = _subjectBusiness.GetWithCondition(x =>
                 x.Name.ToLower().Contains(toLowerSearchTerm)
@@ -71,11 +124,7 @@ namespace TutorDemand.RazorWebApp.Pages.Subject
             // Process filter subject...
             if (!String.IsNullOrEmpty(reqObj.OrderBy))
             {
-                var isDescendingOrder = reqObj.OrderBy.StartsWith("-");
-
-                Subjects = isDescendingOrder
-                    ? Subjects.OrderByDescending(x => x.Name).ToList()
-                    : Subjects.OrderBy(x => x.Name).ToList();
+                Subjects = SortingHelper.SortSubjectsByColumn(Subjects, reqObj.OrderBy).ToList();
             }
 
             // Pagination
@@ -84,9 +133,10 @@ namespace TutorDemand.RazorWebApp.Pages.Subject
             TempData["TotalPage"] = pagination.TotalPage;
             TempData["PageIndex"] = reqObj.PageIndex;
 
-            return new JsonResult(new
-                { PageIndex = pagination.PageIndex, TotalPage = pagination.TotalPage, Subjects = Subjects });
-            //return new JsonResult(Subjects);
+            if (reqObj is not null) return new JsonResult(new
+            { PageIndex = pagination.PageIndex, TotalPage = pagination.TotalPage, Subjects = Subjects });
+
+            return Page();
         }
     }
 }

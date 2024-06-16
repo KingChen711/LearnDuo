@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>LearnDuo</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css">
     <link rel="stylesheet" href="~/css/output.css" />
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="icon" href="~/images/logo.png">
@@ -15,11 +16,54 @@
     <script type='text/javascript'
         src='https://cdn.jsdelivr.net/npm/froala-editor@latest/js/froala_editor.pkgd.min.js'></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.js"></script>
+    <!--Tailwind datetime picker-->
+    <script src="../path/to/flowbite/dist/datepicker.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/datepicker.min.js"></script>
+
+    <style>
+        .select2-results__option img {
+            width: 30px;
+            height: 30px;
+            margin-right: 10px;
+        }
+
+        .select2-selection__choice {
+            display: flex;
+            align-items: center;
+            padding: 5px;
+            border-radius: 5px;
+            margin: 4px;
+            background-color: #f1f1f1;
+        }
+
+        .select2-selection__choice__display {
+            display: flex;
+            align-items: center;
+            max-width: 25rem;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            margin-left: 5px;
+        }
+
+        .select2-selection__choice__display img {
+            width: 35px;
+            height: 35px;
+            margin-right: 5px;
+            margin-left: 0rem;
+        }
+
+        .select2-selection__choice__remove {
+            margin-left: 5px;
+            color: #d9534f;
+            cursor: pointer;
+        }
+    </style>
 </head>
 
 <body class="font-sans leading-normal tracking-normal bg-gray-100">
 
-    <nav id="header" class="z-10 fixed top-0 w-full shadow h-20 flex items-center bg-gray-100">
+    <nav id="header" class="z-20 fixed top-0 w-full shadow h-20 flex items-center bg-gray-100">
         <div class="mx-auto mt-0 flex w-full flex-wrap items-center justify-between py-3 md:max-w-6xl">
 
             <div class="pl-4 flex items-center gap-2">
@@ -94,6 +138,38 @@
         document.getElementById('nav-toggle').onclick = function () {
             document.getElementById("nav-content").classList.toggle("hidden");
         }
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script>
+        function formatState(state) {
+            if (!state.id) {
+                return state.text;
+            }
+            var baseUrl = state.element.getAttribute('data-image');
+            var $state = $(
+                '<span><img src="' + baseUrl + '" class="img-flag" /> ' + state.text + '</span>'
+            );
+            return $state;
+        }
+
+        function formatSelection(state) {
+            if (!state.id) {
+                return state.text;
+            }
+            var baseUrl = state.element.getAttribute('data-image');
+            var $state = $(
+                '<span><img src="' + baseUrl + '" class="img-flag" /> ' + state.text + '</span>'
+            );
+            return $state;
+        }
+
+        $(document).ready(function () {
+            $('#tutors').select2({
+                templateResult: formatState,
+                templateSelection: formatSelection,
+                placeholder: "Choose a tutor"
+            });
+        });
     </script>
 
 </body>

@@ -28,6 +28,7 @@ namespace TutorDemand.RazorWebApp.Pages.Subject
         
         public SubjectDto Subject { get; set; } = null!;
         public List<TutorDto> Tutors { get; set; } = new List<TutorDto>();
+        public List<TeachingScheduleDto> TeachingSchedules { get; set; } = new List<TeachingScheduleDto>();
         // Related subjects
         public List<SubjectDto> OtherSubjects { get; set; }
 
@@ -73,6 +74,7 @@ namespace TutorDemand.RazorWebApp.Pages.Subject
                     foreach(var ts in teachingSchedules)
                     {
                         Tutors.Add(ts.Tutor);
+                        TeachingSchedules.Add(ts);
                     }
                 }
             }

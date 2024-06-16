@@ -9,14 +9,13 @@
     {
         return Xsrf.GetAndStoreTokens(HttpContext).RequestToken;
     }
-
 }
 
 @{
     // var json = JsonSerializer.Serialize(Model.Subjects);
 }
 
-<partial name="_DeletePopupConfirm"/>
+<partial name="_DeletePopupConfirm" />
 
 <div class="bg-opacity-10 py-2 mt-5 mb-12">
     <div class="container flex justify-between">
@@ -28,82 +27,158 @@
     </div>
 </div>
 
-@if (Model.Subjects.Any())
+@if (true)
 {
-    <div>
+    <div class="">
         <div class="relative overflow-x-auto sm:rounded-lg mt-4">
-            <div class="w-full flex justify-between items-center mb-4">
-                <div></div>
-                <form class="search-form max-w-md w-full md:w-auto" method="get" id="search-form">
-                    <label for="default-search" class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">Search</label>
+            <div class="flex justify-end items-center mb-4">
+                <form class="search-form max-w-xl w-full md:w-auto" id="filter-form" method="post" asp-page-handler="FormFilter">
                     <div class="relative w-full">
-                        <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
-                            <svg class="w-4 h-4 text-gray-500 dark:text-gray-400"
-                                 aria-hidden="true"
-                                 xmlns="http://www.w3.org/2000/svg"
-                                 fill="none" viewBox="0 0 20 20">
-                                <path stroke="currentColor"
-                                      stroke-linecap="round"
-                                      stroke-linejoin="round"
-                                      stroke-width="2"
-                                      d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
-                            </svg>
+                        <div class="flex flex-col text-sm">
+                            <div class="rounded-xl border border-gray-200 bg-white p-3 shadow-lg">
+                                <div class="relative mb-2 w-full flex items-center justify-between rounded-md">
+                                    <svg class="absolute left-2 block h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <circle cx="11" cy="11" r="8" class=""></circle>
+                                        <line x1="21" y1="21" x2="16.65" y2="16.65" class=""></line>
+                                    </svg>
+                                    <input asp-for="SubjectFilter.SearchValue" type="text" id="default-search" name="search"
+                                           class="h-12 w-full cursor-text rounded-md border border-gray-100 bg-gray-100 py-4 pr-40 pl-12 shadow-sm outline-none focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
+                                           placeholder="Search by code, name, price, etc" />
+                                </div>
+
+                                <div class="flex justify-end mt-4">
+                                    <img src="https://img.icons8.com/?size=100&id=26139&format=png&color=000000"
+                                         class="h-5 w-5 text-gray-400 cursor-pointer"
+                                         id="toggleFilter"
+                                         width="24" height="24"
+                                         isUp="false" />
+                                </div>
+
+                                <div id="filterPanel" class="@(ModelState.IsValid ? "hidden" : "")">
+                                    <div class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3">
+                                        <div class="flex flex-col">
+                                            <label for="filter-name" class="text-sm font-medium text-stone-600">Code</label>
+                                            <input asp-for="SubjectFilter.SubjectCode" type="text" id="filter-name" placeholder="Subject Code" class="mt-2 block w-full rounded-md border border-gray-100 bg-gray-100 px-2 py-2 shadow-sm outline-none focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50" value="" />
+                                        </div>
+
+                                        <div class="flex flex-col">
+                                            <label for="filter-name" class="text-sm font-medium text-stone-600">Name</label>
+                                            <input asp-for="SubjectFilter.SubjectName" type="text" id="filter-name" placeholder="Subject Name" class="mt-2 block w-full rounded-md border border-gray-100 bg-gray-100 px-2 py-2 shadow-sm outline-none focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50" value=""/>
+                                        </div>
+
+                                        <div class="flex flex-col">
+                                            <label for="filter-price" class="text-sm font-medium text-stone-600">Price</label>
+                                            <input asp-for="SubjectFilter.Price" type="tel" id="filter-price" placeholder="Price" class="mt-2 block w-full rounded-md border border-gray-100 bg-gray-100 px-2 py-2 shadow-sm outline-none focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50" />
+                                            <span asp-validation-for="SubjectFilter.Price"
+                                                  class="text-sm italic text-red-500">
+                                            </span>
+                                        </div>
+                                        
+                                        <div class="flex flex-col">
+                                            <label for="filter-sDate" class="text-sm font-medium text-stone-600">Start Date</label>
+                                            <input asp-for="SubjectFilter.StartDate" type="date" id="filter-sDate" class="mt-2 block w-full cursor-pointer rounded-md border border-gray-100 bg-gray-100 px-2 py-2 shadow-sm outline-none focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50" />
+                                            <span asp-validation-for="SubjectFilter.StartDate"
+                                                  class="text-sm italic text-red-500">
+                                            </span>
+                                        </div>
+
+                                        <div class="flex flex-col">
+                                            <label for="filter-eDate" class="text-sm font-medium text-stone-600">End Date</label>
+                                            <input asp-for="SubjectFilter.EndDate" type="date" id="filter-eDate" class="mt-2 block w-full cursor-pointer rounded-md border border-gray-100 bg-gray-100 px-2 py-2 shadow-sm outline-none focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50" />
+                                            <span asp-validation-for="SubjectFilter.EndDate"
+                                                  class="text-sm italic text-red-500">
+                                            </span>
+                                        </div>
+
+                                    </div>
+
+                                    <div class="mt-6 grid w-full grid-cols-2 justify-end space-x-4 md:flex">
+                                        <button id="btn-filter-reset" class="rounded-lg bg-gray-200 px-8 py-2 font-medium text-gray-700 outline-none hover:opacity-80 focus:ring" type="button">Reset</button>
+                                        <button class="rounded-lg bg-blue-600 px-8 py-2 font-medium text-white outline-none hover:opacity-80 focus:ring" type="submit">Search</button>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        <input type="text"
-                               id="default-search"
-                               class="block w-full p-3 pl-10 text-sm text-black border border-gray-300 rounded-lg bg-white"
-                               placeholder="Search Code, Name..."/>
                     </div>
                 </form>
             </div>
             <table class="w-full items-center text-sm text-left text-black bg-white table-auto">
                 <thead class="text-xs text-black uppercase bg-gray-200">
-                <tr>
-                    <th scope="col" class="px-6 py-3 flex">
-                        <span>Subject Code</span>
-                        <img width="13" height="13"
-                             id="sorting-icon"
-                             class="ml-2"
-                             src="https://img.icons8.com/ios-glyphs/30/sort.png" alt="sort"
-                             style="cursor: pointer" value="+"/>
-                    </th>
-                    <th scope="col" class="px-6 py-3">
-                        Subject Name
-                    </th>
-                    <th scope="col" class="px-6 py-3">
-                        Action
-                    </th>
-                </tr>
+                    <tr>
+                        <th scope="col" class="px-6 py-3">
+                            <span class="inline-block align-middle">Subject Code</span>
+                            <img width="13" height="13"
+                                 class="inline-block align-middle ml-2 cursor-pointer sorting-icon"
+                                 src="https://img.icons8.com/ios-glyphs/30/sort.png" alt="sort"
+                                 value="+code" />
+                        </th>
+                        <th scope="col" class="px-6 py-3">
+                            <span class="inline-block align-middle">Subject Name</span>
+                            <img width="13" height="13"
+                                 class="inline-block align-middle ml-2 cursor-pointer sorting-icon"
+                                 src="https://img.icons8.com/ios-glyphs/30/sort.png" alt="sort"
+                                 value="+name" />
+                        </th>
+                        <th scope="col" class="px-6 py-3">
+                            <span class="inline-block align-middle">Start Date</span>
+                            <img width="13" height="13"
+                                 class="inline-block align-middle ml-2 cursor-pointer sorting-icon"
+                                 src="https://img.icons8.com/ios-glyphs/30/sort.png" alt="sort"
+                                 value="+startdate" />
+                        </th>
+                        <th scope="col" class="px-6 py-3">
+                            <span class="inline-block align-middle">End Date</span>
+                            <img width="13" height="13"
+                                 class="inline-block align-middle ml-2 cursor-pointer sorting-icon"
+                                 src="https://img.icons8.com/ios-glyphs/30/sort.png" alt="sort"
+                                 value="+enddate" />
+                        </th>
+                        <th scope="col" class="px-6 py-3">
+                            <span class="inline-block align-middle">Price</span>
+                            <img width="13" height="13"
+                                 class="inline-block align-middle ml-2 cursor-pointer sorting-icon"
+                                 src="https://img.icons8.com/ios-glyphs/30/sort.png" alt="sort"
+                                 value="+price" />
+                        </th>
+                        <th scope="col" class="px-6 py-3">
+                            Action
+                        </th>
+                    </tr>
                 </thead>
                 <tbody>
-                @foreach (var subject in Model.Subjects)
-                {
-                    <tr class="odd:bg-white even:bg-white border-b border-gray-700">
-                        <th scope="row" class="px-6 py-4 font-medium text-black whitespace-nowrap">
-                            @subject.SubjectCode
-                        </th>
-                        <td class="px-6 py-4">
-                            @subject.Name
-                        </td>
-                        <td class="px-6 py-4">
-                            <button class="action-btn bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded text-sm"
-                                    data-action="view" data-id="@subject.SubjectId" data-name="@subject.Name">
-                                View
-                            </button>
-                            <button class="action-btn bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-1 px-2 rounded text-sm"
-                                    data-action="update" data-id="@subject.SubjectId" data-name="@subject.Name">
-                                Update
-                            </button>
-                            <button class="action-btn bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded text-sm"
-                                    data-action="delete" data-id="@subject.SubjectId" data-name="@subject.Name">
-                                Delete
-                            </button>
-                        </td>
-                    </tr>
-                }
+                    @foreach (var subject in Model.Subjects)
+                    {
+                        <tr class="odd:bg-white even:bg-white border-b border-gray-700">
+                            <th scope="row" class="px-6 py-4 font-medium text-black whitespace-nowrap">
+                                @subject.SubjectCode
+                            </th>
+                            <td class="px-6 py-4">
+                                @subject.Name
+                            </td>
+                            <td class="px-6 py-4">@subject.StartDate!.Value.ToString("dd-MM-yyyy")</td>
+                            <td class="px-6 py-4">@subject.EndDate!.Value.ToString("dd-MM-yyyy")</td>
+                            <td class="px-6 py-4 costPrice font-medium">
+                                @subject.CostPrice
+                            </td>
+                            <td class="px-6 py-4">
+                                <button class="action-btn bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded text-sm"
+                                        data-action="view" data-id="@subject.SubjectId" data-name="@subject.Name">
+                                    View
+                                </button>
+                                <button class="action-btn bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-1 px-2 rounded text-sm"
+                                        data-action="update" data-id="@subject.SubjectId" data-name="@subject.Name">
+                                    Update
+                                </button>
+                                <button class="action-btn bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded text-sm"
+                                        data-action="delete" data-id="@subject.SubjectId" data-name="@subject.Name">
+                                    Delete
+                                </button>
+                            </td>
+                        </tr>
+                    }
                 </tbody>
             </table>
-            <partial name="_Pagination"/>
+            <partial name="_Pagination" />
         </div>
     </div>
 }
@@ -118,9 +193,30 @@ else
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script>
         $(document).ready(function () {
-
             var pageIndex = @TempData["PageIndex"];
             var totalPage = @TempData["TotalPage"];
+
+            // Format cost price to Vietnamese currency
+            var costPriceElements = document.querySelectorAll('.costPrice');
+            costPriceElements.forEach(cp => {
+                cp.textContent = formatToCurrency(cp.textContent);
+            });
+
+            // Process filter click...
+            const toggleFilter = document.getElementById('toggleFilter');
+            const filterPanel = document.getElementById('filterPanel');
+            // Handle toggle filter click 
+            toggleFilter.addEventListener('click', function () {
+
+                filterPanel.classList.toggle('hidden');
+
+                if (filterPanel.classList.contains('hidden')) {
+                    toggleFilter.setAttribute('src', 'https://img.icons8.com/?size=100&id=26139&format=png&color=000000');
+                } else {
+                    toggleFilter.setAttribute('src', 'https://img.icons8.com/?size=100&id=26124&format=png&color=000000')
+                }
+
+            });
 
             function add() {
                 function add() {
@@ -128,34 +224,37 @@ else
                 }
             }
 
-            $('#sorting-icon').on('click', function () {
-
-                var isDescending = this.getAttribute('value') == '-';
-                if (isDescending) {
-                    this.setAttribute('value', '+');
-                } else {
-                    this.setAttribute('value', '-');
-                }
-
-                var reqData = { "SearchValue": "", "OrderBy": isDescending ? '-' : '+', "PageIndex": pageIndex }
-
-                $.ajax({
-                    url: `/Subject/List?handler=Filter`,
-                    type: 'POST',
-                    contentType: "application/json; charset=utf-8",
-                    dataType: "json",
-                    data: JSON.stringify(reqData),
-                    headers:
-                    {
-                        "RequestVerificationToken": "@GetAntiXsrfRequestToken()"
-                    },
-                    success: function (response) {
-                        updateData(response.subjects);
-                        updatePagingStatus(response.pageIndex, response.totalPage);
+            // Process sorting...
+            document.querySelectorAll('.sorting-icon')
+                .forEach(sc => sc.addEventListener('click', function () {
+                    var sortAttr = String(this.getAttribute('value'));
+                    var isDescending = sortAttr.startsWith('-');
+                    if (isDescending) {
+                        this.setAttribute('value', '+' + sortAttr.substring(1));
+                    } else {
+                        this.setAttribute('value', '-' + sortAttr.substring(1));
                     }
-                })
-            })
 
+                    var reqData = { "SearchValue": "", "OrderBy": sortAttr, "PageIndex": pageIndex }
+
+                    $.ajax({
+                        url: `/Subject/List?handler=Filter`,
+                        type: 'POST',
+                        contentType: "application/json; charset=utf-8",
+                        dataType: "json",
+                        data: JSON.stringify(reqData),
+                        headers:
+                        {
+                            "RequestVerificationToken": "@GetAntiXsrfRequestToken()"
+                        },
+                        success: function (response) {
+                            updateData(response.subjects);
+                            updatePagingStatus(response.pageIndex, response.totalPage);
+                        }
+                    })
+                }));
+
+            // Process search...
             $('#default-search').on('input', function () {
                 var searchText = $(this).val();
 
@@ -178,6 +277,7 @@ else
                 })
             });
 
+            // Process paging
             $('#back-page').on('click', function () {
 
                 pageIndex = --pageIndex;
@@ -229,6 +329,45 @@ else
                 })
             })
 
+            // Process Filtering...
+            $('#btn-filter-reset').on('click', function () {
+                var form = document.getElementById("filter-form");
+                if (form) {
+                    var elements = form.getElementsByTagName("input");
+                    Array.from(elements).forEach(function (element) {
+                        element.value = "";
+                    });
+                }
+
+                var reqData = { "SearchValue": "", "OrderBy": null, "PageIndex": 1 }
+
+                $.ajax({
+                    url: `/Subject/List?handler=Filter`,
+                    type: 'POST',
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    data: JSON.stringify(reqData),
+                    headers:
+                    {
+                        "RequestVerificationToken": "@GetAntiXsrfRequestToken()"
+                    },
+                    success: function (response) {
+                        updateData(response.subjects);
+                        updatePagingStatus(response.pageIndex, response.totalPage)
+                    }
+                })
+            });
+
+            // Format Filtering price...
+            $('#filter-price').on('input', function (event) {
+                let input = event.target;
+                let value = input.value.replace(/\./g, '');
+
+                if (value) {
+                    $(this).val(formatToCurrencyWhileInput(value));
+                }
+            });
+
             function addActionBtnListener() {
                 $('.action-btn').on('click', function () {
                     var action = $(this).data('action');
@@ -238,7 +377,7 @@ else
                     var url = "";
                     switch (action) {
                         case "view":
-                            // Redirect to view detail page 
+                            // Redirect to view detail page
                             window.location.href = `/subject/view/${subjectId}`;
                             break;
                         case "update":
@@ -273,6 +412,7 @@ else
                 });
             }
 
+            // Update data response
             function updateData(response) {
                 let tableBody = document.querySelector('tbody');
                 tableBody.innerHTML = '';
@@ -282,50 +422,67 @@ else
                 console.log(subjects);
 
                 subjects.forEach(subject => {
-                    tableBody.innerHTML += `
-                        <tr class="odd:bg-white even:bg-white border-b border-gray-700">
-                            <th scope="row" class="px-6 py-4 font-medium text-black whitespace-nowrap">
-                                ${subject.subjectCode}
-                            </th>
-                            <td class="px-6 py-4">
-                                ${subject.name}
-                            </td>
-                            <td class="px-6 py-4">
-                                <button class="action-btn bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded text-sm"
-                                    data-action="view" data-id="${subject.subjectId}" data-name="${subject.name}">
-                                    View
-                                </button>
-                                <button class="action-btn bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-1 px-2 rounded text-sm"
-                                    data-action="update" data-id="${subject.subjectId}" data-name="${subject.name}">
-                                    Update
-                                </button>
-                                <button class="action-btn bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded text-sm"
-                                    data-action="delete" data-id="${subject.subjectId}" data-name="${subject.name}">
-                                    Delete
-                                </button>
-                            </td>
-                        </tr>
-                    `;
+                    tableBody.innerHTML += `<tr class="odd:bg-white even:bg-white border-b border-gray-700">
+                                                            <th scope="row" class="px-6 py-4 font-medium text-black whitespace-nowrap">
+                                                                ${subject.subjectCode}
+                                                            </th>
+                                                            <td class="px-6 py-4">
+                                                                ${subject.name}
+                                                            </td>
+                                                            <td class="px-6 py-4">${formatToDateOnly(subject.startDate)}</td>
+                                                            <td class="px-6 py-4">${formatToDateOnly(subject.endDate)}</td>
+                                                            <td class="px-6 py-4 costPrice font-medium">
+                                                                ${formatToCurrency(subject.costPrice)}
+                                                            </td>
+                                                            <td class="px-6 py-4">
+                                                                <button class="action-btn bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded text-sm"
+                                                                        data-action="view" data-id="${subject.subjectId}" data-name="${subject.name}">
+                                                                    View
+                                                                </button>
+                                                                <button class="action-btn bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-1 px-2 rounded text-sm"
+                                                                        data-action="update" data-id="${subject.subjectId}" data-name="${subject.name}">
+                                                                    Update
+                                                                </button>
+                                                                <button class="action-btn bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded text-sm"
+                                                                        data-action="delete" data-id="${subject.subjectId}" data-name="${subject.name}">
+                                                                    Delete
+                                                                </button>
+                                                            </td>
+                                                        </tr>`;
                 });
 
                 // Add event listeners after updating data
                 addActionBtnListener();
             }
 
-            // function ajaxGetRequest(url) {
-            //     $.ajax({
-            //         url: `${url}`,
-            //         type: 'GET',
-            //         success: function (response) {
-            //             updateData(response.subjects);
-            //             updatePagingStatus(response.pageIndex, response.totalPage);
-            //         },
-            //         error: function (xhr, status, error) {
-            //             console("error", error);
-            //         }
-            //     });
-            // }
+            // Format to VN region and parse them to Vietnamese currency
+            function formatToCurrency(amount) {
+                return parseFloat(amount).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' }).replace(/,/g, '.');
+            }
 
+            // Format to VN currency while input
+            function formatToCurrencyWhileInput(value) {
+                return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+            }
+
+            // Function to remove formatting
+            function removeFormatting(value) {
+                return value.replace(/[.₫\s]/g, '');
+            }
+
+            // Format datetime to dd-MM-yyyy
+            function formatToDateOnly(datetime) {
+                var date = new Date(datetime);
+
+                const yyyy = date.getFullYear();
+                let mm = date.getMonth() + 1;
+                let dd = date.getDate();
+
+                if (dd < 10) dd = '0' + dd;
+                if (mm < 10) mm = '0' + mm;
+
+                return dd + '-' + mm + '-' + yyyy;
+            }
 
             // Use Fetch instead, because delete, update, add required async to prevent interative call
             async function ajaxGetRequest(url) {
@@ -342,6 +499,7 @@ else
                 }
             }
 
+            // Update Paging Status 
             function updatePagingStatus(pageIndexParam, totalPageParam) {
                 if (pageIndexParam !== undefined && totalPageParam !== undefined) {
                     pageIndex = pageIndexParam;
@@ -370,6 +528,15 @@ else
                     $('#next-page').css("opacity", "0.5");
                 }
             }
+
+            // Handle form submit 
+            document.getElementById('filter-form').onsubmit = function () {
+                var costPriceInput = document.getElementById('filter-price');
+                console.log('Original Value: ', costPriceInput.value);
+                costPriceInput.value = costPriceInput.value.replace(/\./g, '');
+                console.log('Modified Value: ', costPriceInput.value);
+                return true; // Ensure the form continues to submit
+            };
 
             // Add event listeners
             addActionBtnListener();
