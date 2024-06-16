@@ -43,6 +43,10 @@ public class Tutor
 
     [MaxLength(500)] public string? IdentityCard { get; set; }
 
+    public DateTime? CreatedAt { get; set; }
+
+    public DateTime? UpdatedAt { get; set; }
+
     //navigator
     public ICollection<TeachingSchedule> TeachingSchedules { get; set; } = [];
 }

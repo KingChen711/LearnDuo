@@ -37,6 +37,12 @@ public class Customer
 
     [DisplayName("Ngày sinh")] public DateOnly? Dob { get; set; }
 
+    [MaxLength(500)] public string? Avatar { get; set; }
+
+    public DateTime? CreatedAt { get; set; }
+
+    public DateTime? UpdatedAt { get; set; }
+
     //navigator
     public ICollection<Reservation> Reservations { get; set; } = [];
 }
