@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace TutorDemand.Data.Migrations
 {
     /// <inheritdoc />
-    public partial class initdb : Migration
+    public partial class InitializeDatabase : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

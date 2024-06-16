@@ -21,19 +21,24 @@ namespace TutorDemand.Data.Dtos.Subject
         [MaxLength] // No length threshold 
         public string Description { get; set; } = string.Empty;
 
+        [Required(ErrorMessage = "Subject Duration is required")]
         [Range(1, int.MaxValue, ErrorMessage = "Duration must be greater than 0")]
         public decimal? Duration { get; set; }
 
+        [Required(ErrorMessage = "Subject Price is required")]
         [Range(1, int.MaxValue, ErrorMessage = "Price must be greater than 0")]
         public decimal CostPrice { get; set; }
-
-        [Required]
-        [DisplayName("Start date")]
         public DateTime? StartDate { get; set; }
 
-        [Required]
-        [DisplayName("End date")]
         public DateTime? EndDate { get; set; }
 
+        [Required(ErrorMessage = "Enrollment capacity is required")]
+        [Range(1, int.MaxValue, ErrorMessage = "Total Enrollment Capacity")]
+        public int? EnrolledCapacity { get; set; }
+
+        public int? EnrolledStudents { get; set; } = 0;
+
+        public List<string>? TutorIds { get; set; } = new List<string>();
+        public string? SlotId { get; set; } 
     }
 }

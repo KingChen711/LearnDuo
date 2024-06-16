@@ -12,8 +12,8 @@ using TutorDemand.Data.Entities;
 namespace TutorDemand.Data.Migrations
 {
     [DbContext(typeof(NET1704_221_5_TutorDemandContext))]
-    [Migration("20240615070810_initdb")]
-    partial class initdb
+    [Migration("20240616124047_Initialize Database")]
+    partial class InitializeDatabase
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
