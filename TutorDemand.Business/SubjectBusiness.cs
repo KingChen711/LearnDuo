@@ -328,6 +328,10 @@ public class SubjectBusiness : ISubjectBusiness
             subject.Description = subjectDto.Description;
             subject.Image = subjectDto.Image;
             subject.Duration = subjectDto.Duration;
+            subject.EnrolledCapacity = subjectDto.EnrolledCapacity;
+            subject.CostPrice = subjectDto.CostPrice;
+            subject.StartDate = subjectDto.StartDate;
+            subject.EndDate = subjectDto.EndDate;
 
             var result = await _unitOfWork.SubjectRepository.SaveAsync() > 0;
 

@@ -127,6 +127,8 @@ namespace TutorDemand.Data.Migrations
                     MeetRoomCode = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     RoomPassword = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     LearnDays = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    CreationDate = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "GETDATE()"),
+                    LastUpdated = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "GETDATE()"),
                     StartDate = table.Column<DateOnly>(type: "date", nullable: false),
                     EndDate = table.Column<DateOnly>(type: "date", nullable: false)
                 },

@@ -4,6 +4,7 @@
 @{
     var subject = Model.Subject;
     var tutors = Model.Tutors;
+    var teachingSchedules = Model.TeachingSchedules;
     var otherSubjects = Model.OtherSubjects;
 }
 
@@ -86,32 +87,32 @@
         <!-- 2. Instructors -->
         <div class="w-full container mb-32 p-3">
             <h2 class="text-2xl font-bold text-blue-500 mt-10 ml-5">2. Instructors</h2>
-            @if (tutors.Any())
+            @if (teachingSchedules.Any())
             {
                 <div class="flex grid grid-cols-12 mt-10 bg-white">
-                    @foreach (var tutor in tutors)
+                    @foreach (var tc in teachingSchedules)
                     {
                         <div class="flex flex-col col-span-4 items-center mt-10 p-5 border-r-2 border-gray-200">
-                            @if (!string.IsNullOrEmpty(tutor.Avatar))
+                            @if (!string.IsNullOrEmpty(tc.Tutor.Avatar))
                             {
-                                <img src="@tutor.Avatar"
+                                <img src="@tc.Tutor.Avatar"
                                      class="size-[220px] object-cover" />
                             }
                             <div class="flex flex-col ml-10">
                                 <div class="flex mt-5 grid grid-cols-12">
                                     <span class="text-md mr-3 col-span-3">Name:</span>
-                                    <span class="text-md font-medium col-span-9 justify-start">@tutor.Fullname</span>
+                                    <span class="text-md font-medium col-span-9 justify-start">@tc.Tutor.Fullname</span>
                                 </div>
                                 <div class="flex mt-2 grid grid-cols-12">
                                     <span class="text-md mr-3 col-span-3">Email:</span>
-                                    <span class="text-md font-medium col-span-9 justify-start overflow-hidden">@tutor.Email</span>
+                                    <span class="text-md font-medium col-span-9 justify-start overflow-hidden">@tc.Tutor.Email</span>
                                 </div>
                                 <div class="flex mt-2 grid grid-cols-12">
                                     <span class="text-md mr-3 col-span-3">Phone:</span>
-                                    <span class="text-md font-medium col-span-9 justify-start">@tutor.Phone</span>
+                                    <span class="text-md font-medium col-span-9 justify-start">@tc.Tutor.Phone</span>
                                 </div>
                                 <div class="flex mt-10">
-                                    <button type="button" class="text-blue-700 hover:text-white border border-blue-700 hover:bg-blue-800 focus:outline-none font-medium rounded-lg text-sm px-20 py-2.5 text-center me-2 mb-2 dark:border-blue-500 dark:text-blue-500 dark:hover:text-white dark:hover:bg-blue-500">View Schedule</button>
+                                    <a type="button" class="text-blue-700 hover:text-white border border-blue-700 hover:bg-blue-800 focus:outline-none font-medium rounded-lg text-sm px-20 py-2.5 text-center me-2 mb-2 dark:border-blue-500 dark:text-blue-500 dark:hover:text-white dark:hover:bg-blue-500" href="/TeachingSchedules/Detail?id=@tc.TeachingScheduleId">View Schedule</a>
                                 </div>
                             </div>
                         </div>
