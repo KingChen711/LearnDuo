@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using System.Linq.Expressions;
+using TutorDemand.Data.Dtos.Customer;
 using TutorDemand.Data.Dtos.Reservation;
 using TutorDemand.Data.Dtos.Slot;
 using TutorDemand.Data.Dtos.Subject;
@@ -17,6 +18,7 @@ namespace TutorDemand.Data.Mappings
             CreateMap<SubjectDto, SubjectAddDto>().ReverseMap();
             CreateMap<SubjectDto, SubjectUpdateDto>().ReverseMap();
             CreateMap<Tutor, TutorDto>().ReverseMap();
+            CreateMap<Customer, CustomerDto>().ReverseMap();
             CreateMap<TeachingSchedule, TeachingScheduleDto>().ReverseMap();
             CreateMap<Reservation, ReservationDetails>().ReverseMap();
             CreateMap<Reservation, ReservationCreateDto>().ReverseMap();

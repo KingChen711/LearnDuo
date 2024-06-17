@@ -25,6 +25,10 @@ builder.Services.AddRazorPages()
         {
             options.Conventions.AddPageRoute("/Index", "");
         });
+builder.Services.AddSession(option =>
+{
+    option.IdleTimeout = TimeSpan.FromMinutes(10);
+});
 
 builder.Services.AddControllers();
 builder.Services.ConfigureSqlContext(builder.Configuration);
@@ -53,6 +57,7 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
+app.UseSession(); // add session
 
 app.UseAuthorization();
 

@@ -7,23 +7,12 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <Compile Remove="Pages\Customer\**"/>
-        <Content Remove="Pages\Customer\**"/>
-        <EmbeddedResource Remove="Pages\Customer\**"/>
-        <None Remove="Pages\Customer\**"/>
+        <ProjectReference Include="..\TutorDemand.Business\TutorDemand.Business.csproj" />
+        <ProjectReference Include="..\TutorDemand.Data\TutorDemand.Data.csproj" />
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\TutorDemand.Business\TutorDemand.Business.csproj"/>
-        <ProjectReference Include="..\TutorDemand.Data\TutorDemand.Data.csproj"/>
-    </ItemGroup>
-
-    <ItemGroup>
-        <Folder Include="Pages\Customer\"/>
-    </ItemGroup>
-
-    <ItemGroup>
-        <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.0"/>
+        <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.0" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.5">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -31,8 +20,8 @@
     </ItemGroup>
 
     <ItemGroup>
-        <UpToDateCheckBuilt Include="wwwroot/css/site.css" Set="Css"/>
-        <UpToDateCheckBuilt Include="tailwind.config.js" Set="Css"/>
+        <UpToDateCheckBuilt Include="wwwroot/css/site.css" Set="Css" />
+        <UpToDateCheckBuilt Include="tailwind.config.js" Set="Css" />
     </ItemGroup>
 
     <ItemGroup>
@@ -42,7 +31,7 @@
     </ItemGroup>
 
     <Target Name="tailwindcss" BeforeTargets="Build">
-        <Exec Command="npm run css:build"/>
+        <Exec Command="npm run css:build" />
     </Target>
 
 </Project>
