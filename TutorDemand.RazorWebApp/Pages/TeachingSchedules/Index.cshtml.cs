@@ -20,18 +20,23 @@ public class Index : PageModel
         _teachingScheduleBusiness = teachingScheduleBusiness;
     }
 
-    public string Query { get; set; } = "";
+    public string SearchSubject { get; set; } = "";
+    public string SearchTutor { get; set; } = "";
+    public string SearchSlot { get; set; } = "";
 
 
     public PagingMetadata Metadata { get; set; } = null!;
     public PagedList<TeachingSchedule> TeachingSchedules { get; set; } = null!;
 
-    public async Task<IActionResult> OnGetAsync(int pageSize = 5, int pageNumber = 1, string query = "")
+    public async Task<IActionResult> OnGetAsync(int pageSize = 5, int pageNumber = 1, string searchSubject = "",
+        string searchTutor = "",string searchSlot = "")
     {
-        Query = query;
+        SearchSubject = searchSubject;
+        SearchTutor = searchTutor;
+        SearchSlot = searchSlot;
 
         var queryParams = new QueryTeachingScheduleDto
-            { PageNumber = pageNumber, PageSize = pageSize, SearchTerm = query };
+            { PageNumber = pageNumber, PageSize = pageSize, SearchSubject = SearchSubject, SearchTutor = SearchTutor, SearchSlot = SearchSlot };
 
         var teachingSchedulesResult = await _teachingScheduleBusiness.GetTeachingSchedulesAsync(queryParams);
 
