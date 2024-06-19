@@ -57,20 +57,30 @@ namespace TutorDemand.Business
         {
             var pageSize = dto.PageSize;
             var pageNumber = dto.PageNumber;
-            var searchTerm = dto.SearchTerm ?? "";
+            var searchSubject = dto.SearchSubject;
+            var searchTutor = dto.SearchTutor;
+            var searchSlot = dto.SearchSlot;
 
             var query = _unitOfWork
                 .TeachingScheduleRepository.GetQueryable(false)
                 .Include(ts => ts.Subject)
                 .Include(ts => ts.Tutor)
-                .Include(ts => ts.Slot)
-                .Where(ts =>
-                    ts.Subject.Name.ToLower().Contains(searchTerm.ToLower()) ||
-                    ts.Tutor.Fullname.ToLower().Contains(searchTerm.ToLower()) ||
-                    ts.Slot.SlotName.ToLower().Contains(searchTerm.ToLower()) ||
-                    ts.MeetRoomCode.ToLower().Contains(searchTerm.ToLower()) ||
-                    ts.RoomPassword.ToLower().Contains(searchTerm.ToLower()) ||
-                    ts.LearnDays.ToLower().Contains(searchTerm.ToLower()));
+                .Include(ts => ts.Slot).AsQueryable();
+
+            if (searchSubject is not null)
+            {
+                query = query.Where(tc => tc.Subject.Name.ToLower().Contains(searchSubject.ToLower()));
+            }
+
+            if (searchTutor is not null)
+            {
+                query = query.Where(tc => tc.Tutor.Fullname.ToLower().Contains(searchTutor.ToLower()));
+            }
+
+            if (searchSlot is not null)
+            {
+                query = query.Where(tc => tc.Slot.SlotName.ToLower().Contains(searchSlot.ToLower()));
+            }
 
             var teachingSchedulesWithMetaData = await PagedList<TeachingSchedule>.ToPagedList(
                 query,
