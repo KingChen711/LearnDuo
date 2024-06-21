@@ -108,13 +108,13 @@ namespace TutorDemand.RazorWebApp.Pages.Subject
             return Page();
         }
 
-        public IActionResult OnPostFilter([FromBody] SubjectPostRequest reqObj)
+        public async Task<IActionResult> OnPostFilterAsync([FromBody] SubjectPostRequest reqObj)
         {
             IBusinessResult businessResult = null!;
 
             // Process search term subject...
             var toLowerSearchTerm = reqObj.SearchValue.ToLower();
-            businessResult = _subjectBusiness.GetWithCondition(x =>
+            businessResult = await _subjectBusiness.GetWithConditionAysnc(x =>
                 x.Name.ToLower().Contains(toLowerSearchTerm)
                 || x.SubjectCode.ToLower().Contains(toLowerSearchTerm));
 
