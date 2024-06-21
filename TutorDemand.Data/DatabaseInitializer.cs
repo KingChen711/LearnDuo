@@ -498,6 +498,7 @@ namespace TutorDemand.Data
                 Fullname = "Nguyen Van Teo",
                 Dob = new DateOnly(1998, 10, 2),
                 Email = "nguyenvanteo@gmail.com",
+                Password = "123456",
                 Phone = "0767178991",
                 Address = "E2a-7, Street D1, HCM City",
                 Gender = nameof(Gender.Male)

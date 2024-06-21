@@ -13,13 +13,14 @@ namespace TutorDemand.Business
     public class TutorBusiness : ITutorBusiness
     {
         private readonly UnitOfWork _unitOfWork;
+        private readonly IMapper _mapper;
 
         public TutorBusiness()
         {
             _unitOfWork ??= new UnitOfWork();
         }
 
-        public TutorBusiness(IMapper mapper) => _unitOfWork ??= new UnitOfWork();
+        public TutorBusiness(IMapper mapper)  { _mapper = mapper;  _unitOfWork ??= new UnitOfWork(); }
 
         public async Task<IBusinessResult> FindOneAsync(Expression<Func<Tutor, bool>> condition)
         {

@@ -1,16 +1,9 @@
 ﻿using Mapster;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
 using TutorDemand.Business.Abstractions;
 using TutorDemand.Business.Base;
 using TutorDemand.Common;
 using TutorDemand.Data;
-using TutorDemand.Data.DAO;
 using TutorDemand.Data.Dtos.Customer;
 using TutorDemand.Data.Entities;
 
@@ -24,32 +17,11 @@ namespace TutorDemand.Business
         {
             _unitOfWork ??= new UnitOfWork();
         }
-
-        public async Task<IBusinessResult> CreateAsync(CustomerAddDto dto)
+        
+        
+        public async Task<IBusinessResult> DeleteAsync(Guid customerId)
         {
-            try
-            {
-                var entity = dto.Adapt<Customer>();
-                await _unitOfWork.CustomerRepository.CreateAsync(entity);
-                var result = await _unitOfWork.CustomerRepository.SaveAsync() > 0;
-                if (result)
-                {
-                    return new BusinessResult(Const.SUCCESS_CREATE_CODE, Const.SUCCESS_CREATE_MSG);
-                }
-                else
-                {
-                    return new BusinessResult(Const.FAIL_CREATE_CODE, Const.FAIL_CREATE_MSG);
-                }
-            }
-            catch (Exception ex)
-            {
-                return new BusinessResult(Const.ERROR_EXCEPTION_CODE, ex.Message);
-            }
-        }
-
-        public async Task<IBusinessResult> DeleteAsync(Guid tutorId)
-        {
-            var customerEntity = await _unitOfWork.CustomerRepository.GetByIdAsync(tutorId);
+            var customerEntity = _unitOfWork.CustomerRepository.GetOneWithCondition(x => x.CustomerId.Equals(customerId));
             if (customerEntity is null)
             {
                 return new BusinessResult(Const.WARNING_NO_DATA_CODE, Const.WARNING_NO_DATA_MSG);
@@ -57,7 +29,6 @@ namespace TutorDemand.Business
             else
             {
                 await _unitOfWork.CustomerRepository.RemoveAsync(customerEntity);
-                await _unitOfWork.CustomerRepository.SaveAsync();
 
                 return new BusinessResult(Const.SUCCESS_DELETE_CODE, Const.SUCCESS_DELETE_MSG);
             }
@@ -67,11 +38,11 @@ namespace TutorDemand.Business
         {
             try
             {
-                var customers = await _unitOfWork.CustomerRepository.GetWithConditionAsync(expression);
+                var customer = await _unitOfWork.CustomerRepository.GetOneWithConditionAsync(expression);
 
-                if (customers != null)
+                if (customer != null)
                 {
-                    return new BusinessResult(Const.SUCCESS_UPDATE_CODE, Const.SUCCESS_UPDATE_MSG, customers);
+                    return new BusinessResult(Const.SUCCESS_UPDATE_CODE, Const.SUCCESS_UPDATE_MSG, customer);
                 }
                 else
                 {
@@ -105,21 +76,49 @@ namespace TutorDemand.Business
             }
         }
 
-        public async Task<IBusinessResult> UpdateAsync(CustomerUpdateDto dto)
+        public async Task<IBusinessResult> UpdateAsync(CustomerDto dto)
+        {
+            try
+            {
+                var entity = await _unitOfWork.CustomerRepository.GetOneWithConditionAsync(x => x.CustomerId.Equals(dto.CustomerId));
+
+                if (entity == null)
+                {
+                    return new BusinessResult(Const.FAIL_UPDATE_CODE, Const.FAIL_UPDATE_MSG);
+                }
+
+                entity.Fullname = dto.Fullname;
+                entity.Address = dto.Address;
+                entity.Email = dto.Email;
+                entity.Phone = dto.Phone;
+                entity.Gender = dto.Gender;
+                entity.Avatar = dto.Avatar;
+
+                var result = await _unitOfWork.CustomerRepository.UpdateAsync(entity);
+
+                return result > 0
+                    ? new BusinessResult(Const.SUCCESS_UPDATE_CODE, Const.SUCCESS_UPDATE_MSG)
+                    : new BusinessResult(Const.FAIL_UPDATE_CODE, Const.FAIL_UPDATE_MSG);
+            }
+            catch (Exception ex)
+            {
+                return new BusinessResult(Const.ERROR_EXCEPTION_CODE, ex.Message);
+            }
+        }
+        
+        public async Task<IBusinessResult> CreateAsync(CustomerDto dto)
         {
             try
             {
                 var entity = dto.Adapt<Customer>();
-                await _unitOfWork.CustomerRepository.UpdateAsync(entity);
-                var result = await _unitOfWork.CustomerRepository.SaveAsync() > 0;
-
+                var result =  await _unitOfWork.CustomerRepository.CreateAsync(entity) > 0;
                 if (result)
                 {
-                    return new BusinessResult(Const.SUCCESS_UPDATE_CODE, Const.SUCCESS_UPDATE_MSG);
+                    return new BusinessResult(Const.SUCCESS_CREATE_CODE, Const.SUCCESS_CREATE_MSG);
                 }
                 else
                 {
-                    return new BusinessResult(Const.FAIL_UPDATE_CODE, Const.FAIL_UPDATE_MSG);
+                    return new BusinessResult(Const.FAIL_CREATE_CODE, Const.FAIL_CREATE_MSG);
                 }
             }
             catch (Exception ex)

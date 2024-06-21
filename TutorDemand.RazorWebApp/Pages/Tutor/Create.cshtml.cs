@@ -9,12 +9,10 @@ namespace TutorDemand.RazorWebApp.Pages.Tutor
     public class CreateModel : PageModel
     {
         private readonly ITutorBusiness tutorBusiness;
-        private readonly IMapper mapper;
 
-        public CreateModel(ITutorBusiness tutorBusiness, IMapper mapper)
+        public CreateModel(ITutorBusiness tutorBusiness)
         {
             this.tutorBusiness = tutorBusiness;
-            this.mapper = mapper;
         }
 
         [BindProperty] public TutorDto Tutor { get; set; }

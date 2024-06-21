@@ -77,10 +77,9 @@ namespace TutorDemand.Data.Base
         {
             try
             {
-                _context.Add(entity);
-                var a = await _context.SaveChangesAsync();
-                Console.WriteLine(a);
-                return a;
+                await _context.AddAsync(entity);
+                var rs = await _context.SaveChangesAsync();
+                return rs;
             }
             catch (DbUpdateException e)
             {
