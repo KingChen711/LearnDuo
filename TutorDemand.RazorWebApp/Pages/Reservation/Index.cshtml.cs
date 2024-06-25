@@ -32,6 +32,7 @@ namespace TutorDemand.Pages.Reservations
         public List<ReservationDetailDTO> Reservations { get; set; } = new List<ReservationDetailDTO>();
         public int CurrentPage { get; set; } = 1;
         public int TotalPages { get; set; }
+        public string SearchResultMessage { get; set; }
         public bool HasPreviousPage => CurrentPage > 1;
         public bool HasNextPage => CurrentPage < TotalPages;
         public ReservationFilter Filter { get; set; }
@@ -91,7 +92,8 @@ namespace TutorDemand.Pages.Reservations
                     ts => ts.Subject.Name.Contains(input) || ts.Tutor.Fullname.Contains(input), null, "Tutor,Subject");
                 if (searchingSchedule.Data is null)
                 {
-                    
+                    SearchResultMessage = "Không có kết quả tìm kiếm phù hợp.";
+                    return Page();
                 }
 
                 var searchingScheduleData = ((List<TeachingSchedule>)searchingSchedule.Data!).Distinct();
