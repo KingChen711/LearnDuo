@@ -6,6 +6,7 @@ using TutorDemand.Data.Dtos.Reservation;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.IdentityModel.Tokens;
 using TutorDemand.Business.Base;
 using TutorDemand.Data.Dtos.Subject;
 using TutorDemand.Data.Utils;
@@ -35,7 +36,7 @@ namespace TutorDemand.Pages.Reservations
         public string SearchResultMessage { get; set; }
         public bool HasPreviousPage => CurrentPage > 1;
         public bool HasNextPage => CurrentPage < TotalPages;
-        public ReservationFilter Filter { get; set; }
+        [BindProperty(SupportsGet = true)]public ReservationFilter Filter { get; set; }
         [BindProperty(SupportsGet = true)] public string SearchQuery { get; set; }
 
         public async Task<IActionResult> OnGet(string? input, int? currentPage = 1)
@@ -133,52 +134,70 @@ namespace TutorDemand.Pages.Reservations
         {
             const int PageSize = 5;
             CurrentPage = 1;
-
-            var filteredReservations = await _reservationService.GetWithConditionAysnc(reservation =>
-                    (!Filter.PaidPrice.HasValue || reservation.PaidPrice == Filter.PaidPrice) &&
-                    (!Filter.CreateAt.HasValue || reservation.CreatedAt.Date == Filter.CreateAt.Value.Date) &&
-                    (string.IsNullOrEmpty(Filter.TutorName) ||
-                     reservation.TeachingSchedule.Tutor.Fullname.Contains(Filter.TutorName)) &&
-                    (string.IsNullOrEmpty(Filter.SubjectName) ||
-                     reservation.TeachingSchedule.Subject.Name.Contains(Filter.SubjectName)), null, "Tutor,Subject"
-            );
-            if (filteredReservations.Data is null)
+            var reservations = new List<Reservation>();
+            if (!Filter.CreateAt.HasValue && !Filter.PaidPrice.HasValue
+                                          && Filter.SubjectName.IsNullOrEmpty() && Filter.TutorName.IsNullOrEmpty())
             {
-                CurrentPage = 0;
-                return Page();
-            }
-
-            var reservations = (List<Reservation>)filteredReservations.Data!;
-            
-            TotalPages = (int)Math.Ceiling(reservations.Count / (double)PageSize);
-
-            var paginatedReservations = reservations
-                .Skip((CurrentPage - 1) * PageSize)
-                .Take(PageSize)
-                .ToList();
-
-            foreach (var reservation in paginatedReservations)
-            {
-                var teachingSchedule = await _teachingScheduleBusiness.FindOneAsync(ts =>
-                    ts.TeachingScheduleId.Equals(reservation.TeachingScheduleId));
-                var teachingScheduleData = (TeachingSchedule)teachingSchedule.Data!;
-                var tutor = await _tutorBusiness.FindOneAsync(x => x.TutorId.Equals(teachingScheduleData.TutorId));
-                var subject = await _subjectBusiness.GetByIdAsync(((TeachingSchedule)teachingSchedule.Data!).SubjectId);
-
-                var reservationDetail = new ReservationDetailDTO()
+                var result = _reservationService.GetAll();
+                if (result.Status == 1)
                 {
-                    Id = reservation.ReservationId,
-                    CreatedAt = reservation.CreatedAt,
-                    PaidPrice = reservation.PaidPrice,
-                    PaymentMethod = reservation.PaymentMethod,
-                    PaymentStatus = reservation.PaymentStatus,
-                    ReservationStatus = reservation.ReservationStatus,
-                    TutorName = ((Tutor)tutor.Data!).Fullname,
-                    SubjectName = ((Subject)subject.Data!).Name
-                };
-
-                Reservations.Add(reservationDetail);
+                    reservations = (List<Reservation>)result.Data!;
+                }
             }
+            else
+            {
+                var filterTeachingSchedule = await _teachingScheduleBusiness.GetWithConditionAsync(schedule
+                    => (string.IsNullOrEmpty(Filter.TutorName) ||
+                        schedule.Tutor.Fullname.Contains(Filter.TutorName)) &&
+                       (string.IsNullOrEmpty(Filter.SubjectName) ||
+                        schedule.Subject.Name.Contains(Filter.SubjectName)), null, "Tutor,Subject");
+                foreach (var data in ((List<TeachingSchedule>)filterTeachingSchedule.Data!).Distinct())
+                {
+                    var filterReservation = await _reservationService.GetWithConditionAysnc(reservation =>
+                        (reservation.TeachingScheduleId.Equals(data.TeachingScheduleId)) &&
+                        (!Filter.PaidPrice.HasValue || reservation.PaidPrice == Filter.PaidPrice) &&
+                        (!Filter.CreateAt.HasValue || reservation.CreatedAt.Date == Filter.CreateAt.Value.Date));
+                    if (filterReservation.Data is null)
+                    {
+                        continue;
+                    }
+
+                    reservations.AddRange((List<Reservation>)filterReservation.Data);
+                }
+                
+
+                TotalPages = (int)Math.Ceiling(reservations.Count / (double)PageSize);
+
+                var paginatedReservations = reservations
+                    .Skip((CurrentPage - 1) * PageSize)
+                    .Take(PageSize)
+                    .ToList();
+
+                foreach (var reservation in paginatedReservations)
+                {
+                    var teachingSchedule = await _teachingScheduleBusiness.FindOneAsync(ts =>
+                        ts.TeachingScheduleId.Equals(reservation.TeachingScheduleId));
+                    var teachingScheduleData = (TeachingSchedule)teachingSchedule.Data!;
+                    var tutor = await _tutorBusiness.FindOneAsync(x => x.TutorId.Equals(teachingScheduleData.TutorId));
+                    var subject =
+                        await _subjectBusiness.GetByIdAsync(((TeachingSchedule)teachingSchedule.Data!).SubjectId);
+
+                    var reservationDetail = new ReservationDetailDTO()
+                    {
+                        Id = reservation.ReservationId,
+                        CreatedAt = reservation.CreatedAt,
+                        PaidPrice = reservation.PaidPrice,
+                        PaymentMethod = reservation.PaymentMethod,
+                        PaymentStatus = reservation.PaymentStatus,
+                        ReservationStatus = reservation.ReservationStatus,
+                        TutorName = ((Tutor)tutor.Data!).Fullname,
+                        SubjectName = ((Subject)subject.Data!).Name
+                    };
+
+                    Reservations.Add(reservationDetail);
+                }
+            }
+
 
             return Page();
         }
