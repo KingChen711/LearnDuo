@@ -94,7 +94,7 @@
         </div>
 
         <form method="post">
-            <div id="filterPanel" class="@(ModelState.IsValid ? "hidden" : "")">
+            <div id="filterPanel" class="@(ModelState.IsValid ? "" : "hidden")">
                 <div class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3">
                     <div class="flex flex-col">
                         <label for="filter-sName" class="text-sm font-medium text-stone-600">Subject Name</label>
@@ -193,6 +193,7 @@
             searchInput.value = "";
             searchInput.disabled = false; // Enable search input
         } else {
+            searchInput.value = "";
             toggleFilter.setAttribute('src', 'https://img.icons8.com/?size=100&id=26124&format=png&color=000000');
             searchInput.disabled = true; // Disable search input
         }
@@ -290,40 +291,13 @@
                 document.body.appendChild(form);
                 form.submit();
             }
-    
-            function sortTable(column) {
-                const table = document.getElementById('reservationTable');
-                const rows = Array.from(table.rows);
-                const icon = document.getElementById(`sortIcon${column}`);
-                const sortAscending = sortOrder[column] !== 'asc';
-                sortOrder[column] = sortAscending ? 'asc' : 'desc';
-            
-                // Sắp xếp lại các dòng
-                rows.sort((a, b) => {
-                    const aValue = a.cells.namedItem(column).innerText.trim();
-                    const bValue = b.cells.namedItem(column).innerText.trim();
-                    return sortAscending
-                        ? aValue.localeCompare(bValue, undefined, { numeric: true })
-                        : bValue.localeCompare(aValue, undefined, { numeric: true });
-                });
-            
-                // Xóa các dòng hiện tại trong bảng
-                while (table.rows.length > 1) {
-                    table.deleteRow(1);
-                }
-            
-                // Thêm lại các dòng đã được sắp xếp vào bảng
-                rows.forEach(row => table.appendChild(row));
-            
-                // Cập nhật icon sắp xếp
-                const allIcons = document.querySelectorAll('.sorting-icon');
-                allIcons.forEach(icon => icon.src = 'https://img.icons8.com/ios-glyphs/30/sort.png');
+   
             
                 icon.src = sortAscending
                     ? 'https://img.icons8.com/ios-glyphs/30/up-squared.png'
-                    : 'https://img.icons8.com/ios-glyphs/30/down-squared.png';
+                    : 'https://img.icons8.com/ios-glyphs/30/down-squared.png'
             
-    }
+    
 
 </script>
 }
