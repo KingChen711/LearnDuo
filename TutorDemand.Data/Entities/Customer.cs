@@ -9,7 +9,7 @@ public class Customer
     [Key] public int Id { get; set; }
 
     public Guid CustomerId { get; set; }
-
+    
     [Required]
     [DisplayName("Tên")]
     [MaxLength(100, ErrorMessage = "Tên tối đa 100 kí tự.")]
@@ -19,7 +19,10 @@ public class Customer
     [EmailAddress]
     [MaxLength(100, ErrorMessage = "Email tối đa 100 kí tự.")]
     public string Email { get; set; } = null!; //UNIQUE, nếu có mua hàng lần 2 thì find by email trước
-
+    
+    [MinLength(6, ErrorMessage = "Password có ít nhất 6 kí tự.")]
+    public string Password { get; set; } = null!; 
+    
     [Required]
     [RegularExpression(@"^(\+84|0)[1-9]\d{8}$", ErrorMessage = "Số điện thoại không hợp lệ")]
     [DisplayName("Số điện thoại")]
