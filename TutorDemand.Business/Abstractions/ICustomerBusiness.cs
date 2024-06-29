@@ -15,8 +15,8 @@ namespace TutorDemand.Business.Abstractions
     {
         Task<IBusinessResult> GetAllAsync();
         Task<IBusinessResult> FindOneAsync(Expression<Func<Customer, bool>> expression);
-        Task<IBusinessResult> CreateAsync(CustomerAddDto entity);
-        Task<IBusinessResult> UpdateAsync(CustomerUpdateDto entity);
+        Task<IBusinessResult> CreateAsync(CustomerDto entity);
+        Task<IBusinessResult> UpdateAsync(CustomerDto entity);
         Task<IBusinessResult> DeleteAsync(Guid tutorId);
     }
 }

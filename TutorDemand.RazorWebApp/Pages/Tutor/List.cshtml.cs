@@ -26,28 +26,43 @@ namespace TutorDemand.RazorWebApp.Pages.Tutor
 
         [BindProperty] public PaginatedList<TutorDto> Tutors { get; set; }
 
-        public async Task OnGet(int? pageIndex = 1, string? name = null)
+        public async Task OnGet(int? pageIndex = 1, string? name = null, string? email = null, string? phone = null, string? address = null)
         {
             IBusinessResult businessResult = await _tutorBusiness.GetAllAsync();
 
             if (businessResult != null && businessResult.Status == 1)
             {
                 var tutorList = _mapper.Map<List<TutorDto>>(businessResult.Data);
-
-                // Filter the tutorList by name if the name parameter is provided
-                if (!string.IsNullOrEmpty(name))
+                if (!string.IsNullOrEmpty(name) || !string.IsNullOrEmpty(email) || !string.IsNullOrEmpty(phone) ||
+                    !string.IsNullOrEmpty(address))
                 {
-                    tutorList = tutorList.Where(t => 
-                        t.GetType().GetProperties()
-                            .Any(prop => prop.GetValue(t)?.ToString()?.Contains(name, StringComparison.OrdinalIgnoreCase) == true)
-                    ).ToList();
-                }
+                    var filteredTutors = new List<TutorDto>();
 
-                // Paging
-                pageIndex ??= 1;
-                Tutors = PaginatedList<TutorDto>.Paging(tutorList, pageIndex.Value, 5);
+                    foreach (var tutor in tutorList)
+                    {
+                        // Check if any of the criteria match
+                        bool matchName = !string.IsNullOrEmpty(name) && tutor.Fullname.Contains(name, StringComparison.OrdinalIgnoreCase);
+                        bool matchEmail = !string.IsNullOrEmpty(email) && tutor.Email.Contains(email, StringComparison.OrdinalIgnoreCase);
+                        bool matchPhone = !string.IsNullOrEmpty(phone) && tutor.Phone.Contains(phone, StringComparison.OrdinalIgnoreCase);
+                        bool matchAddress = !string.IsNullOrEmpty(address) && tutor.Address.Contains(address, StringComparison.OrdinalIgnoreCase);
+
+                        if (matchName || matchEmail || matchPhone || matchAddress)
+                        {
+                            filteredTutors.Add(tutor);
+                        }
+                    }
+
+                    // Paging
+                    pageIndex ??= 1;
+                    Tutors = PaginatedList<TutorDto>.Paging(filteredTutors, pageIndex.Value, 5);
+                }
+                else
+                {
+                    // Paging
+                    pageIndex ??= 1;
+                    Tutors = PaginatedList<TutorDto>.Paging(tutorList, pageIndex.Value, 5);
+                }
             }
         }
-
     }
 }
