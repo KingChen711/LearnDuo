@@ -7,9 +7,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.IdentityModel.Tokens;
+using TutorDemand.Business;
 using TutorDemand.Business.Base;
 using TutorDemand.Data.Dtos.Subject;
 using TutorDemand.Data.Utils;
+using TutorDemand.RazorWebApp.Models;
 using TutorDemand.RazorWebApp.Pages.Reservation.Models;
 
 namespace TutorDemand.Pages.Reservations
@@ -20,14 +22,16 @@ namespace TutorDemand.Pages.Reservations
         private readonly ITutorBusiness _tutorBusiness;
         private readonly ITeachingScheduleBusiness _teachingScheduleBusiness;
         private readonly ISubjectBusiness _subjectBusiness;
+        private readonly ICustomerBusiness _customerBusiness;
 
         public IndexModel(IReservationBusiness reservationService, ITutorBusiness tutorBusiness,
-            ITeachingScheduleBusiness teachingScheduleBusiness, ISubjectBusiness subjectBusiness)
+            ITeachingScheduleBusiness teachingScheduleBusiness, ISubjectBusiness subjectBusiness,ICustomerBusiness customerBusiness)
         {
             _reservationService = reservationService;
             _tutorBusiness = tutorBusiness;
             _teachingScheduleBusiness = teachingScheduleBusiness;
             _subjectBusiness = subjectBusiness;
+            _customerBusiness = customerBusiness;
         }
 
         public List<ReservationDetailDTO> Reservations { get; set; } = new List<ReservationDetailDTO>();
@@ -46,7 +50,13 @@ namespace TutorDemand.Pages.Reservations
 
             if (string.IsNullOrEmpty(input))
             {
-                var result = _reservationService.GetAll();
+                var customer = SessionHelpers.GetObjectFromJson<Customer>(HttpContext.Session, "Customer");
+                if (customer is null)
+                {
+                    return RedirectToPage("/Auth/Login");
+                }   
+
+                var result = await _reservationService.GetWithConditionAysnc(r => r.CustomerId.Equals(customer.CustomerId),null,null);
                 if (result.Status == 1)
                 {
                     var allReservations = (List<Reservation>)result.Data;
@@ -151,6 +161,11 @@ namespace TutorDemand.Pages.Reservations
                         schedule.Tutor.Fullname.Contains(Filter.TutorName)) &&
                        (string.IsNullOrEmpty(Filter.SubjectName) ||
                         schedule.Subject.Name.Contains(Filter.SubjectName)), null, "Tutor,Subject");
+                if (filterTeachingSchedule.Data is null)
+                {
+                    return RedirectToPage("./Index");
+                }
+
                 foreach (var data in ((List<TeachingSchedule>)filterTeachingSchedule.Data!).Distinct())
                 {
                     var filterReservation = await _reservationService.GetWithConditionAysnc(reservation =>

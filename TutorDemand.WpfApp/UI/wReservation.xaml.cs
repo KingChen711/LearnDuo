@@ -131,6 +131,7 @@ namespace TutorDemand.WpfApp.UI
                 reservation.TeachingScheduleId = scheduleData.TeachingScheduleId;
                 reservation.CustomerId = Guid.Parse(_currentCustomerId);
                 await _reservationService.CreateAsync(reservation);
+                LoadReservation();
                 // Notify the user about the successful creation
                 MessageBox.Show("Reservation created successfully.");
             }
@@ -199,7 +200,7 @@ namespace TutorDemand.WpfApp.UI
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                //MessageBox.Show(ex.Message);
             }
         }
 
@@ -212,6 +213,7 @@ namespace TutorDemand.WpfApp.UI
         {
             try
             {
+                
                 if (txtId.Text.Length > 0)
                 {
                     ReservationDetails req = new ReservationDetails()
@@ -254,9 +256,9 @@ namespace TutorDemand.WpfApp.UI
                     var scheduleData = (TeachingSchedule)teachingSchedule.Data!;
                     reservation.TeachingScheduleId = scheduleData.TeachingScheduleId;
                     await _reservationService.UpdateAsync(reservation);
-
-                        // Notify the user about the successful update
-                        MessageBox.Show("Reservation updated successfully.");
+                    LoadReservation();
+                    // Notify the user about the successful update
+                    MessageBox.Show("Reservation updated successfully.");
                 }
                 else
                 {
@@ -283,8 +285,8 @@ namespace TutorDemand.WpfApp.UI
 
                     if (result == MessageBoxResult.Yes)
                     {
-                        // Proceed with deletion if user confirms
                         await _reservationService.DeleteAsync(Guid.Parse(txtId.Text));
+                        LoadReservation();
                         MessageBox.Show("Tutor deleted successfully.");
                     }
                 }
@@ -307,12 +309,6 @@ namespace TutorDemand.WpfApp.UI
 
         private void resetInput()
         {
-            //txtId.Text = string.Empty;
-            //txtFullName.Text = string.Empty;
-            //txtAddress.Text = string.Empty;
-            //txtEmail.Text = string.Empty;
-            //txtPhone.Text = string.Empty;
-            //cboGender.SelectedIndex = 0;
 
             txtSubjectName.Text = string.Empty;
             txtPrice.Text = string.Empty;
@@ -327,10 +323,12 @@ namespace TutorDemand.WpfApp.UI
         {
             try
             {
-                var reservations = (List<Reservation>)(await _reservationService.GetAllAsync()).Data;
+                var reservations = await _reservationService.GetAllAsync();
+                var reservationDatas = (List<Reservation>)reservations.Data!;
+                reservationDatas.OrderBy(x => x.PaidPrice < 1);
                 var resultData = new List<ReservationDetails>();
 
-                foreach (var reservation in reservations)
+                foreach (var reservation in reservationDatas)
                 {
                     var teachingSchedule = await _teachingScheduleBusiness.FindOneAsync(ts =>
                         ts.TeachingScheduleId.Equals(reservation.TeachingScheduleId));
