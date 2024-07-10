@@ -1,52 +1,41 @@
 @page "{reservationId:Guid}"
 @model TutorDemand.RazorWebApp.Pages.Reservation.ViewModel
 
-@{
-    Layout = null;
-}
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chi tiết giao dịch</title>
-    <link href="~/css/site.css" rel="stylesheet"/>
-</head>
 <body class="bg-gray-100">
     <div class="container mx-auto p-6">
         <div class="bg-white p-8 rounded shadow-md">
-            <h1 class="text-3xl font-bold mb-6 text-gray-800">Chi tiết giao dịch</h1>
+            <h1 class="text-3xl font-bold mb-6 text-gray-800 text-center">Chi tiết giao dịch</h1>
             
-            <div class="mb-8">
-                <h2 class="text-2xl font-semibold mb-4 text-blue-600">Reservation Details</h2>
-                <p class="mb-2"><span class="font-bold text-green-600">Tutor Name:</span> <span class="text-gray-700">@Model.ReservationDetail.TutorName</span></p>
-                <p class="mb-2"><span class="font-bold text-green-600">Subject Name:</span> <span class="text-gray-700">@Model.ReservationDetail.SubjectName</span></p>
-                <p class="mb-2"><span class="font-bold text-green-600">Paid Price:</span> <span class="text-gray-700">@Model.ReservationDetail.PaidPrice</span></p>
-                <p class="mb-2"><span class="font-bold text-green-600">Reservation Status:</span> <span class="text-gray-700">@Model.ReservationDetail.ReservationStatus</span></p>
-                <p class="mb-2"><span class="font-bold text-green-600">Payment Status:</span> <span class="text-gray-700">@Model.ReservationDetail.PaymentStatus</span></p>
-                <p class="mb-2"><span class="font-bold text-green-600">Payment Method:</span> <span class="text-gray-700">@Model.ReservationDetail.PaymentMethod</span></p>
-            </div>
-            
-            <div class="mb-8">
-                <h2 class="text-2xl font-semibold mb-4 text-blue-600">Tutor Detail</h2>
-                <div class="flex items-center mb-4">
-                    @if (!string.IsNullOrEmpty(Model.TutorDetail.Avatar))
-                    {
-                        <img src="@Model.TutorDetail.Avatar" alt="Tutor Avatar" class="w-32 h-32 rounded-full mr-4"/>
-                    }
-                    <div>
-                        <p class="mb-2"><span class="font-bold text-green-600">Tên giảng viên:</span> <span class="text-gray-700">@Model.TutorDetail.Fullname</span></p>
-                        <p class="mb-2"><span class="font-bold text-green-600">Email:</span> <span class="text-gray-700">@Model.TutorDetail.Email</span></p>
-                        <p class="mb-2"><span class="font-bold text-green-600">Số điện thoại:</span> <span class="text-gray-700">@Model.TutorDetail.Phone</span></p>
-                        <p class="mb-2"><span class="font-bold text-green-600">Địa chỉ:</span> <span class="text-gray-700">@Model.TutorDetail.Address</span></p>
-                        <p class="mb-2"><span class="font-bold text-green-600">Giới tính:</span> <span class="text-gray-700">@Model.TutorDetail.Gender</span></p>
-                        <p class="mb-2"><span class="font-bold text-green-600">Ngày sinh:</span> <span class="text-gray-700">@Model.TutorDetail.Dob</span></p>
+            <div class="grid grid-cols-12 gap-8 mb-8">
+                <div class ="col-span-6">
+                    <h2 class="text-2xl font-semibold mb-4 text-blue-600">Reservation Details</h2>
+                    <p class="mb-2"><span class="font-bold text-green-600">Subject Name:</span> <span class="text-gray-700">@Model.ReservationDetail.SubjectName</span></p>
+                    <p class="mb-2"><span class="font-bold text-green-600">Paid Price:</span> <span class="text-gray-700">@Model.ReservationDetail.PaidPrice</span></p>
+                    <p class="mb-2"><span class="font-bold text-green-600">Reservation Status:</span> <span class="text-gray-700">@Model.ReservationDetail.ReservationStatus</span></p>
+                    <p class="mb-2"><span class="font-bold text-green-600">Payment Status:</span> <span class="text-gray-700">@Model.ReservationDetail.PaymentStatus</span></p>
+                    <p class="mb-2"><span class="font-bold text-green-600">Payment Method:</span> <span class="text-gray-700">@Model.ReservationDetail.PaymentMethod</span></p>
+                </div>
+                
+                <div class ="col-span-6">
+                    <h2 class="text-2xl font-semibold mb-4 text-blue-600">Tutor Detail</h2>
+                    <div class="flex items-center mb-4">
+                        @if (!string.IsNullOrEmpty(Model.TutorDetail.Avatar))
+                        {
+                            <img src="@Model.TutorDetail.Avatar" alt="Tutor Avatar" class="w-32 h-32 rounded-full mr-4"/>
+                        }
+                        <div>
+                            <p class="mb-2"><span class="font-bold text-green-600">Tên giảng viên:</span> <span class="text-gray-700">@Model.TutorDetail.Fullname</span></p>
+                            <p class="mb-2"><span class="font-bold text-green-600">Email:</span> <span class="text-gray-700">@Model.TutorDetail.Email</span></p>
+                            <p class="mb-2"><span class="font-bold text-green-600">Số điện thoại:</span> <span class="text-gray-700">@Model.TutorDetail.Phone</span></p>
+                            <p class="mb-2"><span class="font-bold text-green-600">Địa chỉ:</span> <span class="text-gray-700">@Model.TutorDetail.Address</span></p>
+                            <p class="mb-2"><span class="font-bold text-green-600">Giới tính:</span> <span class="text-gray-700">@Model.TutorDetail.Gender</span></p>
+                            <p class="mb-2"><span class="font-bold text-green-600">Ngày sinh:</span> <span class="text-gray-700">@Model.TutorDetail.Dob</span></p>
+                        </div>
                     </div>
                 </div>
             </div>
             
-            <div>
+            <div class="bg-blue-50 p-6 rounded shadow-md text-center">
                 <h2 class="text-2xl font-semibold mb-4 text-blue-600">Teaching Schedule</h2>
                 <p class="mb-2"><span class="font-bold text-green-600">Meet Room:</span> <span class="text-gray-700">@Model.ScheduleDto.MeetRoomCode</span></p>
                 <p class="mb-2"><span class="font-bold text-green-600">Learning Date:</span> <span class="text-gray-700">@Model.ScheduleDto.LearnDays</span></p>
@@ -56,4 +45,3 @@
         </div>
     </div>
 </body>
-</html>
