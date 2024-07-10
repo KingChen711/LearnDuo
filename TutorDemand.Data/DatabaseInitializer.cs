@@ -497,6 +497,7 @@ namespace TutorDemand.Data
                 CustomerId = Guid.NewGuid(),
                 Fullname = "Nguyen Van Teo",
                 Dob = new DateOnly(1998, 10, 2),
+                Password = "123456",
                 Email = "nguyenvanteo@gmail.com",
                 Phone = "0767178991",
                 Address = "E2a-7, Street D1, HCM City",
