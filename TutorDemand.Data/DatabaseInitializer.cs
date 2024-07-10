@@ -500,7 +500,8 @@ namespace TutorDemand.Data
                 Email = "nguyenvanteo@gmail.com",
                 Phone = "0767178991",
                 Address = "E2a-7, Street D1, HCM City",
-                Gender = nameof(Gender.Male)
+                Gender = nameof(Gender.Male),
+                Password ="123456"
             });
 
             var result = await _context.SaveChangesAsync() > 0;
