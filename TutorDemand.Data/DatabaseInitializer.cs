@@ -502,7 +502,6 @@ namespace TutorDemand.Data
                 Phone = "0767178991",
                 Address = "E2a-7, Street D1, HCM City",
                 Gender = nameof(Gender.Male),
-                Password ="123456"
             });
 
             var result = await _context.SaveChangesAsync() > 0;

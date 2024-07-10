@@ -1,21 +1,7 @@
 ﻿using AutoMapper;
-using System;
-using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
-using System.Net;
-using System.Net.WebSockets;
-using System.Text;
-using System.Text.Encodings.Web;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 using TutorDemand.Business;
 using TutorDemand.Business.Abstractions;
 using TutorDemand.Business.Base;
@@ -155,6 +141,11 @@ namespace TutorDemand.WpfApp.UI
             EmptyTextAndLoadSubjects();
         }
 
+        private void ButtonReset_Click(object sender, RoutedEventArgs e) 
+        {
+            EmptyTextAndLoadSubjects();
+        }
+
         private async void GrdSubject_MouseDouble_Click(object sender, RoutedEventArgs e)
         {
             DataGrid grd = sender as DataGrid;
@@ -277,6 +268,59 @@ namespace TutorDemand.WpfApp.UI
             if (result.Status == Const.SUCCESS_READ_CODE)
             {
                 grdSubject.ItemsSource = result.Data as List<Subject>;
+            }
+        }
+
+        public async void ButtonSearch_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                var searchTerm = txtSearch.Text.ToString();
+
+                IBusinessResult result = null!;
+                if (decimal.TryParse(searchTerm, out var decimalNum))
+                {
+                    result = await _subjectBusiness.GetWithConditionAysnc(x =>
+                        x.CostPrice == decimalNum
+                     || x.Duration == decimalNum);
+
+                    if (result.Status == Const.SUCCESS_READ_CODE)
+                    {
+                        grdSubject.ItemsSource = result.Data as List<Subject>;
+                    }
+                    return;
+                }
+
+                if (DateTime.TryParse(searchTerm, out var dateTerm))
+                {
+                    result = await _subjectBusiness.GetWithConditionAysnc(x =>
+                        x.StartDate.HasValue && x.EndDate.HasValue &&
+                        dateTerm >= x.StartDate.Value && dateTerm <= x.EndDate.Value
+                    );
+
+                    if (result.Status == Const.SUCCESS_READ_CODE)
+                    {
+                        grdSubject.ItemsSource = result.Data as List<Subject>;
+                    }
+
+                    return;
+                }
+
+                result = await _subjectBusiness.GetWithConditionAysnc(x =>
+                    x.SubjectCode.Contains(searchTerm)
+                 || x.Name.Contains(searchTerm)
+                 || x.Description.Contains(searchTerm)
+                 || x.StartDate.HasValue && x.StartDate.Value.ToString().Contains(searchTerm)
+                 || x.EndDate.HasValue && x.EndDate.Value.ToString().Contains(searchTerm));
+
+                if (result.Status == Const.SUCCESS_READ_CODE)
+                {
+                    grdSubject.ItemsSource = result.Data as List<Subject>;
+                }
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Alert", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
     }

@@ -267,7 +267,7 @@ public class SubjectBusiness : ISubjectBusiness
     {
         try
         {
-            _unitOfWork.SubjectRepository.PrepareCreate(_mapper.Map<Subject>(subjectDto));
+            await _unitOfWork.SubjectRepository.PrepareCreateAsync(_mapper.Map<Subject>(subjectDto));
             var result = await _unitOfWork.SubjectRepository.SaveAsync() > 0;
             if (result)
             {

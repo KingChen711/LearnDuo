@@ -71,11 +71,11 @@ namespace TutorDemand.RazorWebApp.Pages.Subject
             }
 
             // Check if request from filter form
-            if (!String.IsNullOrEmpty(SubjectFilter.SubjectName?.ToString())
-                || !String.IsNullOrEmpty(SubjectFilter.SubjectCode?.ToString())
-                || !String.IsNullOrEmpty(SubjectFilter.StartDate.ToString())
-                || !String.IsNullOrEmpty(SubjectFilter.EndDate.ToString())
-                || !String.IsNullOrEmpty(SubjectFilter.Price.ToString()))
+            if (!string.IsNullOrEmpty(SubjectFilter.SubjectName?.ToString())
+                || !string.IsNullOrEmpty(SubjectFilter.SubjectCode?.ToString())
+                || !string.IsNullOrEmpty(SubjectFilter.StartDate.ToString())
+                || !string.IsNullOrEmpty(SubjectFilter.EndDate.ToString())
+                || !string.IsNullOrEmpty(SubjectFilter.Price.ToString()))
             {
 
                 DateTime.TryParse(SubjectFilter.StartDate.ToString(), out var validStartDate);
@@ -84,14 +84,19 @@ namespace TutorDemand.RazorWebApp.Pages.Subject
 
 
                 businessResult = await _subjectBusiness.GetWithConditionAysnc(x =>
+                    // Process filter by code
                     (string.IsNullOrEmpty(SubjectFilter.SubjectCode) || x.SubjectCode.Contains(SubjectFilter.SubjectCode)) &&
+                    // Process filter by name
                     (string.IsNullOrEmpty(SubjectFilter.SubjectName) || x.Name.Contains(SubjectFilter.SubjectName)) &&
+                    // Process filter by date range
                     (!SubjectFilter.StartDate.HasValue || (x.StartDate.HasValue && x.StartDate.Value.Date >= validStartDate.Date)) &&
                     (!SubjectFilter.EndDate.HasValue || (x.EndDate.HasValue && x.EndDate.Value.Date <= validEndDate.Date)) &&
+                    // Process filter by price date
                     (!SubjectFilter.Price.HasValue || x.CostPrice == validPrice));
             }
-            else
+            else // Search without any filter features
             {
+                // Get all subject 
                 businessResult = await _subjectBusiness.GetAllAsync();
             }
 
@@ -108,13 +113,13 @@ namespace TutorDemand.RazorWebApp.Pages.Subject
             return Page();
         }
 
-        public IActionResult OnPostFilter([FromBody] SubjectPostRequest reqObj)
+        public async Task<IActionResult> OnPostFilterAsync([FromBody] SubjectPostRequest reqObj)
         {
             IBusinessResult businessResult = null!;
 
             // Process search term subject...
             var toLowerSearchTerm = reqObj.SearchValue.ToLower();
-            businessResult = _subjectBusiness.GetWithCondition(x =>
+            businessResult = await _subjectBusiness.GetWithConditionAysnc(x =>
                 x.Name.ToLower().Contains(toLowerSearchTerm)
                 || x.SubjectCode.ToLower().Contains(toLowerSearchTerm));
 
