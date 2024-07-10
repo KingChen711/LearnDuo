@@ -26,11 +26,11 @@ namespace TutorDemand.Business
         {
             try
             {
-                var tutors = await _unitOfWork.TutorRepository.GetOneWithConditionAsync(condition);
+                var tutor = await _unitOfWork.TutorRepository.GetOneWithConditionAsync(condition);
 
-                if (tutors != null)
+                if (tutor != null)
                 {
-                    return new BusinessResult(Const.SUCCESS_UPDATE_CODE, Const.SUCCESS_UPDATE_MSG, tutors);
+                    return new BusinessResult(Const.SUCCESS_READ_CODE, Const.SUCCESS_READ_MSG, tutor);
                 }
                 else
                 {
