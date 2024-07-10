@@ -206,6 +206,7 @@ else
             // Process filter click...
             const toggleFilter = document.getElementById('toggleFilter');
             const filterPanel = document.getElementById('filterPanel');
+            
             // Handle toggle filter click 
             toggleFilter.addEventListener('click', function () {
 
@@ -404,6 +405,7 @@ else
                 }
             });
 
+            // Handle button events
             function addActionBtnListener() {
                 $('.action-btn').on('click', function () {
                     var action = $(this).data('action');

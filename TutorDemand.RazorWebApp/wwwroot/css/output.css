@@ -1,5 +1,5 @@
 /*
-! tailwindcss v3.4.4 | MIT License | https://tailwindcss.com
+! tailwindcss v3.4.3 | MIT License | https://tailwindcss.com
 */
 
 /*
@@ -847,8 +847,8 @@ video {
   margin-top: 2rem;
 }
 
-.mt-\[20\%\] {
-  margin-top: 20%;
+.mt-\[10\%\] {
+  margin-top: 10%;
 }
 
 .block {
@@ -915,6 +915,10 @@ video {
 
 .h-12 {
   height: 3rem;
+}
+
+.h-2\/3 {
+  height: 66.666667%;
 }
 
 .h-20 {
@@ -1025,10 +1029,6 @@ video {
 
 .max-w-3xl {
   max-width: 48rem;
-}
-
-.max-w-96 {
-  max-width: 24rem;
 }
 
 .max-w-\[32px\] {

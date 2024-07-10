@@ -19,6 +19,11 @@ namespace TutorDemand.Data.Base
             _context.Add(entity);
         }
 
+        public async Task PrepareCreateAsync(T entity)
+        {
+            await _context.AddAsync(entity);
+        }
+
         public GenericRepository()
         {
             _context ??= new NET1704_221_5_TutorDemandContext();
