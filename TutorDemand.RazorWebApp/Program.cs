@@ -23,7 +23,7 @@ builder.Services.AddSingleton(mapperConfig.CreateMapper());
 builder.Services.AddRazorPages()
         .AddRazorPagesOptions(options =>
         {
-            options.Conventions.AddPageRoute("/Index", "");
+            options.Conventions.AddPageRoute("/Auth/Login", "");
         });
 builder.Services.AddSession(option =>
 {
