@@ -7,6 +7,15 @@ namespace TutorDemand.Business.Abstractions;
 
 public interface IReservationBusiness
 {
+    IBusinessResult GetWithCondition(
+        Expression<Func<Reservation, bool>> filter = null!,
+        Func<IQueryable<Reservation>, IOrderedQueryable<Reservation>> orderBy = null!,
+        string includeProperties = "");
+
+    Task<IBusinessResult> GetWithConditionAysnc(
+        Expression<Func<Reservation, bool>> filter = null!,
+        Func<IQueryable<Reservation>, IOrderedQueryable<Reservation>> orderBy = null!,
+        string includeProperties = "");
     IBusinessResult Create(Reservation reservation);
     public IBusinessResult Delete(Guid reservationId);
     IBusinessResult Delete(int id);

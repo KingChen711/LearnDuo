@@ -340,7 +340,8 @@ public class ReservationBusiness : IReservationBusiness
     {
         try
         {
-            var reservationEntity = _unitOfWork.ReservationRepository.GetOneWithCondition(r => r.ReservationId.Equals(reservationId));
+            var reservationEntity =
+                _unitOfWork.ReservationRepository.GetOneWithCondition(r => r.ReservationId.Equals(reservationId));
             if (reservationEntity is null)
             {
                 return new BusinessResult(Const.WARNING_NO_DATA_CODE, Const.WARNING_NO_DATA_MSG);
@@ -384,7 +385,8 @@ public class ReservationBusiness : IReservationBusiness
 
     public async Task<IBusinessResult> DeleteAsync(Guid reservationId)
     {
-        var reservationEntity =  _unitOfWork.ReservationRepository.GetOneWithCondition(r => r.ReservationId.Equals(reservationId));
+        var reservationEntity =
+            _unitOfWork.ReservationRepository.GetOneWithCondition(r => r.ReservationId.Equals(reservationId));
         if (reservationEntity is null)
         {
             return new BusinessResult(Const.WARNING_NO_DATA_CODE, Const.WARNING_NO_DATA_MSG);
@@ -598,8 +600,7 @@ public class ReservationBusiness : IReservationBusiness
     {
         try
         {
-            
-            var result =await _unitOfWork.ReservationRepository.UpdateAsync(reservation)>0;
+            var result = await _unitOfWork.ReservationRepository.UpdateAsync(reservation) > 0;
 
             if (result)
             {
@@ -645,5 +646,61 @@ public class ReservationBusiness : IReservationBusiness
     public async Task<int> SaveChangeAsync()
     {
         return await _unitOfWork.ReservationRepository.SaveAsync();
+    }
+
+    public IBusinessResult GetWithCondition(
+        Expression<Func<Reservation, bool>> filter = null!,
+        Func<IQueryable<Reservation>, IOrderedQueryable<Reservation>> orderBy = null!,
+        string includeProperties = "")
+    {
+        try
+        {
+            var Reservations = _unitOfWork.ReservationRepository.GetWithCondition(filter, orderBy, includeProperties);
+
+            if (Reservations.Any())
+            {
+                return new BusinessResult(Const.SUCCESS_READ_CODE, Const.SUCCESS_READ_MSG, Reservations);
+            }
+            else
+            {
+                return new BusinessResult(Const.FAIL_READ_CODE, Const.FAIL_READ_MSG);
+            }
+        }
+        catch (Exception ex)
+        {
+            return new BusinessResult(Const.ERROR_EXCEPTION_CODE, ex.Message);
+        }
+    }
+
+    public async Task<IBusinessResult> GetWithConditionAysnc(
+        Expression<Func<Reservation, bool>> filter = null!,
+        Func<IQueryable<Reservation>, IOrderedQueryable<Reservation>> orderBy = null!,
+        string includeProperties = "")
+    {
+        try
+        {
+            // Combine the filter with additional includes for TeachingSchedule and Subject
+            Expression<Func<Reservation, bool>> combinedFilter = filter;
+            string combinedIncludeProperties = includeProperties + ",TeachingSchedule,TeachingSchedule.Subject";
+
+            var reservations = await _unitOfWork.ReservationRepository.GetWithConditionAsync(
+                combinedFilter, orderBy, combinedIncludeProperties);
+
+            if (reservations.Any())
+            {
+                // Successful retrieval
+                return new BusinessResult(Const.SUCCESS_READ_CODE, Const.SUCCESS_READ_MSG, reservations);
+            }
+            else
+            {
+                // No data found
+                return new BusinessResult(Const.FAIL_READ_CODE, Const.FAIL_READ_MSG);
+            }
+        }
+        catch (Exception ex)
+        {
+            // Exception occurred
+            return new BusinessResult(Const.ERROR_EXCEPTION_CODE, ex.Message);
+        }
     }
 }

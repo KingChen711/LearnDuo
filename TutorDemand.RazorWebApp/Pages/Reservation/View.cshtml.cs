@@ -45,14 +45,14 @@ public class ViewModel : PageModel
         ReservationDetail = _mapper.Map<ReservationDetails>(reservationData);
 
         var teachingSchedule =
-            await _teachingscheduleBusiness.FindOneAsync(x =>
-                x.TeachingScheduleId.Equals(reservationData.TeachingScheduleId));
+            await _teachingscheduleBusiness.GetWithConditionAsync(x =>
+                x.TeachingScheduleId.Equals(reservationData.TeachingScheduleId),null,"Subject");
         if (teachingSchedule.Data is null)
         {
             return RedirectToPage("/Error");
         }
 
-        var teachingScheduleData = (TeachingSchedule)teachingSchedule.Data!;
+        var teachingScheduleData = ((List<TeachingSchedule>)teachingSchedule.Data!).First();
         ScheduleDto = _mapper.Map<TeachingScheduleDto>(teachingScheduleData);
         var tutor = await _tutorBusiness.FindOneAsync(x => x.TutorId.Equals(teachingScheduleData.TutorId));
 
@@ -62,6 +62,7 @@ public class ViewModel : PageModel
         }
 
         TutorDetail = _mapper.Map<TutorDto>((Data.Entities.Tutor)tutor.Data!);
+        ReservationDetail.SubjectName = teachingScheduleData.Subject.Name;
         return Page();
     }
 }
