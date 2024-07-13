@@ -557,8 +557,7 @@ public class ReservationBusiness : IReservationBusiness
     {
         try
         {
-            await _unitOfWork.ReservationRepository.CreateAsync(reservation);
-            var result = await _unitOfWork.ReservationRepository.SaveAsync() > 0;
+            var result = await _unitOfWork.ReservationRepository.CreateAsync(reservation) > 0;
             if (result)
             {
                 return new BusinessResult(Const.SUCCESS_CREATE_CODE, Const.SUCCESS_CREATE_MSG);

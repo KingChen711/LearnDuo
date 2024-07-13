@@ -1,13 +1,17 @@
 using AutoMapper;
+using Microsoft.AspNetCore.DataProtection.KeyManagement.Internal;
+using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using TutorDemand.Business.Abstractions;
+using TutorDemand.Common;
 using TutorDemand.Data.Dtos.Reservation;
 using TutorDemand.Data.Dtos.Subject;
 using TutorDemand.Data.Dtos.TeachingSchedule;
 using TutorDemand.Data.Dtos.Tutor;
 using TutorDemand.Data.Entities;
 using TutorDemand.Data.Enums;
+using TutorDemand.RazorWebApp.Models;
 
 namespace TutorDemand.RazorWebApp.Pages.Reservation
 {
@@ -38,7 +42,6 @@ namespace TutorDemand.RazorWebApp.Pages.Reservation
             _teachingScheduleBusiness = teachingScheduleBusiness;
             _mapper = mapper;
             _customerBusiness = customerBusiness;
-
         }
 
         public async Task<IActionResult> OnGet(Guid subjectId)
@@ -85,19 +88,47 @@ namespace TutorDemand.RazorWebApp.Pages.Reservation
 
         public async Task<IActionResult> OnPost(Guid subjectId)
         {
-
             var req = Request.Form;
-            var customer = await _customerBusiness.GetAllAsync();
-            var currentCustomer = ((List<Customer>)customer.Data!).First();
-            Reservation.CustomerId = currentCustomer.CustomerId;
+            var teachingScheduleId = Guid.Parse(Request.Form["Reservation.TeachingScheduleId"]);
+            var paidPrice = int.Parse(Request.Form["Reservation.CostPrice"]);
+
+
+            var customer = SessionHelpers.GetObjectFromJson<Customer>(HttpContext.Session, "Customer");
+            if (customer is null) return RedirectToPage("/Auth/Login");
+
+            Reservation.CustomerId = customer.CustomerId;
             Reservation.CreatedAt = DateTime.Now;
             Reservation.ReservationStatus = ReservationStatus.Processing.ToString();
             Reservation.PaymentStatus = PaymentStatus.Unpaid.ToString();
-            Reservation.TeachingScheduleId = Guid.Parse(Request.Form["Reservation.TeachingScheduleId"]);
-            
-            Reservation.PaidPrice = int.Parse(Request.Form["Reservation.CostPrice"]);
+            Reservation.TeachingScheduleId = teachingScheduleId;
+            Reservation.PaidPrice = paidPrice;
 
-            await _reservationBusiness.CreateAsync(_mapper.Map<Data.Entities.Reservation>(Reservation));
+            var isCashPayment = Reservation.PaymentMethod.Equals(PaymentMethod.Cash.ToString());
+            if (isCashPayment)
+            {
+                Reservation.PaymentStatus = PaymentStatus.Paid.ToString();
+            }
+
+            var result = await _reservationBusiness.CreateAsync(_mapper.Map<Data.Entities.Reservation>(Reservation));
+
+            if (result.Status == Const.SUCCESS_CREATE_CODE && isCashPayment)
+            {
+                // Get Subject by By
+                var getSubjectResult = await _subjectBusiness.GetWithConditionAysnc(x =>
+                    x.SubjectId.ToString().Equals(subjectId.ToString()));
+
+                // Convert result data to typeof(SubjectDto)
+                var subjects = _mapper.Map<List<SubjectDto>>(getSubjectResult.Data);
+
+                if (subjects.Any())
+                {
+                    subjects.First().EnrolledStudents += 1;
+
+                    // Update enrolled student
+                    await _subjectBusiness.UpdateAsync(subjects.First());
+                }
+            }
+
             return RedirectToPage("/Reservation/Index");
         }
     }

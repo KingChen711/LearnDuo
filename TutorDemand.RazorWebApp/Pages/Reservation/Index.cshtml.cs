@@ -94,7 +94,8 @@ namespace TutorDemand.Pages.Reservations
                 }
                 else
                 {
-                    return RedirectToPage("Error");
+                    return Page();
+                    //return RedirectToPage("/Error");
                 }
             }
             else

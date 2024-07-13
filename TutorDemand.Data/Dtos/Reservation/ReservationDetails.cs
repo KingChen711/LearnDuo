@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TutorDemand.Data.Dtos.TeachingSchedule;
 
 namespace TutorDemand.Data.Dtos.Reservation
 {
@@ -15,5 +16,8 @@ namespace TutorDemand.Data.Dtos.Reservation
         public string PaymentMethod { get; set; } = null!;
         public string SubjectName { get; set; } = null!;
         public string TutorName { get; set; } = null!;
+        
+        public Guid TeachingScheduleId { get; set; }
+        public TeachingScheduleDto TeachingSchedule { get; set; }
     }
 }

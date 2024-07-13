@@ -219,6 +219,21 @@
             }
     
             function openUpdateModal(reservationId, currentPaymentMethod, currentPaymentStatus, currentReservationStatus) {
+                console.log(currentPaymentStatus);
+
+                if (currentPaymentStatus == 'Paid') {
+                    // Readonly for payment status and payment method 
+                    document.getElementById('paymentStatusDropdown').setAttribute("disabled", "true");
+                    document.getElementById('paymentMethodDropdown').setAttribute("disabled", "true");
+
+                    document.getElementById('paymentStatusDropdown').value = currentPaymentStatus;
+                    document.getElementById('paymentMethodDropdown').value = currentPaymentMethod;
+                } else {
+                    // Remove readonly for another payment method
+                    document.getElementById("paymentStatusDropdown").removeAttribute("disabled");
+                    document.getElementById("paymentMethodDropdown").removeAttribute("disabled");
+                }
+                
                 // Set the dropdowns to the current values
                 document.getElementById('paymentMethodDropdown').value = currentPaymentMethod;
                 document.getElementById('paymentStatusDropdown').value = currentPaymentStatus;

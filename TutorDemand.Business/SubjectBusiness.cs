@@ -329,6 +329,7 @@ public class SubjectBusiness : ISubjectBusiness
             subject.Image = subjectDto.Image;
             subject.Duration = subjectDto.Duration;
             subject.EnrolledCapacity = subjectDto.EnrolledCapacity;
+            subject.EnrolledStudents = subjectDto.EnrolledStudents;
             subject.CostPrice = subjectDto.CostPrice;
             subject.StartDate = subjectDto.StartDate;
             subject.EndDate = subjectDto.EndDate;

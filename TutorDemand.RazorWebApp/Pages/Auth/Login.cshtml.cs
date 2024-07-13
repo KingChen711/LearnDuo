@@ -46,7 +46,7 @@ namespace TutorDemand.RazorWebApp.Pages.Auth
             {
                 // Store user data in session
                 SessionHelpers.SetObjectAsJson(HttpContext.Session,"Customer", cutomer.Data);
-                return RedirectToPage("/Index");
+                return RedirectToPage("/Subject/List");
             }
             else 
             {

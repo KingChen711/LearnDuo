@@ -6,6 +6,7 @@
     var tutors = Model.Tutors;
     var teachingSchedules = Model.TeachingSchedules;
     var otherSubjects = Model.OtherSubjects;
+    var isEnrolled = TempData["SubjectEnrolled"]?.ToString();
 }
 
 @if (subject is not null)
@@ -56,14 +57,18 @@
                     @* <span class="text-bold startDate text-2xl text-gray-700">@subject.StartDate</span> *@
                     @if (subject.EnrolledStudents < subject.EnrolledCapacity)
                     {
-                        <a id="enrollButton" type="button" class="shadow-green-500/50 text-md mb-2 me-2 mt-5 cursor-pointer rounded-3xl bg-gradient-to-r from-green-400 via-green-500 to-green-600 px-20 py-2.5 text-center font-medium tracking-widest text-white shadow-lg hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-green-300 dark:shadow-lg dark:shadow-green-800/80 dark:focus:ring-green-800 @(Model.Tutors.Any() ? "" : "pointer-events-none opacity-50")">Enroll</a>
+                        <a id="enrollButton" type="button" class="shadow-green-500/50 text-md mb-2 me-2 mt-5 cursor-pointer rounded-3xl bg-gradient-to-r from-green-400 via-green-500 to-green-600 px-20 py-2.5 text-center font-medium tracking-widest text-white shadow-lg hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-green-300 dark:shadow-lg dark:shadow-green-800/80 dark:focus:ring-green-800 @(Model.Tutors.Any() && isEnrolled == null ? "" : "pointer-events-none opacity-50")">Enroll</a>
+                    }
+                    @if(isEnrolled != null)
+                    {
+                        <span class="text-danger text-[12.5px] mt-2 italic font-medium">You already enrolled this subject</span>
                     }
                 </div>
                 <script>
                         document.getElementById("enrollButton").addEventListener("click", function() {
                             window.location.href = '/Reservation/Create/@Model.Subject.SubjectId';
                         });
-                    </script>
+                </script>
             </div>
         </div>
         <hr />
