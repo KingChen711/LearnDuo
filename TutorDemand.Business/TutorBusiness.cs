@@ -119,6 +119,7 @@ namespace TutorDemand.Business
                 entity.CertificateImage = dto.CertificateImage;
                 entity.IdentityCard = dto.IdentityCard;
                 entity.Avatar = dto.Avatar;
+                entity.Dob = dto.Dob;
 
                var result = await _unitOfWork.TutorRepository.UpdateAsync(entity);
 
