@@ -11,8 +11,8 @@ Follow these steps to set up the project:
 
 1. **Clone the repository:**
    ```bash
-   git clone <repository-url>
-   cd <repository-folder>
+   git clone https://github.com/KingChen711/NET1704_221_PRJ_5_TutorDemand/
+   cd NET1704_221_PRJ_5_TutorDemand
    ```
 2. **Navigate to the TutorDemand.RazorWebApp folder:**
    ```bash
